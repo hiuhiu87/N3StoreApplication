@@ -33,6 +33,7 @@ public class MainApplicationView extends javax.swing.JFrame {
             panelProduct = new ProductPanel();
             customerPanel = new CustomerPanel();
             orderPanel = new OrderPanel();
+            System.out.println("long");
 
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
