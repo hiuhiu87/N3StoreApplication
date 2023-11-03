@@ -27,10 +27,8 @@ public class ProductPanel extends javax.swing.JPanel {
 
     public ProductPanel() {
         initComponents();
+        System.out.println("tesst");
     }
-
-
-
 
     private void resetForm() {
         txtPriceIn.setText("");
