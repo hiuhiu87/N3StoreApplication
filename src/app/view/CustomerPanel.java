@@ -54,7 +54,40 @@ public class CustomerPanel extends javax.swing.JPanel {
 cd.setBIRTHDATE(txtDate.getText());
         return cd;
     }
-
+boolean check(){
+    if(txtFullname.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "vui long nhap ten");
+        return false;
+    }
+    if(txtEmail.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "vui long nhap email");
+        return false;
+    }
+    if(txtDate.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "vui long nhap ngay sinh");
+        return false;
+    }
+    if(txtAddress.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
+        return false;
+    }
+    if(txtPhoneNumber.getText().isEmpty()){
+        JOptionPane.showMessageDialog(this, "vui long nhap sdt");
+        return false;
+    }else{
+        try {
+          double hocphi=Double.parseDouble(txtPhoneNumber.getText());
+            if(hocphi<0){
+                JOptionPane.showMessageDialog(this, "sdt>0");
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "sdt phai la so");
+            return false;
+        }
+    }
+    return true;
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -322,13 +355,13 @@ cd.setBIRTHDATE(txtDate.getText());
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        KhachHang cd = reafrom();
+if(check()){        KhachHang cd = reafrom();
         if (service.addSach(cd) > 0) {
             JOptionPane.showMessageDialog(this, "them thanh cong");
             filltable(service.getAll());
         } else {
             JOptionPane.showMessageDialog(this, "them that bai");
-        }
+        }}
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
