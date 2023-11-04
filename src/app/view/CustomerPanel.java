@@ -4,6 +4,8 @@
  */
 package app.view;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -12,6 +14,7 @@ public class CustomerPanel extends javax.swing.JPanel {
 
     public CustomerPanel() {
         initComponents();
+        JOptionPane.showMessageDialog(this, "");
     }
 
 
