@@ -18,7 +18,6 @@ public class OrderPanel extends javax.swing.JPanel {
 
     public OrderPanel() {
         initComponents();
-        System.out.println("ok");
     }
 
     

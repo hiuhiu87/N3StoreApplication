@@ -44,19 +44,19 @@ public class SellPanel extends javax.swing.JPanel {
 
     public SellPanel() {
         initComponents();
-        Thread threadCam = new Thread(() -> {
-            initWebcam();
-        });
-        threadCam.start();
-        Thread threadScan = new Thread(() -> {
-            try {
-                Thread.sleep(5000);
-                scan();
-            } catch (InterruptedException ex) {
-                
-            }
-        });
-        threadScan.start();
+//        Thread threadCam = new Thread(() -> {
+//            initWebcam();
+//        });
+//        threadCam.start();
+//        Thread threadScan = new Thread(() -> {
+//            try {
+//                Thread.sleep(5000);
+//                scan();
+//            } catch (InterruptedException ex) {
+//                
+//            }
+//        });
+//        threadScan.start();
         tblDisplayProduct.setModel(tblModelProduct);
         tblDisplayOrder.setModel(tblModelOrder);
         tblDisplayCart.setModel(tblModelCart);
