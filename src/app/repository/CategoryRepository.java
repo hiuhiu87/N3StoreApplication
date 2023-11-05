@@ -75,4 +75,26 @@ public class CategoryRepository {
         }
     }
 
+    public Category findByName(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.CATEGORY
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Category category = new Category();
+            while (rs.next()) {
+                category.setId(rs.getInt(1));
+                category.setName(rs.getString(2));
+                category.setDeleted(rs.getBoolean(3));
+            }
+            return category;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
