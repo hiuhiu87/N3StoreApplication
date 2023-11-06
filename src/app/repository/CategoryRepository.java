@@ -16,14 +16,15 @@ import java.util.List;
  *
  * @author Admin
  */
-public class CategoryRepository {
-
+public class CategoryRepository implements CrudRepository<Category> {
+    
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          SELECT ID, NAME, DELETED
-                         FROM N3STORESNEAKER.dbo.CATEGORY;
+                         FROM N3STORESNEAKER.dbo.CATEGORY
+                         ORDER BY ID DESC;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -39,8 +40,8 @@ public class CategoryRepository {
             return list;
         }
     }
-
-    public int addCategory(Category category) {
+    
+    public int add(Category category) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          INSERT INTO N3STORESNEAKER.dbo.CATEGORY
@@ -56,8 +57,8 @@ public class CategoryRepository {
             return 0;
         }
     }
-
-    public int updateCategory(Integer id, Category category) {
+    
+    public int update(Integer id, Category category) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          UPDATE N3STORESNEAKER.dbo.CATEGORY
@@ -74,7 +75,7 @@ public class CategoryRepository {
             return 0;
         }
     }
-
+    
     public Category findByName(String name) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -96,5 +97,5 @@ public class CategoryRepository {
             return null;
         }
     }
-
+    
 }

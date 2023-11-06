@@ -1,11 +1,13 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package app.view;
 
-
-import java.util.ArrayList;
+import app.model.Size;
+import app.model.Sole;
+import app.service.SoleService;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,14 +15,45 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class TypeProductView extends javax.swing.JFrame {
+public class SoleDialog extends javax.swing.JDialog {
 
+    private final SoleService soleService = new SoleService();
+    private DefaultTableModel tableModelSole;
 
-    public TypeProductView() {
+    /**
+     * Creates new form ColorDialog
+     *
+     * @param parent
+     * @param modal
+     */
+    public SoleDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-
+        tableModelSole = new DefaultTableModel();
+        tblDisplay.setModel(tableModelSole);
+        addColumTable();
+        fillTable(soleService.getAllSoles());
     }
 
+    private void addColumTable() {
+        tableModelSole.addColumn("STT");
+        tableModelSole.addColumn("Tên");
+        tableModelSole.addColumn("Trạng Thái");
+    }
+
+    private void fillTable(List<Sole> list) {
+        int stt = 0;
+        tableModelSole.setRowCount(0);
+        for (Sole sole : list) {
+            stt++;
+            Object[] row = {
+                stt,
+                sole.getName(),
+                sole.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
+            };
+            tableModelSole.addRow(row);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,20 +64,18 @@ public class TypeProductView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtNameCompany = new app.view.swing.TextField();
+        txtNameSole = new app.view.swing.TextField();
         panelFunction = new javax.swing.JPanel();
         btnAdd = new app.view.swing.ButtonOutLine();
         btnUpdate = new app.view.swing.ButtonOutLine();
         btnExit = new app.view.swing.ButtonOutLine();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplay = new javax.swing.JTable();
-        labelNameCompanyError = new javax.swing.JLabel();
+        labelNameGpuError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
-        setResizable(false);
 
-        txtNameCompany.setLabelText("Tên Nhà Sản Xuất");
+        txtNameSole.setLabelText("Tên Đế Giày");
 
         panelFunction.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức Năng"));
 
@@ -106,7 +137,7 @@ public class TypeProductView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblDisplay);
 
-        labelNameCompanyError.setForeground(new java.awt.Color(255, 51, 102));
+        labelNameGpuError.setForeground(new java.awt.Color(255, 51, 102));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,21 +153,21 @@ public class TypeProductView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(labelNameCompanyError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtNameCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                                .addComponent(labelNameGpuError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtNameSole, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(txtNameCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNameSole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelNameCompanyError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelNameGpuError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -150,16 +181,25 @@ public class TypeProductView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
- 
+        if (txtNameSole.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên Đế Giày Không Được Để Trống");
+        } else {
+            String nameCompany = txtNameSole.getText();
+            Sole sole = new Sole();
+            sole.setName(nameCompany);
+            String result = soleService.addSole(sole);
+            JOptionPane.showMessageDialog(this, result);
+            fillTable(soleService.getAllSoles());
+        }
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,20 +218,27 @@ public class TypeProductView extends javax.swing.JFrame {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
-//        /* Create and display the form */
+//        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new CompanyView().setVisible(true);
+//                SoleDialog dialog = new SoleDialog(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
 //            }
 //        });
 //    }
@@ -201,9 +248,9 @@ public class TypeProductView extends javax.swing.JFrame {
     private app.view.swing.ButtonOutLine btnExit;
     private app.view.swing.ButtonOutLine btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelNameCompanyError;
+    private javax.swing.JLabel labelNameGpuError;
     private javax.swing.JPanel panelFunction;
     private javax.swing.JTable tblDisplay;
-    private app.view.swing.TextField txtNameCompany;
+    private app.view.swing.TextField txtNameSole;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,7 +4,6 @@
  */
 package app.view;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -28,11 +27,11 @@ public class MainApplicationView extends javax.swing.JFrame {
 
     public MainApplicationView() {
         initComponents();
-            panelSell = new SellPanel();
-            panelStaff = new StaffPanel();
-            panelProduct = new ProductPanel();
-            customerPanel = new CustomerPanel();
-            orderPanel = new OrderPanel();
+        panelSell = new SellPanel();
+        panelStaff = new StaffPanel();
+        panelProduct = new ProductPanel(this);
+        customerPanel = new CustomerPanel();
+        orderPanel = new OrderPanel();
 
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
@@ -44,7 +43,6 @@ public class MainApplicationView extends javax.swing.JFrame {
 //        txtAccount.setText(user.getEmail());
 //        pswAccount.setText(user.getPassword());
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -529,8 +527,8 @@ public class MainApplicationView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -696,7 +694,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-      
+
                 new MainApplicationView().setVisible(true);
             }
         });

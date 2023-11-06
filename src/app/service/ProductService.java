@@ -29,7 +29,7 @@ public class ProductService {
         if (name.trim().isEmpty()) {
             return "Tên Sản Phẩm Không Được Để Trống";
         }
-        
+
         if (optionalCategory.getId() == null) {
             return "Không Tìm Thấy Danh Mục !";
         }
@@ -39,8 +39,8 @@ public class ProductService {
         product.setDeleted(false);
         product.setIdCategory(optionalCategory.getId());
         product.setName(name);
-        boolean res = productRepository.addProduct(product);
-        if (res) {
+        int res = productRepository.add(product);
+        if (res > 0) {
             return "Thêm Thành Công";
         } else {
             return "Đã Xảy ra Lỗi";

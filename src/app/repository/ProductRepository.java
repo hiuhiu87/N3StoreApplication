@@ -17,9 +17,9 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class ProductRepository {
+public class ProductRepository implements CrudRepository<Product>{
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -48,12 +48,13 @@ public class ProductRepository {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          SELECT
-                         	P.NAME,
-                         	C.NAME,
-                         	DELETED
+                         	p.NAME,
+                         	c.NAME,
+                         	p.DELETED
                          FROM
-                         	N3STORESNEAKER.dbo.PRODUCT P
-                         JOIN CATEGORY c on p.ID_CATEGORY = c.ID;
+                         	N3STORESNEAKER.dbo.PRODUCT p
+                         JOIN CATEGORY c on
+                         	p.ID_CATEGORY = c.ID;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -70,7 +71,7 @@ public class ProductRepository {
         }
     }
 
-    public boolean addProduct(Product product) {
+    public int add(Product product) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          INSERT INTO N3STORESNEAKER.dbo.PRODUCT
@@ -83,11 +84,21 @@ public class ProductRepository {
             stm.setObject(3, product.getName());
             stm.setObject(4, product.getDeleted());
             int res = stm.executeUpdate();
-            return res > 0;
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
+    }
+
+    @Override
+    public int update(Integer id, Product t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Product findByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

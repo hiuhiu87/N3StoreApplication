@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-    </Property>
-    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -27,42 +23,42 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="342" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Component id="labelNameCompanyError" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="txtNameCompany" min="-2" pref="228" max="-2" attributes="0"/>
+                          <Component id="txtNameSize" alignment="0" min="-2" pref="228" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="panelFunction" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
-      <Group type="103" groupAlignment="1" attributes="0">
-          <Group type="102" attributes="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                      <Component id="txtNameCompany" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNameSize" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="labelNameCompanyError" min="-2" pref="18" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="161" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Component id="panelFunction" max="32767" attributes="0"/>
                   </Group>
@@ -73,9 +69,9 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="app.view.swing.TextField" name="txtNameCompany">
+    <Component class="app.view.swing.TextField" name="txtNameSize">
       <Properties>
-        <Property name="labelText" type="java.lang.String" value="T&#xea;n Nh&#xe0; S&#x1ea3;n Xu&#x1ea5;t"/>
+        <Property name="labelText" type="java.lang.String" value="T&#xea;n Size"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="panelFunction">
@@ -93,9 +89,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnExit" min="-2" pref="84" max="-2" attributes="0"/>
-                      <Component id="btnUpdate" min="-2" pref="84" max="-2" attributes="0"/>
-                      <Component id="btnAdd" min="-2" pref="84" max="-2" attributes="0"/>
+                      <Component id="btnExit" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
+                      <Component id="btnUpdate" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
+                      <Component id="btnAdd" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
               </Group>
