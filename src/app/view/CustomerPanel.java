@@ -6,6 +6,7 @@ package app.view;
 
 import app.model.KhachHang;
 import app.service.KhachHang_Service;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -37,10 +38,10 @@ public class CustomerPanel extends javax.swing.JPanel {
 
     void showdata(int index) {
         KhachHang kh = service.getAll().get(index);
-         txtCode.setText(String.valueOf(kh.getId()));
+        txtCode.setText(String.valueOf(kh.getId()));
         txtFullname.setText(kh.getFULLNAME());
         txtEmail.setText(kh.getEMAIL());
-       txtPhoneNumber.setText(kh.getPHONE_NUMBER());
+        txtPhoneNumber.setText(kh.getPHONE_NUMBER());
         txtAddress.setText(kh.getAddress());
         txtDate.setText(String.valueOf(kh.getBIRTHDATE()));
     }
@@ -51,43 +52,64 @@ public class CustomerPanel extends javax.swing.JPanel {
         cd.setEMAIL(txtEmail.getText());
         cd.setPHONE_NUMBER(txtPhoneNumber.getText());
         cd.setAddress(txtAddress.getText());
-cd.setBIRTHDATE(txtDate.getText());
+        cd.setBIRTHDATE(txtDate.getText());
         return cd;
     }
-boolean check(){
-    if(txtFullname.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "vui long nhap ten");
-        return false;
-    }
-    if(txtEmail.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "vui long nhap email");
-        return false;
-    }
-    if(txtDate.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "vui long nhap ngay sinh");
-        return false;
-    }
-    if(txtAddress.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
-        return false;
-    }
-    if(txtPhoneNumber.getText().isEmpty()){
-        JOptionPane.showMessageDialog(this, "vui long nhap sdt");
-        return false;
-    }else{
-        try {
-          double hocphi=Double.parseDouble(txtPhoneNumber.getText());
-            if(hocphi<0){
-                JOptionPane.showMessageDialog(this, "sdt>0");
-                return false;
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "sdt phai la so");
+
+    boolean check() {
+        if (txtFullname.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "vui long nhap ten");
             return false;
         }
+        if (txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "vui long nhap email");
+            return false;
+        }
+        if (txtEmail.getText().indexOf("@") == -1 || txtEmail.getText().indexOf(".") == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng của E-mail");
+            return false;
+        }
+        if (txtDate.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "vui long nhap ngay sinh");
+            return false;
+        } else {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date ns = sdf.parse(txtDate.getText());
+            } catch (Exception e) {
+//                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng (ngày/tháng/năm)");
+                return false;
+            }
+            if (txtAddress.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
+                return false;
+            }
+            if (txtPhoneNumber.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "vui long nhap sdt");
+                return false;
+            } else {
+                try {
+                    double hocphi = Double.parseDouble(txtPhoneNumber.getText());
+                    if (hocphi < 0) {
+                        JOptionPane.showMessageDialog(this, "sdt>0");
+                        return false;
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "sdt phai la so");
+                    return false;
+                }
+            }
+            if (txtPhoneNumber.getText().length() != 10) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số");
+                return false;
+            }
+
+            return true;
+        }
     }
-    return true;
-}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -355,13 +377,15 @@ boolean check(){
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-if(check()){        KhachHang cd = reafrom();
-        if (service.addSach(cd) > 0) {
-            JOptionPane.showMessageDialog(this, "them thanh cong");
-            filltable(service.getAll());
-        } else {
-            JOptionPane.showMessageDialog(this, "them that bai");
-        }}
+        if (check()) {
+            KhachHang cd = reafrom();
+            if (service.addSach(cd) > 0) {
+                JOptionPane.showMessageDialog(this, "them thanh cong");
+                filltable(service.getAll());
+            } else {
+                JOptionPane.showMessageDialog(this, "them that bai");
+            }
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
