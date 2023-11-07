@@ -152,7 +152,7 @@
     </Component>
     <Component class="app.view.swing.TextField" name="txtDKGiaTriMin">
       <Properties>
-        <Property name="labelText" type="java.lang.String" value="&#x110;i&#x1ec1;u Ki&#x1ec7;n Gi&#xe1; Tr&#x1ecb; T&#x1ed1;i Thi&#x1ec3;u (s&#x1ed1; th&#x1ead;p ph&#xe2;n)"/>
+        <Property name="labelText" type="java.lang.String" value="&#x110;i&#x1ec1;u Ki&#x1ec7;n Gi&#xe1; Tr&#x1ecb; T&#x1ed1;i Thi&#x1ec3;u"/>
       </Properties>
     </Component>
     <Component class="app.view.swing.TextField" name="txtKieu">

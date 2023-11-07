@@ -167,7 +167,7 @@ public class DiscountPanel extends javax.swing.JPanel {
 
         txtNgayStar.setLabelText("Ngày Bắt Đầu");
 
-        txtDKGiaTriMin.setLabelText("Điều Kiện Giá Trị Tối Thiểu (số thập phân)");
+        txtDKGiaTriMin.setLabelText("Điều Kiện Giá Trị Tối Thiểu");
 
         txtKieu.setLabelText("Kiểu");
 
