@@ -75,7 +75,25 @@ public class MaterialRepository implements CrudRepository<Material> {
 
     @Override
     public Material findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.MATERIAL
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Material material = new Material();
+            while (rs.next()) {
+                material.setId(rs.getInt(1));
+                material.setName(rs.getString(2));
+                material.setDeleted(rs.getBoolean(3));
+            }
+            return material;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

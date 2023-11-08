@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Admin
  */
-public class ColorRepository implements CrudRepository<Color>{
+public class ColorRepository implements CrudRepository<Color> {
 
     public List<Color> getAll() {
         try (Connection con = DBConnector.getConnection()) {
@@ -71,7 +71,25 @@ public class ColorRepository implements CrudRepository<Color>{
 
     @Override
     public Color findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.COLOR
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Color color = new Color();
+            while (rs.next()) {
+                color.setId(rs.getInt(1));
+                color.setName(rs.getString(2));
+                color.setDeleted(rs.getBoolean(3));
+            }
+            return color;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

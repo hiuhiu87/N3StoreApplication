@@ -73,7 +73,25 @@ public class CompanyRepository implements CrudRepository<Company> {
 
     @Override
     public Company findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.BRAND
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Company company = new Company();
+            while (rs.next()) {
+                company.setId(rs.getInt(1));
+                company.setName(rs.getString(2));
+                company.setDeleted(rs.getBoolean(3));
+            }
+            return company;
+        } catch (Exception e) {
+            return null;
+        }
     }
-    
+
 }

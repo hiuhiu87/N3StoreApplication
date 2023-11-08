@@ -9,14 +9,17 @@ package app.request;
  * @author Admin
  */
 public class AddProductRequest {
-    
+
     private String name;
-    
+
     private String categoryName;
 
-    public AddProductRequest(String name, String categoryName) {
+    private String companyName;
+
+    public AddProductRequest(String name, String categoryName, String companyName) {
         this.name = name;
         this.categoryName = categoryName;
+        this.companyName = companyName;
     }
 
     public AddProductRequest() {
@@ -37,7 +40,13 @@ public class AddProductRequest {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-    
-    
-    
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
 }

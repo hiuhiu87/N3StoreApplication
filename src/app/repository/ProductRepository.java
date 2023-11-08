@@ -18,14 +18,15 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class ProductRepository implements CrudRepository<Product>{
+public class ProductRepository implements CrudRepository<Product> {
 
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
-                         SELECT ID, CODE, ID_CATEGORY, NAME, DELETED
-                         FROM N3STORESNEAKER.dbo.PRODUCT;
+                         SELECT ID, CODE, ID_CATEGORY, NAME, ID_BRAND, DELETED
+                         FROM N3STORESNEAKER.dbo.PRODUCT
+                         ORDER BY ID DESC;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -35,7 +36,8 @@ public class ProductRepository implements CrudRepository<Product>{
                 product.setCode(rs.getString(2));
                 product.setIdCategory(rs.getInt(3));
                 product.setName(rs.getString(4));
-                product.setDeleted(rs.getBoolean(5));
+                product.setIdBrand(rs.getInt(5));
+                product.setDeleted(rs.getBoolean(6));
                 list.add(product);
             }
             return list;
@@ -49,22 +51,32 @@ public class ProductRepository implements CrudRepository<Product>{
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          SELECT
-                                p.CODE,
+                         	p.CODE,
                          	p.NAME,
                          	c.NAME,
+                         	b.NAME,
+                         	COUNT(pd.id) AS QUANTITY,
                          	p.DELETED
                          FROM
                          	N3STORESNEAKER.dbo.PRODUCT p
-                         JOIN CATEGORY c on
-                         	p.ID_CATEGORY = c.ID;
+                         LEFT JOIN CATEGORY c on
+                         	p.ID_CATEGORY = c.ID
+                         LEFT JOIN BRAND b on
+                         	p.ID_BRAND = b.ID
+                         LEFT JOIN PRODUCT_DETAIL pd on
+                         	p.id = pd.ID_PRODUCT
+                         GROUP BY p.CODE, p.NAME, c.NAME, p.DELETED, b.NAME;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 ProductResponse product = new ProductResponse();
-                product.setName(rs.getString(1));
-                product.setCategory(rs.getString(2));
-                product.setDeleted(rs.getBoolean(3));
+                product.setCode(rs.getString(1));
+                product.setName(rs.getString(2));
+                product.setCategory(rs.getString(3));
+                product.setCompany(rs.getString(4));
+                product.setQuantity(rs.getInt(5));
+                product.setDeleted(rs.getBoolean(6));
                 list.add(product);
             }
             return list;
@@ -77,14 +89,15 @@ public class ProductRepository implements CrudRepository<Product>{
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          INSERT INTO N3STORESNEAKER.dbo.PRODUCT
-                         (CODE, ID_CATEGORY, NAME, DELETED)
-                         VALUES(?, ?, ?, ?);
+                         (CODE, ID_CATEGORY, NAME, ID_BRAND, DELETED)
+                         VALUES(?, ?, ?, ?, ?);
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, product.getCode());
             stm.setObject(2, product.getIdCategory());
             stm.setObject(3, product.getName());
-            stm.setObject(4, product.getDeleted());
+            stm.setObject(4, product.getIdBrand());
+            stm.setObject(5, product.getDeleted());
             int res = stm.executeUpdate();
             return res;
         } catch (Exception e) {
@@ -100,9 +113,30 @@ public class ProductRepository implements CrudRepository<Product>{
 
     @Override
     public Product findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, CODE, ID_CATEGORY, NAME, ID_BRAND, DELETED
+                         FROM N3STORESNEAKER.dbo.PRODUCT;
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Product product = new Product();
+            while (rs.next()) {
+                product.setId(rs.getInt(1));
+                product.setCode(rs.getString(2));
+                product.setIdCategory(rs.getInt(3));
+                product.setName(rs.getString(4));
+                product.setIdBrand(rs.getInt(5));
+                product.setDeleted(rs.getBoolean(6));
+            }
+            return product;
+        } catch (Exception e) {
+            return null;
+        }
     }
-    
+
     public String generateNextModelCode() {
         Connection conn = null;
         PreparedStatement stm = null;

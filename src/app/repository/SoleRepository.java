@@ -73,7 +73,25 @@ public class SoleRepository implements CrudRepository<Sole> {
 
     @Override
     public Sole findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.SOLE
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Sole sole = new Sole();
+            while (rs.next()) {
+                sole.setId(rs.getInt(1));
+                sole.setName(rs.getString(2));
+                sole.setDeleted(rs.getBoolean(3));
+            }
+            return sole;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

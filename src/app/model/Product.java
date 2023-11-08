@@ -9,22 +9,25 @@ package app.model;
  * @author Admin
  */
 public class Product {
-    
+
     private Integer id;
-    
+
     private String code;
-    
+
     private Integer idCategory;
-    
+
     private String name;
-    
+
+    private Integer idBrand;
+
     private Boolean deleted;
 
-    public Product(Integer id, String code, Integer idCategory, String name, Boolean deleted) {
+    public Product(Integer id, String code, Integer idCategory, String name, Integer idBrand, Boolean deleted) {
         this.id = id;
         this.code = code;
         this.idCategory = idCategory;
         this.name = name;
+        this.idBrand = idBrand;
         this.deleted = deleted;
     }
 
@@ -70,7 +73,15 @@ public class Product {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    public Integer getIdBrand() {
+        return idBrand;
+    }
+
+    public void setIdBrand(Integer idBrand) {
+        this.idBrand = idBrand;
+    }
     
     
-    
+
 }
