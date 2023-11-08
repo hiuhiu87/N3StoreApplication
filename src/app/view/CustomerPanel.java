@@ -5,8 +5,10 @@
 package app.view;
 
 import app.model.KhachHang;
+import app.model.Oders;
 import app.service.KhachHang_Service;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -20,11 +22,12 @@ public class CustomerPanel extends javax.swing.JPanel {
 
     KhachHang_Service service = new KhachHang_Service();
     int row = -1;
+    DefaultTableModel model = new DefaultTableModel();
 
     public CustomerPanel() {
         initComponents();
         filltable(service.getAll());
-
+        
     }
 
     void filltable(List<KhachHang> lst) {
@@ -138,6 +141,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         labelDateError = new javax.swing.JLabel();
         txtCode = new app.view.swing.TextField();
         labelNameError1 = new javax.swing.JLabel();
+        txtSearchCustomer = new app.view.swing.TextField();
         panelCustomerBought = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplayProductBought = new javax.swing.JTable();
@@ -198,6 +202,18 @@ public class CustomerPanel extends javax.swing.JPanel {
         labelNameError1.setForeground(new java.awt.Color(255, 0, 51));
         labelNameError1.setPreferredSize(new java.awt.Dimension(0, 14));
 
+        txtSearchCustomer.setLabelText("Tìm Kiếm");
+        txtSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchCustomerActionPerformed(evt);
+            }
+        });
+        txtSearchCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchCustomerKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelCustomerInforLayout = new javax.swing.GroupLayout(panelCustomerInfor);
         panelCustomerInfor.setLayout(panelCustomerInforLayout);
         panelCustomerInforLayout.setHorizontalGroup(
@@ -213,23 +229,24 @@ public class CustomerPanel extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(txtCode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelNameError1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(labelEmailError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(labelPhoneNumberError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCustomerInforLayout.createSequentialGroup()
-                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createSequentialGroup()
-                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelEmailError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelPhoneNumberError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35))))
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCustomerInforLayout.setVerticalGroup(
             panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,8 +289,10 @@ public class CustomerPanel extends javax.swing.JPanel {
                         .addGap(12, 12, 12)
                         .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         panelCustomerBought.setBackground(new java.awt.Color(255, 255, 255));
@@ -341,10 +360,10 @@ public class CustomerPanel extends javax.swing.JPanel {
         );
         panelListCustomerLayout.setVerticalGroup(
             panelListCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelListCustomerLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListCustomerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         labelPanelCustomer.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -359,12 +378,10 @@ public class CustomerPanel extends javax.swing.JPanel {
                 .addComponent(labelPanelCustomer)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelListCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelListCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
                         .addComponent(panelCustomerInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCustomerBought, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -407,17 +424,18 @@ public class CustomerPanel extends javax.swing.JPanel {
         row = tblListCustomer.getSelectedRow();
         KhachHang cd = reafrom();
         int ma = Integer.parseInt(tblListCustomer.getValueAt(row, 0).toString());
-        if(check()){
-        int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
-        if (a == 0) {
-            if (service.updateSV(cd, ma) > 0) {
-                JOptionPane.showMessageDialog(this, "update thanh cong");
-                filltable(service.getAll());
-                reset();
-            } else {
-                JOptionPane.showMessageDialog(this, "update that bai");
+        if (check()) {
+            int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
+            if (a == 0) {
+                if (service.updateSV(cd, ma) > 0) {
+                    JOptionPane.showMessageDialog(this, "update thanh cong");
+                    filltable(service.getAll());
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(this, "update that bai");
+                }
             }
-        }}
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tblListCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListCustomerMouseClicked
@@ -425,6 +443,44 @@ public class CustomerPanel extends javax.swing.JPanel {
         showdata(row);
     }//GEN-LAST:event_tblListCustomerMouseClicked
 
+    private void txtSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchCustomerActionPerformed
+
+    }//GEN-LAST:event_txtSearchCustomerActionPerformed
+
+    private void txtSearchCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchCustomerKeyReleased
+       String textSearch = txtSearchCustomer.getText().toLowerCase().trim();
+System.out.println(textSearch);
+List<KhachHang> list = service.getAll();
+List<KhachHang> listSearch = new ArrayList<>();
+
+for (KhachHang khachhang : list) {
+    String idString = String.valueOf(khachhang.getId());
+    String fullName = khachhang.getFULLNAME().toLowerCase();
+    if (idString.contains(textSearch) || fullName.contains(textSearch)) {
+        listSearch.add(khachhang);
+    }
+}
+
+if (listSearch.isEmpty()) {
+    filltable(service.getAll());
+} else {
+    if (txtSearchCustomer.getText().equals("")) {
+        clearTable(model);
+        filltable(list);
+    } else {
+        clearTable(model);
+        for (KhachHang khachhang : listSearch) {
+            model.addRow(khachhang.toDaTaRow());
+        }
+        filltable(listSearch);
+    }
+}
+    }//GEN-LAST:event_txtSearchCustomerKeyReleased
+    private void clearTable(DefaultTableModel model) {
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.ButtonGradient btnAdd;
@@ -449,5 +505,6 @@ public class CustomerPanel extends javax.swing.JPanel {
     private app.view.swing.TextField txtEmail;
     private app.view.swing.TextField txtFullname;
     private app.view.swing.TextField txtPhoneNumber;
+    private app.view.swing.TextField txtSearchCustomer;
     // End of variables declaration//GEN-END:variables
 }
