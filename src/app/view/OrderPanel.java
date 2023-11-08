@@ -8,6 +8,8 @@ import app.model.OderDetail;
 import app.model.Oders;
 import app.service.OderDetailService;
 import app.service.OderService;
+import app.view.swing.EventPagination;
+import app.view.swing.PaginationItemRenderStyle1;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -25,13 +27,27 @@ public class OrderPanel extends javax.swing.JPanel {
     DefaultComboBoxModel<String> cbxPayment = new DefaultComboBoxModel<>();
     OderService oderService = new OderService();
     OderDetailService oderDetailService = new OderDetailService();
+    List<Oders> listOders = new ArrayList<>();
     private int index = -1;
 
     public OrderPanel() {
         initComponents();
         setComboxPayment();
-        fillTableOder(oderService.getAllOders());
         fillTableOderDetail(oderDetailService.getAllOderDetails());
+        paginationOder.setPaginationItemRender(new PaginationItemRenderStyle1());
+
+        paginationOder.addEventPagination(new EventPagination() {
+            @Override
+            public void pageChanged(int page) {
+                if (page < 1) {
+                    page = 1;
+                }
+                loadDataOders(page);
+            }
+        });
+
+        loadDataOders(1);
+
     }
 
     void setComboxPayment() {
@@ -43,10 +59,29 @@ public class OrderPanel extends javax.swing.JPanel {
     }
 
     void fillTableOder(List<Oders> listOder) {
-        model = (DefaultTableModel) tblDisplayOrder.getModel();
         model.setRowCount(0);
         for (Oders oders : listOder) {
             model.addRow(oders.toDataOrder());
+        }
+    }
+
+    public void loadDataOders(int page) {
+        int limit = 5;
+        int offset = (page - 1) * limit;
+        try {
+            model = (DefaultTableModel) tblDisplayOrder.getModel();
+            model.setRowCount(0);
+            fillTableOder(oderService.getAllOders());
+            int rowCount = oderService.countOder();
+            System.out.println(rowCount);
+            int totalPages = (int) Math.ceil((double) rowCount / limit);
+            listOders = oderService.getPaginatedOders(offset, limit);
+            fillTableOder(listOders);
+            paginationOder.setPagegination(page, totalPages);
+            System.out.println("Tổng số trang: " + totalPages);
+            System.out.println("Trang hiện tại: " + page);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -59,7 +94,7 @@ public class OrderPanel extends javax.swing.JPanel {
     }
 
     void showDataOder(int index) {
-        Oders oders = oderService.getAllOders().get(index);
+        Oders oders = listOders.get(index);
         txtCreateDate.setText(oders.getDateCreateDate() + "");
         txtCustomerMoney.setText(oders.getCustomerMoney() + "");
         txtNameCustomer.setText(oders.getNameCustomer());
@@ -71,16 +106,15 @@ public class OrderPanel extends javax.swing.JPanel {
         } else {
             cbxPaymentMethod.setSelectedIndex(2);
         }
-        if(oders.getStatus() == 1){
+        if (oders.getStatus() == 1) {
             txtPayStatus.setText("Chờ thanh toán");
-        }else if(oders.getStatus() == 2){
+        } else if (oders.getStatus() == 2) {
             txtPayStatus.setText("Đã thanh toán");
-        }else{
+        } else {
             txtPayStatus.setText("Huỷ");
         }
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,6 +135,7 @@ public class OrderPanel extends javax.swing.JPanel {
         txtSearch = new app.view.swing.TextField();
         btnImport = new app.view.swing.Button();
         btnExport = new app.view.swing.Button();
+        paginationOder = new app.view.swing.Pagination();
         panelOrderDetail = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDetailOrder = new javax.swing.JTable();
@@ -115,6 +150,11 @@ public class OrderPanel extends javax.swing.JPanel {
         cbxPaymentMethod = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         panelOrder.setBackground(new java.awt.Color(255, 255, 255));
         panelOrder.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh Sách Hóa Đơn"));
@@ -220,6 +260,10 @@ public class OrderPanel extends javax.swing.JPanel {
                                 .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(102, 102, 102)))))
                 .addContainerGap())
+            .addGroup(panelOrderLayout.createSequentialGroup()
+                .addGap(226, 226, 226)
+                .addComponent(paginationOder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelOrderLayout.setVerticalGroup(
             panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,9 +287,11 @@ public class OrderPanel extends javax.swing.JPanel {
                                 .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paginationOder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
         );
 
         panelOrderDetail.setBackground(new java.awt.Color(255, 255, 255));
@@ -429,6 +475,10 @@ public class OrderPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchKeyReleased
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+
+    }//GEN-LAST:event_formComponentShown
+
     private void clearTable(DefaultTableModel model) {
         while (model.getRowCount() > 0) {
             model.removeRow(0);
@@ -442,6 +492,7 @@ public class OrderPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxPaymentMethod;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private app.view.swing.Pagination paginationOder;
     private javax.swing.JPanel panelInformation;
     private javax.swing.JPanel panelOrder;
     private javax.swing.JPanel panelOrderDetail;
