@@ -449,7 +449,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="labelNameProductTab2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="cbbNameProductDetail" min="-2" pref="237" max="-2" attributes="0"/>
+                                  <Component id="cbbNameProduct" min="-2" pref="237" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -466,7 +466,7 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                  <Component id="cbbNameProductDetail" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cbbNameProduct" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="39" max="32767" attributes="0"/>
@@ -527,12 +527,12 @@
                     <Property name="text" type="java.lang.String" value="T&#xea;n S&#x1ea3;n Ph&#x1ea9;m"/>
                   </Properties>
                 </Component>
-                <Component class="app.view.swing.Combobox" name="cbbNameProductDetail">
+                <Component class="app.view.swing.Combobox" name="cbbNameProduct">
                   <Properties>
                     <Property name="labeText" type="java.lang.String" value="T&#xea;n S&#x1ea3;n Ph&#x1ea9;m"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbNameProductDetailActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbNameProductActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="labelPriceIn">

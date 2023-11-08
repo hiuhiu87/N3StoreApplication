@@ -8,6 +8,7 @@ import app.model.Category;
 import app.model.Color;
 import app.model.Company;
 import app.model.Material;
+import app.model.Product;
 import app.model.Size;
 import app.model.Sole;
 import app.request.AddProductRequest;
@@ -44,7 +45,7 @@ import javax.swing.text.BadLocationException;
  * @author Admin
  */
 public class ProductPanel extends javax.swing.JPanel {
-
+    
     private final CategoryService categoryService = new CategoryService();
     private final ProductService productService = new ProductService();
     private final ColorService colorService = new ColorService();
@@ -58,17 +59,20 @@ public class ProductPanel extends javax.swing.JPanel {
     private final DefaultComboBoxModel comboBoxModelSize;
     private final DefaultComboBoxModel comboBoxModelSole;
     private final DefaultComboBoxModel comboBoxModelCompany;
+    private final DefaultComboBoxModel comboBoxModelProduct;
     private final DefaultTableModel tableModelProduct;
     private final ColorDialog colorDialog;
     private final MaterialDialog materialDialog;
     private final SoleDialog soleDialog;
     private final CompanyDialog companyDialog;
     private final SizeDialog sizeDialog;
-
+    private final CategoryDialog categoryDialog;
+    
     public ProductPanel(JFrame parentFrame) {
         initComponents();
         comboBoxModelCategory = new DefaultComboBoxModel();
         comboBoxModelColor = new DefaultComboBoxModel();
+        comboBoxModelProduct = new DefaultComboBoxModel();
         comboBoxModelMaterial = new DefaultComboBoxModel();
         comboBoxModelSize = new DefaultComboBoxModel();
         comboBoxModelSole = new DefaultComboBoxModel();
@@ -76,6 +80,7 @@ public class ProductPanel extends javax.swing.JPanel {
         tableModelProduct = new DefaultTableModel();
         colorDialog = new ColorDialog(parentFrame, true);
         materialDialog = new MaterialDialog(parentFrame, true);
+        categoryDialog = new CategoryDialog(parentFrame, true);
         soleDialog = new SoleDialog(parentFrame, true);
         companyDialog = new CompanyDialog(parentFrame, true);
         sizeDialog = new SizeDialog(parentFrame, true);
@@ -86,6 +91,7 @@ public class ProductPanel extends javax.swing.JPanel {
         cbbMaterial.setModel(comboBoxModelMaterial);
         cbbSize.setModel(comboBoxModelSize);
         cbbSole.setModel(comboBoxModelSole);
+        cbbNameProduct.setModel(comboBoxModelProduct);
         addColumnTableProduct();
         fillComboBoxCategory(categoryService.getAll());
         fillComboBoxColor(colorService.getAllColors());
@@ -94,18 +100,19 @@ public class ProductPanel extends javax.swing.JPanel {
         fillComboBoxSize(sizeService.getAllSizes());
         fillComboBoxSole(soleService.getAllSoles());
         fillTableProduct(productService.getAllProductResponse());
+        fillComboBoxProduct(productService.getAllProducts());
     }
-
+    
     private void fillComboBoxCategory(List<Category> categorys) {
         List<String> categoryName = new ArrayList<>();
-        categoryName.add("Chọn Danh Mục Giày");
         for (Category category : categorys) {
             categoryName.add(category.getName());
         }
+        comboBoxModelCategory.removeAllElements();
         comboBoxModelCategory.addAll(categoryName);
         cbbCategory.setSelectedIndex(0);
     }
-
+    
     private void fillTableProduct(List<ProductResponse> list) {
         if (list != null) {
             tableModelProduct.setRowCount(0);
@@ -114,6 +121,7 @@ public class ProductPanel extends javax.swing.JPanel {
                 stt++;
                 Object[] row = {
                     stt,
+                    productResponse.getQuantity(),
                     productResponse.getName(),
                     productResponse.getCategory(),
                     productResponse.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
@@ -122,7 +130,7 @@ public class ProductPanel extends javax.swing.JPanel {
             }
         }
     }
-
+    
     private void fillComboBoxColor(List<Color> list) {
         List<String> colorList = new ArrayList<>();
         for (Color color : list) {
@@ -132,7 +140,17 @@ public class ProductPanel extends javax.swing.JPanel {
         comboBoxModelColor.addAll(colorList);
         cbbColor.setSelectedIndex(0);
     }
-
+    
+    private void fillComboBoxProduct(List<Product> list) {
+        List<String> productNameList = new ArrayList<>();
+        for (Product product : list) {
+            productNameList.add(product.getName());
+        }
+        comboBoxModelProduct.removeAllElements();
+        comboBoxModelProduct.addAll(productNameList);
+        cbbNameProduct.setSelectedIndex(0);
+    }
+    
     private void fillComboBoxMaterial(List<Material> list) {
         List<String> materialList = new ArrayList<>();
         for (Material material : list) {
@@ -142,7 +160,7 @@ public class ProductPanel extends javax.swing.JPanel {
         comboBoxModelMaterial.addAll(materialList);
         cbbMaterial.setSelectedIndex(0);
     }
-
+    
     private void fillComboBoxCompany(List<Company> list) {
         List<String> companyList = new ArrayList<>();
         for (Company company : list) {
@@ -152,7 +170,7 @@ public class ProductPanel extends javax.swing.JPanel {
         comboBoxModelCompany.addAll(companyList);
         cbbCompany.setSelectedIndex(0);
     }
-
+    
     private void fillComboBoxSole(List<Sole> list) {
         List<String> soleList = new ArrayList<>();
         for (Sole sole : list) {
@@ -162,7 +180,7 @@ public class ProductPanel extends javax.swing.JPanel {
         comboBoxModelSole.addAll(soleList);
         cbbSole.setSelectedIndex(0);
     }
-
+    
     private void fillComboBoxSize(List<Size> list) {
         List<String> sizeList = new ArrayList<>();
         for (Size size : list) {
@@ -172,14 +190,15 @@ public class ProductPanel extends javax.swing.JPanel {
         comboBoxModelSize.addAll(sizeList);
         cbbSize.setSelectedIndex(0);
     }
-
+    
     private void addColumnTableProduct() {
         tableModelProduct.addColumn("STT");
+        tableModelProduct.addColumn("Mã Sản Phẩm");
         tableModelProduct.addColumn("Tên Sản Phẩm");
         tableModelProduct.addColumn("Danh Mục");
         tableModelProduct.addColumn("Trạng Thái");
     }
-
+    
     private void onCloseJDialog(JDialog dialog, String nameFill) {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -187,12 +206,12 @@ public class ProductPanel extends javax.swing.JPanel {
                 switch (nameFill) {
                     case "Color" -> {
                         fillComboBoxColor(colorService.getAllColors());
-
+                        
                     }
                     case "Category" -> {
                         fillComboBoxCategory(categoryService.getAll());
                     }
-
+                    
                     case "Company" -> {
                         fillComboBoxCompany(companyService.getAllCompany());
                     }
@@ -205,14 +224,17 @@ public class ProductPanel extends javax.swing.JPanel {
                     case "Material" -> {
                         fillComboBoxMaterial(materialService.getAllMaterials());
                     }
+                    case "Product" -> {
+                        fillComboBoxProduct(productService.getAllProducts());
+                    }
                     default ->
                         throw new AssertionError();
                 }
             }
-
+            
         });
     }
-
+    
     private void onChange() {
 //            txtSearchProduct.getDocument().addDocumentListener(new DocumentListener() {
 //                @Override
@@ -284,7 +306,7 @@ public class ProductPanel extends javax.swing.JPanel {
         panelDetailProduct = new javax.swing.JPanel();
         panelFunction = new javax.swing.JPanel();
         labelNameProductTab2 = new javax.swing.JLabel();
-        cbbNameProductDetail = new app.view.swing.Combobox();
+        cbbNameProduct = new app.view.swing.Combobox();
         labelPriceIn = new javax.swing.JLabel();
         txtPriceIn = new app.view.swing.TextField();
         labelPriceOut = new javax.swing.JLabel();
@@ -518,10 +540,10 @@ public class ProductPanel extends javax.swing.JPanel {
         labelNameProductTab2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelNameProductTab2.setText("Tên Sản Phẩm");
 
-        cbbNameProductDetail.setLabeText("Tên Sản Phẩm");
-        cbbNameProductDetail.addActionListener(new java.awt.event.ActionListener() {
+        cbbNameProduct.setLabeText("Tên Sản Phẩm");
+        cbbNameProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbNameProductDetailActionPerformed(evt);
+                cbbNameProductActionPerformed(evt);
             }
         });
 
@@ -631,7 +653,7 @@ public class ProductPanel extends javax.swing.JPanel {
                     .addGroup(panelFunctionLayout.createSequentialGroup()
                         .addComponent(labelNameProductTab2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbbNameProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbbNameProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         panelFunctionLayout.setVerticalGroup(
@@ -643,7 +665,7 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addComponent(labelNameProductTab2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelFunctionLayout.createSequentialGroup()
                         .addGap(17, 17, 17)
-                        .addComponent(cbbNameProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbbNameProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
@@ -1015,17 +1037,12 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int count = 0;
-
+        
         if (txtNameProduct.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tên Sản Phẩm Không Được Để Trống");
             count++;
         }
-
-        if (cbbCategory.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Vui Lòng Chọn Danh Mục");
-            count++;
-        }
-
+        
         if (count == 0) {
             String name = txtNameProduct.getText();
             String categoryName = (String) cbbCategory.getSelectedItem();
@@ -1034,6 +1051,7 @@ public class ProductPanel extends javax.swing.JPanel {
             String res = productService.addProduct(addProductRequest);
             JOptionPane.showMessageDialog(this, res);
             fillTableProduct(productService.getAllProductResponse());
+            fillComboBoxProduct(productService.getAllProducts());
         }
 
     }//GEN-LAST:event_btnAddActionPerformed
@@ -1051,7 +1069,8 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRefeshActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-
+        txtNameProduct.setText("");
+        cbbCategory.setSelectedIndex(0);
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnAddCompanyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCompanyActionPerformed
@@ -1072,9 +1091,9 @@ public class ProductPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnRefreshActionPerformed
 
-    private void cbbNameProductDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbNameProductDetailActionPerformed
+    private void cbbNameProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbNameProductActionPerformed
 
-    }//GEN-LAST:event_cbbNameProductDetailActionPerformed
+    }//GEN-LAST:event_cbbNameProductActionPerformed
 
     private void btnUpdateDetailProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDetailProductActionPerformed
 
@@ -1097,7 +1116,8 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnAddCateforyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCateforyActionPerformed
-        // TODO add your handling code here:
+        categoryDialog.setVisible(true);
+        onCloseJDialog(categoryDialog, "Category");
     }//GEN-LAST:event_btnAddCateforyActionPerformed
 
     private void btnAddMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMaterialActionPerformed
@@ -1139,7 +1159,7 @@ public class ProductPanel extends javax.swing.JPanel {
     private app.view.swing.Combobox cbbColor;
     private app.view.swing.Combobox cbbCompany;
     private app.view.swing.Combobox cbbMaterial;
-    private app.view.swing.Combobox cbbNameProductDetail;
+    private app.view.swing.Combobox cbbNameProduct;
     private app.view.swing.Combobox cbbSize;
     private app.view.swing.Combobox cbbSole;
     private javax.swing.JScrollPane jScrollPane1;

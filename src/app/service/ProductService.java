@@ -35,7 +35,7 @@ public class ProductService {
         }
 
         Product product = new Product();
-        product.setCode("SP1");
+        product.setCode(productRepository.generateNextModelCode());
         product.setDeleted(false);
         product.setIdCategory(optionalCategory.getId());
         product.setName(name);
@@ -49,6 +49,10 @@ public class ProductService {
 
     public List<ProductResponse> getAllProductResponse() {
         return productRepository.getAllProductsView();
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.getAll();
     }
 
 }

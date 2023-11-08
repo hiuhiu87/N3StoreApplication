@@ -45,7 +45,7 @@ public class CategoryRepository implements CrudRepository<Category> {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          INSERT INTO N3STORESNEAKER.dbo.CATEGORY
-                         (ID, NAME, DELETED)
+                         (NAME, DELETED)
                          VALUES(?, ?);
                          """;
             PreparedStatement stm = con.prepareStatement(sql);

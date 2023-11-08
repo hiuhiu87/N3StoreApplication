@@ -11,6 +11,7 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -48,6 +49,7 @@ public class ProductRepository implements CrudRepository<Product>{
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          SELECT
+                                p.CODE,
                          	p.NAME,
                          	c.NAME,
                          	p.DELETED
@@ -99,6 +101,51 @@ public class ProductRepository implements CrudRepository<Product>{
     @Override
     public Product findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public String generateNextModelCode() {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            String sql = "SELECT MAX(CODE) FROM PRODUCT";
+            stm = conn.prepareStatement(sql);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                String lastCode = rs.getString(1);
+                if (lastCode == null) {
+                    return "SP1";
+                }
+                int lastNumber = Integer.parseInt(lastCode.substring(2));
+                int nextNumber = lastNumber + 1;
+                String nextCode = "SP" + nextNumber;
+                return nextCode;
+            } else {
+                return "SP1";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+
+                if (stm != null) {
+                    stm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

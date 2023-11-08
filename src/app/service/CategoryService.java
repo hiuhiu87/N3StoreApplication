@@ -20,4 +20,16 @@ public class CategoryService {
         return categoryRepository.getAll();
     }
 
+    public String addCategory(Category category) {
+        if (category.getName().trim().isEmpty()) {
+            return "Tên Danh Mục Không Được Để Chóng";
+        }
+        int res = categoryRepository.add(category);
+        if (res > 0) {
+            return "Thêm Danh Mục Thành Công";
+        } else {
+            return "Đã Xảy Ra Lỗi";
+        }
+    }
+
 }
