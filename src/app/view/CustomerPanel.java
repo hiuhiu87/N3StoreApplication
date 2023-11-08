@@ -78,7 +78,7 @@ public class CustomerPanel extends javax.swing.JPanel {
                 Date ns = sdf.parse(txtDate.getText());
             } catch (Exception e) {
 //                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng (ngày/tháng/năm)");
+                JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng (ngày-tháng-năm)");
                 return false;
             }
             if (txtAddress.getText().isEmpty()) {
@@ -92,12 +92,12 @@ public class CustomerPanel extends javax.swing.JPanel {
                 try {
                     double hocphi = Double.parseDouble(txtPhoneNumber.getText());
                     if (hocphi < 0) {
-                        JOptionPane.showMessageDialog(this, "sdt>0");
+                        JOptionPane.showMessageDialog(this, "số điện thoại phải là số dương");
                         return false;
                     }
 
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "sdt phai la so");
+                    JOptionPane.showMessageDialog(this, "số điện thoại phải là số");
                     return false;
                 }
             }
@@ -108,6 +108,15 @@ public class CustomerPanel extends javax.swing.JPanel {
 
             return true;
         }
+    }
+
+    void reset() {
+        txtAddress.setText("");
+        txtCode.setText("");
+        txtDate.setText("");
+        txtEmail.setText("");
+        txtFullname.setText("");
+        txtPhoneNumber.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -377,27 +386,38 @@ public class CustomerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+
         if (check()) {
-            KhachHang cd = reafrom();
-            if (service.addSach(cd) > 0) {
-                JOptionPane.showMessageDialog(this, "them thanh cong");
-                filltable(service.getAll());
-            } else {
-                JOptionPane.showMessageDialog(this, "them that bai");
+            int a = JOptionPane.showConfirmDialog(this, "bạn có muốn thêm nữa không?");
+            if (a == 0) {
+                KhachHang cd = reafrom();
+                if (service.addSach(cd) > 0) {
+                    JOptionPane.showMessageDialog(this, "them thanh cong");
+                    filltable(service.getAll());
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(this, "them that bai");
+                }
             }
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+
         row = tblListCustomer.getSelectedRow();
         KhachHang cd = reafrom();
         int ma = Integer.parseInt(tblListCustomer.getValueAt(row, 0).toString());
-        if (service.updateSV(cd, ma) > 0) {
-            JOptionPane.showMessageDialog(this, "update thanh cong");
-            filltable(service.getAll());
-        } else {
-            JOptionPane.showMessageDialog(this, "update that bai");
-        }
+        if(check()){
+        int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
+        if (a == 0) {
+            if (service.updateSV(cd, ma) > 0) {
+                JOptionPane.showMessageDialog(this, "update thanh cong");
+                filltable(service.getAll());
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(this, "update that bai");
+            }
+        }}
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tblListCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListCustomerMouseClicked
