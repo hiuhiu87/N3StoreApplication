@@ -3,6 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package app.view;
+import app.service.NhanVienService;
+import app.model.NhanVien;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -10,10 +20,15 @@ package app.view;
  * @author Admin
  */
 public class StaffPanel extends javax.swing.JPanel {
-
+NhanVienService nvService = new NhanVienService();
+    DefaultTableModel tblmol = new DefaultTableModel();
+    int index = -1;
 
     public StaffPanel() {
         initComponents();
+         index = 1;
+        fillTable(nvService.getAll());
+          
     }
 
 
@@ -68,7 +83,6 @@ public class StaffPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1418, 731));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Quản Lý Nhân Viên");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -120,6 +134,11 @@ public class StaffPanel extends javax.swing.JPanel {
         btnAdd.setBackground(new java.awt.Color(0, 0, 0));
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Add");
+        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddMouseClicked(evt);
+            }
+        });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -138,6 +157,11 @@ public class StaffPanel extends javax.swing.JPanel {
         btnChangeStatus.setBackground(new java.awt.Color(0, 0, 0));
         btnChangeStatus.setForeground(new java.awt.Color(255, 255, 255));
         btnChangeStatus.setText("Đổi Trạng Thái");
+        btnChangeStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnChangeStatusMouseClicked(evt);
+            }
+        });
         btnChangeStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChangeStatusActionPerformed(evt);
@@ -147,6 +171,11 @@ public class StaffPanel extends javax.swing.JPanel {
         btnUpdate.setBackground(new java.awt.Color(0, 0, 0));
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Update");
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseClicked(evt);
+            }
+        });
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -381,15 +410,17 @@ public class StaffPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(565, 565, 565)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,7 +439,8 @@ public class StaffPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void tblDisplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayMouseClicked
-
+index = tblDisplay.getSelectedRow();
+        this.showData(index);
     }//GEN-LAST:event_tblDisplayMouseClicked
 
     private void btnChangeStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatusActionPerformed
@@ -427,7 +459,117 @@ public class StaffPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnExportActionPerformed
 
+    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+      
+   
+           NhanVien sv = this.readForm();
+           if (nvService.addStudent(sv) > 0) {
+                    JOptionPane.showMessageDialog(this, "Thêm thành công");
+                    fillTable(nvService.getAll());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Thêm thất bại");
+                }
+  
+     
+    }//GEN-LAST:event_btnAddMouseClicked
 
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+ index = tblDisplay.getSelectedRow();
+        int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
+        NhanVien nv = readForm();
+        if (nvService.updateSV(nv, id) > 0) {
+            JOptionPane.showMessageDialog(this, "update thanh cong");
+            fillTable(nvService.getAll());
+        } else {
+            JOptionPane.showMessageDialog(this, "update that bai");
+        }
+    }//GEN-LAST:event_btnUpdateMouseClicked
+
+    private void btnChangeStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChangeStatusMouseClicked
+         int index = tblDisplay.getSelectedRow();
+        if (index < 0) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng dữ liệu để xoá");
+            return;
+        } else {
+            int ID = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
+            if (nvService.Delete(ID) > 0) {
+                JOptionPane.showMessageDialog(this, "Xoá thành công");
+                fillTable(nvService.getAll());
+            } else {
+                JOptionPane.showMessageDialog(this, "Xoá thất bại");
+            }
+        }
+
+    }//GEN-LAST:event_btnChangeStatusMouseClicked
+public void fillTable(List<NhanVien>list) {
+        tblmol = (DefaultTableModel) tblDisplay.getModel();
+        tblmol.setRowCount(0);
+        for (NhanVien item : list) {
+            tblmol.addRow(item.toDataRow());
+        }
+    }
+public void showData(int index) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    NhanVien nv = nvService.getAll().get(index);
+    String ngaySinhString = dateFormat.format(nv.getNgaySinh());
+
+    txtCodeStaff.setText(nv.getID().toString());
+    txtFullName.setText(nv.getTen());
+    txtAddress.setText(nv.getDiaChi());
+    txtEmail.setText(nv.getEmail());
+    txtPhoneNumber.setText(nv.getSdt());
+    txtDate.setText(ngaySinhString);
+    if (nv.isGender()) {
+        rdMale.setSelected(true);
+    }else{
+    rdFemale.setSelected(true);
+    } 
+    if (nv.isRoLe()) {
+        rdStaff.setSelected(true);
+    }else{
+    rdManager.setSelected(true);
+    }
+}
+  public NhanVien readForm() {
+      
+
+      
+    try {
+        int id ;
+        String Ten,Email,NgaySinh,DiaChi,Sdt;
+        boolean Gender,Role;
+        if (rdMale.isSelected()) {
+            Gender = true;
+        } else {
+            Gender = false;
+        }
+        if (rdStaff.isSelected()) {
+            Role = true;
+        } else {
+            Role = false;
+        }
+        id = Integer.parseInt(txtCodeStaff.getText());
+        Ten = txtFullName.getText();
+        Email = txtEmail.getText();
+        NgaySinh = txtDate.getText();
+        DiaChi = txtAddress.getText();
+        Sdt = txtPhoneNumber.getText();
+        Date dateOfBirth = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateOfBirth= dateFormat.parse(NgaySinh);
+        return new NhanVien(id, Ten, dateOfBirth, Email, Gender, Role, Sdt, DiaChi);
+
+    } catch (ParseException ex) {
+        Logger.getLogger(StaffPanel.class.getName()).log(Level.SEVERE, null, ex);  
+        return NhanVien();
+
+    }
+
+       
+  }
+  
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.Button btnAdd;
     private app.view.swing.Button btnChangeStatus;
@@ -467,4 +609,8 @@ public class StaffPanel extends javax.swing.JPanel {
     private app.view.swing.TextField txtPhoneNumber;
     private app.view.swing.TextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
+    private NhanVien NhanVien() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
