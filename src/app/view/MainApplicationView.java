@@ -34,8 +34,6 @@ public class MainApplicationView extends javax.swing.JFrame {
         customerPanel = new CustomerPanel();
         orderPanel = new OrderPanel();
         discountPanel = new DiscountPanel();
-
-
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
     }
