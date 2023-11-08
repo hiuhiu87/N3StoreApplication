@@ -24,6 +24,7 @@ public class MainApplicationView extends javax.swing.JFrame {
     private ProductPanel panelProduct;
     private CustomerPanel customerPanel;
     private OrderPanel orderPanel;
+    private DiscountPanel discountPanel;
 
     public MainApplicationView() {
         initComponents();
@@ -32,6 +33,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         panelProduct = new ProductPanel(this);
         customerPanel = new CustomerPanel();
         orderPanel = new OrderPanel();
+        discountPanel = new DiscountPanel();
 
 
         this.onClicked(sellPanelBtn, sellStatusLb);
@@ -595,14 +597,14 @@ public class MainApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_orderLbMouseClicked
 
     private void discountLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountLbMouseClicked
-//        this.onClicked(discountPanelBtn, discountStatusLb);
-//        this.unClicked(orderPanelBtn, orderStatusLb);
-//        this.unClicked(sellPanelBtn, sellStatusLb);
-//        this.unClicked(statisticPanelBtn, statisticStatusLb);
-//        this.unClicked(staffPanelBtn, staffStatusLb);
-//        this.unClicked(userPanelBtn, userStatusLb);
-//        this.unClicked(productPanelBtn, productStatusLb);
-        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
+        this.onClicked(discountPanelBtn, discountStatusLb);
+        this.unClicked(orderPanelBtn, orderStatusLb);
+        this.unClicked(sellPanelBtn, sellStatusLb);
+        this.unClicked(statisticPanelBtn, statisticStatusLb);
+        this.unClicked(staffPanelBtn, staffStatusLb);
+        this.unClicked(userPanelBtn, userStatusLb);
+        this.unClicked(productPanelBtn, productStatusLb);
+        showPanel(discountPanel);
     }//GEN-LAST:event_discountLbMouseClicked
 
     private void userLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userLbMouseClicked
