@@ -1,10 +1,13 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package app.view;
 
-import java.util.ArrayList;
+import app.model.Company;
+import app.model.Material;
+import app.service.MaterialService;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,11 +15,44 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class CpuView extends javax.swing.JFrame {
+public class MaterialDialog extends javax.swing.JDialog {
 
+    private final MaterialService materialService = new MaterialService();
+    private DefaultTableModel tableModelMaterial;
 
-    public CpuView() {
+    /**
+     * Creates new form ColorDialog
+     *
+     * @param parent
+     * @param modal
+     */
+    public MaterialDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        tableModelMaterial = new DefaultTableModel();
+        tblDisplay.setModel(tableModelMaterial);
+        addColumTable();
+        fillTable(materialService.getAllMaterials());
+    }
+
+    private void addColumTable() {
+        tableModelMaterial.addColumn("STT");
+        tableModelMaterial.addColumn("Tên");
+        tableModelMaterial.addColumn("Trạng Thái");
+    }
+
+    private void fillTable(List<Material> list) {
+        int stt = 0;
+        tableModelMaterial.setRowCount(0);
+        for (Material material : list) {
+            stt++;
+            Object[] row = {
+                stt,
+                material.getName(),
+                material.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
+            };
+            tableModelMaterial.addRow(row);
+        }
     }
 
     /**
@@ -28,7 +64,7 @@ public class CpuView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtNameCpu = new app.view.swing.TextField();
+        txtNameCMaterial = new app.view.swing.TextField();
         panelFunction = new javax.swing.JPanel();
         btnAdd = new app.view.swing.ButtonOutLine();
         btnUpdate = new app.view.swing.ButtonOutLine();
@@ -38,10 +74,8 @@ public class CpuView extends javax.swing.JFrame {
         labelNameCpuError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
-        setResizable(false);
 
-        txtNameCpu.setLabelText("Tên CPU");
+        txtNameCMaterial.setLabelText("Tên Chất Liệu");
 
         panelFunction.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức Năng"));
 
@@ -120,18 +154,18 @@ public class CpuView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(labelNameCpuError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtNameCpu, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                            .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(txtNameCpu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelNameCpuError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -147,16 +181,25 @@ public class CpuView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-
+        if (txtNameCMaterial.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên Chất Liệu Không Được Để Trống");
+        } else {
+            String nameCompany = txtNameCMaterial.getText();
+            Material material = new Material();
+            material.setName(nameCompany);
+            String result = materialService.addMaterail(material);
+            JOptionPane.showMessageDialog(this, result);
+            fillTable(materialService.getAllMaterials());
+        }
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,20 +218,27 @@ public class CpuView extends javax.swing.JFrame {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(CompanyView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
-//        /* Create and display the form */
+//        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new CompanyView().setVisible(true);
+//                MaterialDialog dialog = new MaterialDialog(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
 //            }
 //        });
 //    }
@@ -201,6 +251,7 @@ public class CpuView extends javax.swing.JFrame {
     private javax.swing.JLabel labelNameCpuError;
     private javax.swing.JPanel panelFunction;
     private javax.swing.JTable tblDisplay;
-    private app.view.swing.TextField txtNameCpu;
+    private app.view.swing.TextField txtNameCMaterial;
     // End of variables declaration//GEN-END:variables
+
 }
