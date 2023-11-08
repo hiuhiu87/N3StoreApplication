@@ -220,6 +220,9 @@
       <Properties>
         <Property name="labelText" type="java.lang.String" value="Nh&#x1ead;p T&#xea;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="txtTimKiemCaretUpdate"/>
+      </Events>
     </Component>
     <Component class="app.view.swing.ButtonGradient" name="btnSearch">
       <Properties>

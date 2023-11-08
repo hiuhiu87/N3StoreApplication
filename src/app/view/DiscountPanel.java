@@ -42,7 +42,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         }
     }
 
-    public Voucher getform() {
+    public Voucher getform() {        
         String name = txtTen.getText().trim();
         if (name.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tên không được bỏ trống!");
@@ -205,6 +205,11 @@ public class DiscountPanel extends javax.swing.JPanel {
         });
 
         txtTimKiem.setLabelText("Nhập Tên");
+        txtTimKiem.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtTimKiemCaretUpdate(evt);
+            }
+        });
 
         btnSearch.setText("Tìm Kiếm");
         btnSearch.setColor2(new java.awt.Color(23, 35, 51));
@@ -363,8 +368,12 @@ public class DiscountPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String name = txtTimKiem.getText();
-        vcs.getList(name);
+        String tk = txtTimKiem.getText().trim();
+        if(tk.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin muốn tìm kiếm!");
+            return;
+        }
+        vcs.getList(tk);
         loadTable();
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -386,6 +395,13 @@ public class DiscountPanel extends javax.swing.JPanel {
             rdHetHan.setSelected(true);
         }
     }//GEN-LAST:event_tbHienthiVoucherMouseClicked
+
+    private void txtTimKiemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimKiemCaretUpdate
+        String tk = txtTimKiem.getText();
+        if(tk.length() == 0){
+            loadTable();
+        }
+    }//GEN-LAST:event_txtTimKiemCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
