@@ -4,8 +4,6 @@
  */
 package app.repository;
 
-import app.model.*;
-
 /**
  *
  * @author Admin
