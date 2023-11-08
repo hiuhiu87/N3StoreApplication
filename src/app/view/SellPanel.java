@@ -67,21 +67,21 @@ public class SellPanel extends javax.swing.JPanel {
  
 
     private void initWebcam() {
-        Dimension size = WebcamResolution.QVGA.getSize();
-        try {
-            webcam = Webcam.getWebcams().get(0);
-            webcam.setViewSize(size);
-
-            panel = new WebcamPanel(webcam);
-            panel.setPreferredSize(size);
-
-            panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 300));
-            panelBarcode.revalidate();
-        } catch (WebcamException e) {
-            if (this.isEnabled()) {
-                JOptionPane.showMessageDialog(this, "Lỗi Cam");
-            }
-        }
+//        Dimension size = WebcamResolution.QVGA.getSize();
+//        try {
+//            webcam = Webcam.getWebcams().get(0);
+//            webcam.setViewSize(size);
+//
+//            panel = new WebcamPanel(webcam);
+//            panel.setPreferredSize(size);
+//
+//            panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 300));
+//            panelBarcode.revalidate();
+//        } catch (WebcamException e) {
+//            if (this.isEnabled()) {
+//                JOptionPane.showMessageDialog(this, "Lỗi Cam");
+//            }
+//        }
     }
 
     private void scan() {
@@ -273,10 +273,32 @@ public class SellPanel extends javax.swing.JPanel {
         panelBarcodeContainer.setBackground(new java.awt.Color(255, 255, 255));
         panelBarcodeContainer.setBorder(javax.swing.BorderFactory.createTitledBorder("Barcode"));
         panelBarcodeContainer.setPreferredSize(new java.awt.Dimension(0, 10));
-        panelBarcodeContainer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelBarcode.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        panelBarcodeContainer.add(panelBarcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 220, 180));
+        javax.swing.GroupLayout panelBarcodeLayout = new javax.swing.GroupLayout(panelBarcode);
+        panelBarcode.setLayout(panelBarcodeLayout);
+        panelBarcodeLayout.setHorizontalGroup(
+            panelBarcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 220, Short.MAX_VALUE)
+        );
+        panelBarcodeLayout.setVerticalGroup(
+            panelBarcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 180, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelBarcodeContainerLayout = new javax.swing.GroupLayout(panelBarcodeContainer);
+        panelBarcodeContainer.setLayout(panelBarcodeContainerLayout);
+        panelBarcodeContainerLayout.setHorizontalGroup(
+            panelBarcodeContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBarcodeContainerLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(panelBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        panelBarcodeContainerLayout.setVerticalGroup(
+            panelBarcodeContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBarcodeContainerLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(panelBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         panelCart.setBackground(new java.awt.Color(255, 255, 255));
         panelCart.setBorder(javax.swing.BorderFactory.createTitledBorder("Giỏ Hàng"));
@@ -578,7 +600,7 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
