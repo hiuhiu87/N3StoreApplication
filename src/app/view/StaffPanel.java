@@ -460,7 +460,15 @@ index = tblDisplay.getSelectedRow();
     }//GEN-LAST:event_btnChangeStatusActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-
+index = tblDisplay.getSelectedRow();
+        int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
+        NhanVien nv = readForm();
+        if (nvService.updateSV(nv, id) > 0) {
+            JOptionPane.showMessageDialog(this, "update thanh cong");
+            fillTable(nvService.getAll());
+        } else {
+            JOptionPane.showMessageDialog(this, "update that bai");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -486,15 +494,7 @@ index = tblDisplay.getSelectedRow();
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
- index = tblDisplay.getSelectedRow();
-        int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
-        NhanVien nv = readForm();
-        if (nvService.updateSV(nv, id) > 0) {
-            JOptionPane.showMessageDialog(this, "update thanh cong");
-            fillTable(nvService.getAll());
-        } else {
-            JOptionPane.showMessageDialog(this, "update that bai");
-        }
+ 
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnChangeStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChangeStatusMouseClicked
