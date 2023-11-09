@@ -6,7 +6,10 @@ package app.view;
 
 import app.model.KhachHang;
 import app.model.Oders;
+import app.model.Voucher;
 import app.service.KhachHang_Service;
+import app.view.swing.EventPagination;
+import app.view.swing.PaginationItemRenderStyle1;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,11 +26,37 @@ public class CustomerPanel extends javax.swing.JPanel {
     KhachHang_Service service = new KhachHang_Service();
     int row = -1;
     DefaultTableModel model = new DefaultTableModel();
-
+    private List<KhachHang> listPhanTrangVoucher = new ArrayList<>();
     public CustomerPanel() {
         initComponents();
         filltable(service.getAll());
-        
+          ph.setPaginationItemRender(new PaginationItemRenderStyle1());
+        ph.addEventPagination(new EventPagination() {
+            @Override
+            public void pageChanged(int page) {
+                loadDataTablePhanTrang(page);
+            }
+        });
+        loadDataTablePhanTrang(1);
+    }
+   public void loadDataTablePhanTrang(int page) {
+        int limit = 5;
+        int offset = (page - 1) * limit;
+        try {
+            model = (DefaultTableModel) tblListCustomer.getModel();
+            model.setRowCount(0);
+            filltable(service.getAll());
+            int count = service.count();
+            System.out.println(count);
+            int sumPage = (int) Math.ceil((double) count/limit);
+            System.out.println(sumPage);
+            listPhanTrangVoucher = service.getListPhanTrang(offset, limit);
+            filltable(listPhanTrangVoucher);
+            ph.setPagegination(page, sumPage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void filltable(List<KhachHang> lst) {
@@ -148,6 +177,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         panelListCustomer = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListCustomer = new javax.swing.JTable();
+        ph = new app.view.swing.Pagination();
         labelPanelCustomer = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -357,13 +387,19 @@ public class CustomerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1156, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(panelListCustomerLayout.createSequentialGroup()
+                .addGap(300, 300, 300)
+                .addComponent(ph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelListCustomerLayout.setVerticalGroup(
             panelListCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListCustomerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         labelPanelCustomer.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -497,6 +533,7 @@ if (listSearch.isEmpty()) {
     private javax.swing.JPanel panelCustomerBought;
     private javax.swing.JPanel panelCustomerInfor;
     private javax.swing.JPanel panelListCustomer;
+    private app.view.swing.Pagination ph;
     private javax.swing.JTable tblDisplayProductBought;
     private javax.swing.JTable tblListCustomer;
     private app.view.swing.TextField txtAddress;
