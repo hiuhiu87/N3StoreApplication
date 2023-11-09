@@ -3,24 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/SellPanel.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/util/XEmail.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/dbconnect/DBConnector.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/util/XDate.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/service/OderService.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/repository/OderRepository.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/ProductPanel.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/StaffPanel.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/LoginFrame.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/MainApplicationView.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/model/OderDetail.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/model/Oders.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/repository/OderDetailRepository.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/swing/Pagination.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/service/OderDetailService.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/util/SplitString.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/util/PasswordGenerator.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/StatisticPanel.java</file>
-            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/util/CheckValidate.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/swing/PaginationItemRender.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/service/OderService.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/repository/OderRepository.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/MaterialDialog.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/OrderPanel.java</file>
         </group>
     </open-files>
