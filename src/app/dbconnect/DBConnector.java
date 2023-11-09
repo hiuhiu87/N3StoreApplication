@@ -19,7 +19,7 @@ public class DBConnector {
     private static final String PORT = "1433";
     private static final String DBNAME = "N3STORESNEAKER";
     private static final String USERNAME = "sa";
-    private static final String PASSWORD = "Nhey1123@";
+    private static final String PASSWORD = "12345678";
 
     public static Connection getConnection() {
 

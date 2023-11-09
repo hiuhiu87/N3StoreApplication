@@ -18,4 +18,12 @@ public class OderDetailService {
      public List<OderDetail> getAllOderDetails(){
       return oderDetailRepository.getAllOdersDetails();
      }
+     
+      public List<OderDetail> getPaginatedOders(int offset, int limit) {
+        return oderDetailRepository.getAllOdersDetailsPhanTrang(offset, limit);
+    }
+      
+     public int countOderDetail(){
+       return oderDetailRepository.countOderDetail();
+    }
 }
