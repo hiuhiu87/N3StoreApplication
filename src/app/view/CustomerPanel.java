@@ -26,7 +26,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     KhachHang_Service service = new KhachHang_Service();
     int row = -1;
     DefaultTableModel model = new DefaultTableModel();
-    private List<KhachHang> listPhanTrangVoucher = new ArrayList<>();
+    private List<KhachHang> listPhanTrangkh = new ArrayList<>();
     public CustomerPanel() {
         initComponents();
         filltable(service.getAll());
@@ -50,8 +50,8 @@ public class CustomerPanel extends javax.swing.JPanel {
             System.out.println(count);
             int sumPage = (int) Math.ceil((double) count/limit);
             System.out.println(sumPage);
-            listPhanTrangVoucher = service.getListPhanTrang(offset, limit);
-            filltable(listPhanTrangVoucher);
+            listPhanTrangkh = service.getListPhanTrang(offset, limit);
+            filltable(listPhanTrangkh);
             ph.setPagegination(page, sumPage);
 
         } catch (Exception e) {
@@ -89,20 +89,24 @@ public class CustomerPanel extends javax.swing.JPanel {
     }
 
     boolean check() {
-        if (txtFullname.getText().isEmpty()) {
+        if (txtFullname.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap ten");
+             txtFullname.requestFocus();
             return false;
         }
-        if (txtEmail.getText().isEmpty()) {
+        if (txtEmail.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap email");
+              txtEmail.requestFocus();
             return false;
         }
-        if (txtEmail.getText().indexOf("@") == -1 || txtEmail.getText().indexOf(".") == -1) {
+        if (txtEmail.getText().trim().indexOf("@") == -1 || txtEmail.getText().indexOf(".") == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng của E-mail");
+              txtEmail.requestFocus();
             return false;
         }
-        if (txtDate.getText().isEmpty()) {
+        if (txtDate.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap ngay sinh");
+              txtDate.requestFocus();
             return false;
         } else {
             try {
@@ -111,30 +115,36 @@ public class CustomerPanel extends javax.swing.JPanel {
             } catch (Exception e) {
 //                e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng (ngày-tháng-năm)");
+                  txtDate.requestFocus();
                 return false;
             }
-            if (txtAddress.getText().isEmpty()) {
+            if (txtAddress.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
+                  txtAddress.requestFocus();
                 return false;
             }
-            if (txtPhoneNumber.getText().isEmpty()) {
+            if (txtPhoneNumber.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "vui long nhap sdt");
+                  txtPhoneNumber.requestFocus();
                 return false;
             } else {
                 try {
                     double hocphi = Double.parseDouble(txtPhoneNumber.getText());
                     if (hocphi < 0) {
                         JOptionPane.showMessageDialog(this, "số điện thoại phải là số dương");
+                         txtPhoneNumber.requestFocus();
                         return false;
                     }
 
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, "số điện thoại phải là số");
+                     txtPhoneNumber.requestFocus();
                     return false;
                 }
             }
-            if (txtPhoneNumber.getText().length() != 10) {
+            if (txtPhoneNumber.getText().trim().length() != 10) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số");
+                 txtPhoneNumber.requestFocus();
                 return false;
             }
 
@@ -170,7 +180,6 @@ public class CustomerPanel extends javax.swing.JPanel {
         labelDateError = new javax.swing.JLabel();
         txtCode = new app.view.swing.TextField();
         labelNameError1 = new javax.swing.JLabel();
-        txtSearchCustomer = new app.view.swing.TextField();
         panelCustomerBought = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplayProductBought = new javax.swing.JTable();
@@ -178,6 +187,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListCustomer = new javax.swing.JTable();
         ph = new app.view.swing.Pagination();
+        txtSearchCustomer = new app.view.swing.TextField();
         labelPanelCustomer = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -232,18 +242,6 @@ public class CustomerPanel extends javax.swing.JPanel {
         labelNameError1.setForeground(new java.awt.Color(255, 0, 51));
         labelNameError1.setPreferredSize(new java.awt.Dimension(0, 14));
 
-        txtSearchCustomer.setLabelText("Tìm Kiếm");
-        txtSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchCustomerActionPerformed(evt);
-            }
-        });
-        txtSearchCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSearchCustomerKeyReleased(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelCustomerInforLayout = new javax.swing.GroupLayout(panelCustomerInfor);
         panelCustomerInfor.setLayout(panelCustomerInforLayout);
         panelCustomerInforLayout.setHorizontalGroup(
@@ -261,7 +259,6 @@ public class CustomerPanel extends javax.swing.JPanel {
                         .addComponent(labelNameError1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                     .addComponent(labelEmailError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
@@ -280,7 +277,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         );
         panelCustomerInforLayout.setVerticalGroup(
             panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createSequentialGroup()
+            .addGroup(panelCustomerInforLayout.createSequentialGroup()
                 .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCustomerInforLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
@@ -319,10 +316,8 @@ public class CustomerPanel extends javax.swing.JPanel {
                         .addGap(12, 12, 12)
                         .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         panelCustomerBought.setBackground(new java.awt.Color(255, 255, 255));
@@ -379,27 +374,44 @@ public class CustomerPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblListCustomer);
 
+        txtSearchCustomer.setLabelText("Tìm Kiếm");
+        txtSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchCustomerActionPerformed(evt);
+            }
+        });
+        txtSearchCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchCustomerKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelListCustomerLayout = new javax.swing.GroupLayout(panelListCustomer);
         panelListCustomer.setLayout(panelListCustomerLayout);
         panelListCustomerLayout.setHorizontalGroup(
             panelListCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListCustomerLayout.createSequentialGroup()
+                .addGap(322, 322, 322)
+                .addComponent(ph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelListCustomerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1156, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(panelListCustomerLayout.createSequentialGroup()
-                .addGap(300, 300, 300)
-                .addComponent(ph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListCustomerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(509, 509, 509))
         );
         panelListCustomerLayout.setVerticalGroup(
             panelListCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListCustomerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(ph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                .addGap(71, 71, 71))
         );
 
         labelPanelCustomer.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -430,8 +442,8 @@ public class CustomerPanel extends javax.swing.JPanel {
                 .addComponent(labelPanelCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelCustomerInfor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelCustomerBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelCustomerBought, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelCustomerInfor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelListCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -445,11 +457,11 @@ public class CustomerPanel extends javax.swing.JPanel {
             if (a == 0) {
                 KhachHang cd = reafrom();
                 if (service.addSach(cd) > 0) {
-                    JOptionPane.showMessageDialog(this, "them thanh cong");
+                    JOptionPane.showMessageDialog(this, "thêm thành công");
                     filltable(service.getAll());
                     reset();
                 } else {
-                    JOptionPane.showMessageDialog(this, "them that bai");
+                    JOptionPane.showMessageDialog(this, "thêm thất bại");
                 }
             }
         }
@@ -464,11 +476,11 @@ public class CustomerPanel extends javax.swing.JPanel {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
             if (a == 0) {
                 if (service.updateSV(cd, ma) > 0) {
-                    JOptionPane.showMessageDialog(this, "update thanh cong");
+                    JOptionPane.showMessageDialog(this, "update thành công");
                     filltable(service.getAll());
                     reset();
                 } else {
-                    JOptionPane.showMessageDialog(this, "update that bai");
+                    JOptionPane.showMessageDialog(this, "update thất bại");
                 }
             }
         }

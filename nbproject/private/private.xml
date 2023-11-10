@@ -3,27 +3,31 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/StaffPanel.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/Pagination.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/PaginationItemRender.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/Page.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/DefaultPaginationItemRender.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/VoucherPanel.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/ProductPanel.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CustomerView.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/EventPagination.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/MaterialDialog.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/ColorDialog.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/LoginFrame.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/PaginationItemRenderStyle1.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/DiscountPanel.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/service/KhachHang_Service.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/ProductChooseView.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/SoleDialog.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CustomerPanel.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/OrderPanel.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/dbconnect/DBConnector.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/model/KhachHang.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/util/CheckValidate.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/ProductPanel.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CustomerView.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/SizeDialog.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/swing/ButtonUI.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/SellPanel.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CpuView.java</file>
-            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/LoginFrame.java</file>
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CategoryDialog.java</file>
             <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/MainApplicationView.java</file>
-=======
-            <file>file:/D:/FPT/DuAn1/N3StoreApplication/src/app/view/MainApplicationView.java</file>
-            <file>file:/D:/FPT/DuAn1/N3StoreApplication/src/app/service/NhanVienService.java</file>
-            <file>file:/D:/FPT/DuAn1/N3StoreApplication/src/app/view/StaffPanel.java</file>
->>>>>>> tuan
+            <file>file:/C:/Users/ACER/Desktop/van%20truong/Du%20an%201/N3StoreApplication/src/app/view/CompanyDialog.java</file>
         </group>
     </open-files>
 </project-private>
