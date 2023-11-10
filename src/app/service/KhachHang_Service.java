@@ -33,7 +33,7 @@ public class KhachHang_Service {
             rs = ps.executeQuery();
             while (rs.next()) {
                 //  public SinhVien(String maSV, String tenSV, int tuoi, int kyHoc, String nganhHoc, double diemTB, b
-                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
                 lstSV.add(s);
             }
             return lstSV;
@@ -52,7 +52,7 @@ public class KhachHang_Service {
             ps.execute();
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                   KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+                   KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
                 list.add(s);
               
             }
