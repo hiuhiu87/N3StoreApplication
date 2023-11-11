@@ -27,6 +27,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     private VoucherService vcs = new VoucherService();
     private Voucher v = new Voucher();
     private List<Voucher> listPhanTrangVoucher = new ArrayList<>();
+    private int currentpage = 1;
 
     /**
      * Creates new form discountPanel
@@ -73,6 +74,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             dtm = (DefaultTableModel) tbHienthiVoucher.getModel();
             dtm.setRowCount(0);
             fillTable(vcs.getListAll());
+            currentpage = page;
             int count = vcs.count();
             System.out.println(count);
             int sumPage = (int) Math.ceil((double) count / limit);
@@ -80,7 +82,6 @@ public class DiscountPanel extends javax.swing.JPanel {
             listPhanTrangVoucher = vcs.getListPhanTrang(offset, limit);
             fillTable(listPhanTrangVoucher);
             pn.setPagegination(page, sumPage);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,12 +116,12 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
         Date start_Date = jDateNgayBatDau.getDate();
-        if (StringUtil.isBlank((CharSequence) start_Date)) {
+        if (start_Date == null) {
             JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được bỏ trống!");
             return null;
         }
         Date end_Date = jDateNgayKetThuc.getDate();
-        if (StringUtil.isBlank((CharSequence) end_Date)) {
+        if (end_Date == null) {
             JOptionPane.showMessageDialog(this, "Ngày kết thúc không được bỏ trống!");
             return null;
         }
@@ -133,15 +134,8 @@ public class DiscountPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Điều kiện tối thiểu phải là số");
             return null;
         }
-        String type = txtKieu.getText().trim();
-        if (type.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Kiểu không được bỏ trống!");
-            return null;
-        }
-        if (type.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(this, "Kiểu bao gồm là chữ và số!");
-            return null;
-        }
+        String type = cbbKieu.getSelectedItem().toString();
+
         String values = txtGiaTri.getText().trim();
         if (values.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Giá trị không được bỏ trống!");
@@ -191,7 +185,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtMaSo = new app.view.swing.TextField();
         txtSoLuong = new app.view.swing.TextField();
         txtDKGiaTriMin = new app.view.swing.TextField();
-        txtKieu = new app.view.swing.TextField();
         txtGiaTri = new app.view.swing.TextField();
         rdHetHan = new javax.swing.JRadioButton();
         txtGiaTriMax = new app.view.swing.TextField();
@@ -200,6 +193,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         btnRemove = new app.view.swing.ButtonGradient();
         jDateNgayKetThuc = new com.toedter.calendar.JDateChooser();
         jDateNgayBatDau = new com.toedter.calendar.JDateChooser();
+        cbbKieu = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -267,8 +261,6 @@ public class DiscountPanel extends javax.swing.JPanel {
 
         txtDKGiaTriMin.setLabelText("Điều Kiện Giá Trị Tối Thiểu");
 
-        txtKieu.setLabelText("Kiểu");
-
         txtGiaTri.setLabelText("Giá Trị");
 
         buttonGroup1.add(rdHetHan);
@@ -292,7 +284,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             }
         });
 
-        btnRemove.setText("Xóa");
+        btnRemove.setText("Cập thật trạng thái");
         btnRemove.setColor2(new java.awt.Color(23, 35, 51));
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,13 +296,15 @@ public class DiscountPanel extends javax.swing.JPanel {
 
         jDateNgayBatDau.setDateFormatString("yyyy-MM-dd");
 
+        cbbKieu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fixed Amount", "Percentage" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtMaSo, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
@@ -320,21 +314,22 @@ public class DiscountPanel extends javax.swing.JPanel {
                             .addComponent(jDateNgayBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(33, 33, 33)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtGiaTriMax, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(rdHoatDong)
                                 .addGap(38, 38, 38)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(rdHetHan)))))
+                                .addComponent(rdHetHan))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtGiaTri, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                                .addComponent(txtGiaTriMax, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                                .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                                .addComponent(cbbKieu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(44, 44, 44)
                         .addComponent(btnAdd2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(42, 42, 42)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -344,9 +339,9 @@ public class DiscountPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtKieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtGiaTriMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -364,12 +359,12 @@ public class DiscountPanel extends javax.swing.JPanel {
                                 .addComponent(rdHoatDong)
                                 .addComponent(rdHetHan))
                             .addComponent(jDateNgayKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24))
+                .addGap(39, 39, 39))
         );
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -504,12 +499,14 @@ public class DiscountPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd2ActionPerformed
+
         int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "add", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             Voucher v = getform();
+
             if (vcs.add(v) > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm thành công");
-                loadDataTablePhanTrang(1);
+                loadDataTablePhanTrang(currentpage);
             }
 
         }
@@ -525,19 +522,20 @@ public class DiscountPanel extends javax.swing.JPanel {
             Voucher v = this.getform();
             vcs.update(v, id);
             JOptionPane.showMessageDialog(this, "Cập nhật thành công");
-            loadDataTablePhanTrang(1);
+            loadDataTablePhanTrang(currentpage);
 
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn xóa?", "remove", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn cập nhật trạng thái?", "remove", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
             String name = txtTimKiem.getText();
             Voucher v = vcs.getList(name).get(row);
             vcs.remove(v);
-            JOptionPane.showMessageDialog(this, "Xóa thành công");
+            JOptionPane.showMessageDialog(this, "cập nhật thành công");
+//            loadDataTablePhanTrang(currentpage);
             loadTable();
 
         }
@@ -568,7 +566,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         }
 
         txtDKGiaTriMin.setText(tbHienthiVoucher.getValueAt(row, 6).toString());
-        txtKieu.setText(tbHienthiVoucher.getValueAt(row, 7).toString());
+        cbbKieu.setSelectedItem(tbHienthiVoucher.getValueAt(row, 7).toString());
         txtGiaTri.setText(tbHienthiVoucher.getValueAt(row, 8).toString());
         txtGiaTriMax.setText(tbHienthiVoucher.getValueAt(row, 9).toString());
         String deleted = tbHienthiVoucher.getValueAt(row, 10).toString();
@@ -590,7 +588,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtTen.setText("");
         txtMaSo.setText("");
         txtSoLuong.setText("");
-        txtKieu.setText("");
+        cbbKieu.setSelectedIndex(0);
         txtGiaTri.setText("");
         txtGiaTriMax.setText("");
         txtDKGiaTriMin.setText("");
@@ -605,6 +603,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     private app.view.swing.ButtonGradient btnSearch;
     private app.view.swing.ButtonGradient btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbbKieu;
     private com.toedter.calendar.JDateChooser jDateNgayBatDau;
     private com.toedter.calendar.JDateChooser jDateNgayKetThuc;
     private javax.swing.JLabel jLabel1;
@@ -624,7 +623,6 @@ public class DiscountPanel extends javax.swing.JPanel {
     private app.view.swing.TextField txtDKGiaTriMin;
     private app.view.swing.TextField txtGiaTri;
     private app.view.swing.TextField txtGiaTriMax;
-    private app.view.swing.TextField txtKieu;
     private app.view.swing.TextField txtMaSo;
     private app.view.swing.TextField txtSoLuong;
     private app.view.swing.TextField txtTen;

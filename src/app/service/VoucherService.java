@@ -47,7 +47,7 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListAll() {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER";
+            String q = "SELECT * FROM VOUCHER ";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
@@ -63,7 +63,7 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListPhanTrang(int offset, int limit) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String q = "SELECT * FROM VOUCHER ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);
