@@ -97,22 +97,22 @@ public class VoucherService implements VoucherInterface {
     @Override
     public int add(Voucher v) {
         try {
-            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED) VALUES (?,'',?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, v.getTen());
-            ps.setString(2, v.getCode());
-            ps.setInt(3, v.getQuantity());
+//            ps.setString(2, v.getCode());
+            ps.setInt(2, v.getQuantity());
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             String star_date = sdf1.format(v.getStart_Date());
-            ps.setString(4, star_date);
+            ps.setString(3, star_date);
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
             String end_date = sdf2.format(v.getEnd_Date());
-            ps.setString(5, end_date);
-            ps.setFloat(6, v.getMin_values_condition());
-            ps.setString(7, v.getType());
-            ps.setFloat(8, v.getValues());
-            ps.setFloat(9, v.getMax_values());
-            ps.setInt(10, v.getDeleted());
+            ps.setString(4, end_date);
+            ps.setFloat(5, v.getMin_values_condition());
+            ps.setString(6, v.getType());
+            ps.setFloat(7, v.getValues());
+            ps.setFloat(8, v.getMax_values());
+            ps.setInt(9, v.getDeleted());
             if(ps.executeUpdate() > 0){
                 System.out.println("Thêm thành công");
                 return 1;
