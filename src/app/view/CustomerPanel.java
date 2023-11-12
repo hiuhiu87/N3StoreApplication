@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -97,46 +99,45 @@ public class CustomerPanel extends javax.swing.JPanel {
             txtFullname.requestFocus();
             return false;
         }
-        if (txtEmail.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "vui long nhap email");
-            txtEmail.requestFocus();
-            return false;
-        }
-        if (txtEmail.getText().trim().indexOf("@") == -1 || txtEmail.getText().indexOf(".") == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng ghi đúng định dạng của E-mail");
-            txtEmail.requestFocus();
-            return false;
-        }
+      if(txtEmail.getText().trim().isEmpty()) {
+  JOptionPane.showMessageDialog(this, "Vui lòng nhập email");
+  txtEmail.requestFocus();
+  return false;
+}
+
+String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                            "[a-zA-Z0-9_+&*-]+)*@" +
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                            "A-Z]{2,7}$";
+                              
+Pattern pat = Pattern.compile(emailRegex);
+if(!pat.matcher(txtEmail.getText().trim()).matches()) {
+  JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng email");  
+  txtEmail.requestFocus();
+  return false; 
+}
 
         if (txtAddress.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
             txtAddress.requestFocus();
             return false;
         }
-        if (txtPhoneNumber.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "vui long nhap sdt");
-            txtPhoneNumber.requestFocus();
-            return false;
-        } else {
-            try {
-                double hocphi = Double.parseDouble(txtPhoneNumber.getText());
-                if (hocphi < 0) {
-                    JOptionPane.showMessageDialog(this, "số điện thoại phải là số dương");
-                    txtPhoneNumber.requestFocus();
-                    return false;
-                }
+       if(txtPhoneNumber.getText().trim().isEmpty()) {
+  JOptionPane.showMessageDialog(this, "Vui lòng nhập số điện thoại");
+  txtPhoneNumber.requestFocus();
+  return false;
+}
 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "số điện thoại phải là số");
-                txtPhoneNumber.requestFocus();
-                return false;
-            }
-        }
-        if (txtPhoneNumber.getText().trim().length() != 10) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số");
-            txtPhoneNumber.requestFocus();
-            return false;
-        }
+String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
+
+Pattern pattern = Pattern.compile(phoneRegex);
+Matcher matcher = pattern.matcher(txtPhoneNumber.getText());
+
+if(!matcher.matches()) {
+  JOptionPane.showMessageDialog(this, "Số điện thoại phải đúng định dạng Việt Nam");
+  txtPhoneNumber.requestFocus();
+  return false;
+}
 
         return true;
 
