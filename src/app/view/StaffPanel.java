@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import app.view.swing.EventPagination;
 import app.view.swing.PaginationItemRenderStyle1;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -29,7 +31,8 @@ public class StaffPanel extends javax.swing.JPanel {
     int index = -1;
     NhanVien nv = new NhanVien();
     List<NhanVien> listPhanTrangNhanVien = new ArrayList<>();
-private int currentpage = 1;
+    private int currentpage = 1;
+
     public StaffPanel() {
         initComponents();
         index = 1;
@@ -477,24 +480,25 @@ private int currentpage = 1;
     }//GEN-LAST:event_btnChangeStatusActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (checkTrung()&&checkTrung1()) {
         int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn Sửa?", "Sửa", JOptionPane.YES_NO_OPTION);
         index = tblDisplay.getSelectedRow();
         int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
         if (validates()) {
             NhanVien nv = readForm();
             if (a == JOptionPane.YES_OPTION) {
-                 if (nvService.updateSV(nv, id) > 0) {
-                JOptionPane.showMessageDialog(this, "update thanh cong");
-                loadDataTablePhanTrang(1);
-            } else {
-                JOptionPane.showMessageDialog(this, "update that bai");
+                if (nvService.updateSV(nv, id) > 0) {
+                    JOptionPane.showMessageDialog(this, "update thanh cong");
+                    loadDataTablePhanTrang(1);
+                } else {
+                    JOptionPane.showMessageDialog(this, "update that bai");
+                }
             }
-            }
-            
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
     }
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-       
+
         txtCodeStaff.setText(" ");
         txtDate.setDate(null);
         txtEmail.setText(" ");
@@ -508,21 +512,22 @@ private int currentpage = 1;
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+        if (checkTrung()&&checkTrung1()) {
         int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "thêm", JOptionPane.YES_NO_OPTION);
-        
+
         if (validates()) {
             NhanVien sv = this.readForm();
-            if (a == JOptionPane.YES_OPTION ) {
-                   if (nvService.addStudent(sv) > 0) {
-                JOptionPane.showMessageDialog(this, "Thêm thành công");
-                loadDataTablePhanTrang(1);
-            } else {
-                JOptionPane.showMessageDialog(this, "Thêm thất bại");
+            if (a == JOptionPane.YES_OPTION) {
+                if (nvService.addStudent(sv) > 0) {
+                    JOptionPane.showMessageDialog(this, "Thêm thành công");
+                    loadDataTablePhanTrang(1);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Thêm thất bại");
+                }
             }
-            }
-         
-        }
 
+        }
+        }
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
@@ -530,11 +535,11 @@ private int currentpage = 1;
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnChangeStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChangeStatusMouseClicked
-       int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn xóa?", "remove", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn xóa?", "remove", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tblDisplay.getSelectedRow();
-            int  id = Integer.parseInt(txtCodeStaff.getText());
-            
+            int id = Integer.parseInt(txtCodeStaff.getText());
+
             nvService.Delete(id);
             JOptionPane.showMessageDialog(this, "Xóa thành công");
             loadDataTablePhanTrang(1);
@@ -579,7 +584,7 @@ private int currentpage = 1;
         tblmol.setRowCount(0);
         for (NhanVien item : list) {
 
-            tblmol.addRow(new Object[]{item.getID(), item.getTen(), item.getEmail(), item.getNgaySinh(), item.isGender() == true ? "Nam" : "Nữ", item.isRoLe() == true ? "Nhân viên" : "Quản Lý", item.getSdt(),item.isDeleted() == true ? "Đang hoạt động" : "Dừng hoạt động"});
+            tblmol.addRow(new Object[]{item.getID(), item.getTen(), item.getEmail(), item.getNgaySinh(), item.isGender() == true ? "Nam" : "Nữ", item.isRoLe() == true ? "Nhân viên" : "Quản Lý", item.getSdt(), item.isDeleted() == true ? "Đang hoạt động" : "Dừng hoạt động"});
         }
     }
 
@@ -684,14 +689,55 @@ private int currentpage = 1;
             txtPhoneNumber.requestFocus();
             return false;
         }
-         if (txtEmail.getText().isEmpty()) {
+        String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
+
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(txtPhoneNumber.getText());
+
+        if (!matcher.matches()) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải đúng định dạng");
+            txtPhoneNumber.requestFocus();
+            return false;
+        }
+        if (txtEmail.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Email trống");
             txtPhoneNumber.requestFocus();
             return false;
         }
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."
+                + "[a-zA-Z0-9_+&*-]+)*@"
+                + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
+                + "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (!pat.matcher(txtEmail.getText().trim()).matches()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng email");
+            txtEmail.requestFocus();
+            return false;
+        }
+
         return true;
     }
-
+boolean checkTrung() {
+        List<NhanVien> lstXM = listPhanTrangNhanVien;
+        for (int i = 0; i < lstXM.size(); i++) {
+            if (txtPhoneNumber.getText().equalsIgnoreCase(lstXM.get(i).getSdt())) {
+                JOptionPane.showMessageDialog(this, "Trùng số điện thoại");
+                return false;
+            }
+        }
+        return true;
+    }
+  boolean checkTrung1() {
+        List<NhanVien> lstXM = listPhanTrangNhanVien;
+        for (int i = 0; i < lstXM.size(); i++) {
+            if (txtEmail.getText().equalsIgnoreCase(lstXM.get(i).getEmail())) {
+                JOptionPane.showMessageDialog(this, "Trùng gmail");
+                return false;
+            }
+        }
+        return true;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.Button btnAdd;
     private app.view.swing.Button btnChangeStatus;
