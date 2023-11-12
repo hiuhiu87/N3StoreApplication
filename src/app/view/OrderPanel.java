@@ -17,12 +17,24 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -179,6 +191,7 @@ public class OrderPanel extends javax.swing.JPanel {
         btnImport = new app.view.swing.Button();
         btnExport = new app.view.swing.Button();
         paginationOder = new app.view.swing.Pagination();
+        btnPrint = new app.view.swing.Button();
         panelOrderDetail = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDetailOrder = new javax.swing.JTable();
@@ -289,6 +302,15 @@ public class OrderPanel extends javax.swing.JPanel {
 
         paginationOder.setBackground(new java.awt.Color(204, 204, 204));
 
+        btnPrint.setBackground(new java.awt.Color(23, 35, 51));
+        btnPrint.setForeground(new java.awt.Color(255, 255, 255));
+        btnPrint.setText("Print");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelOrderLayout = new javax.swing.GroupLayout(panelOrder);
         panelOrder.setLayout(panelOrderLayout);
         panelOrderLayout.setHorizontalGroup(
@@ -305,16 +327,18 @@ public class OrderPanel extends javax.swing.JPanel {
                         .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addComponent(rdCancel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
                             .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addComponent(rdAll)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(14, 14, 14)
                                 .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(102, 102, 102)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)))))
                 .addContainerGap())
             .addGroup(panelOrderLayout.createSequentialGroup()
                 .addGap(226, 226, 226)
@@ -342,7 +366,8 @@ public class OrderPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -647,6 +672,43 @@ public class OrderPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnImportActionPerformed
 
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        if (tblDetailOrder.getRowCount() <= 0) {
+            return;
+        }
+
+        if (index >= 0) {
+            try {
+                index = tblDisplayOrder.getSelectedRow();
+                Oders oders = oderService.getAllOders().get(index);
+                System.out.println(oders.getNameCustomer());
+                System.out.println(oders.getCode());
+                Map<String, Object> map = new HashMap<>();
+                map.put("stt", "1");
+                map.put("Custommer", oders.getNameCustomer());
+                map.put("employee", oders.getNameEmployee());
+                map.put("Code", oders.getCode());
+                map.put("dateCreate", oders.getDateCreateDate() + "");
+                map.put("productName", "Giày 1");
+                map.put("quantity", "2");
+                map.put("price", "250,000");
+                map.put("totalMoney", "500,000");
+                map.put("moneyReduce", "50,000");
+                map.put("totalMoneydiscount", "450,000");
+                map.put("customerMoney", "500,000");
+                map.put("payment", oders.getPaymentMethod());
+                JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
+                JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
+                JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
+                JasperViewer.viewReport(print, false);
+
+            } catch (JRException ex) {
+                Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_btnPrintActionPerformed
+
     private void openExcelFile(String filePath) {
         try {
             Desktop.getDesktop().open(new File(filePath));
@@ -665,6 +727,7 @@ public class OrderPanel extends javax.swing.JPanel {
     private app.view.swing.Button btnExport;
     private javax.swing.ButtonGroup btnGroupOrderStatus;
     private app.view.swing.Button btnImport;
+    private app.view.swing.Button btnPrint;
     private javax.swing.JComboBox<String> cbxPaymentMethod;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
