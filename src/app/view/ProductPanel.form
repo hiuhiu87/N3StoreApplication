@@ -67,9 +67,9 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="22" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="0" pref="1211" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="labelCategory" min="-2" pref="88" max="-2" attributes="0"/>
@@ -98,7 +98,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="212" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                       <Component id="btnNew" min="-2" max="-2" attributes="0"/>
@@ -109,17 +109,20 @@
                                       <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="516" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="544" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="labelNameProductSearch" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtSearchNameProduct" min="-2" pref="206" max="-2" attributes="0"/>
+                              <Component id="txtSearchNameProduct" min="-2" pref="290" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnRefesh" min="-2" pref="86" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="paginationProducts" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="523" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -127,22 +130,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnNew" min="-2" pref="35" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnAdd" min="-2" pref="35" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="btnUpdate" min="-2" pref="35" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="labelCategory" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                                  <Component id="cbbCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnAddCatefory" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelCategory" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="cbbCategory" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnAddCatefory" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="cbbCompany" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -151,25 +146,32 @@
                                   <Component id="labelCompany1" alignment="0" min="-2" pref="42" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
+                              <Component id="labelNamePrdError" min="-2" pref="17" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtNameProduct" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelNameProduct" min="-2" pref="26" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnNew" min="-2" pref="35" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnAdd" min="-2" pref="35" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="btnUpdate" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="labelNamePrdError" min="-2" pref="17" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtNameProduct" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelNameProduct" min="-2" pref="26" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="txtSearchNameProduct" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnRefesh" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="labelNameProductSearch" min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace pref="73" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtSearchNameProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRefesh" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="304" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="209" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="paginationProducts" pref="35" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -236,17 +238,9 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="labelNameProductSearch">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="14" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="T&#xec;m Ki&#x1ebf;m"/>
-              </Properties>
-            </Component>
             <Component class="app.view.swing.TextField" name="txtSearchNameProduct">
               <Properties>
-                <Property name="labelText" type="java.lang.String" value="T&#xea;n S&#x1ea3;n Ph&#x1ea9;m"/>
+                <Property name="labelText" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m Theo T&#xea;n S&#x1ea3;n Ph&#x1ea9;m"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -266,6 +260,7 @@
                         <Column editable="true" title="Title 4" type="java.lang.Object"/>
                       </Table>
                     </Property>
+                    <Property name="rowHeight" type="int" value="45"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductDisplayMouseClicked"/>
@@ -388,6 +383,18 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddCompany1ActionPerformed"/>
               </Events>
             </Component>
+            <Component class="app.view.swing.Pagination" name="paginationProducts">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="23" red="17" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                    <LineBorder roundedCorners="true"/>
+                  </Border>
+                </Property>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="panelDetailProduct">
@@ -424,7 +431,7 @@
                       <Component id="panelFunction" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelAtribute" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="30" max="32767" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -453,46 +460,55 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <Component id="labelPriceIn" min="-2" pref="61" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="cbbNameProduct" pref="266" max="32767" attributes="0"/>
-                                              <Component id="txtPriceIn" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="txtPriceOrigin" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="labelPriceOut1" max="32767" attributes="0"/>
                                               <Component id="labelPriceOut" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
-                                              <Component id="labelDescription" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                                              <Component id="labelDescription" alignment="1" pref="65" max="32767" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtPriceOut" max="32767" attributes="0"/>
-                                              <Component id="jScrollPane3" pref="266" max="32767" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="txtPriceSell" max="32767" attributes="0"/>
+                                                      <Component id="jScrollPane3" pref="266" max="32767" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                                  <Component id="txtQuantity" max="32767" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="labelPriceOutError" min="-2" pref="192" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="labelPriceInError" min="-2" pref="192" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="382" max="-2" attributes="0"/>
-                                          <Component id="labelQuantityError" min="-2" pref="192" max="-2" attributes="0"/>
-                                      </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="labelPriceOutError" min="-2" pref="192" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="labelPriceInError" min="-2" pref="192" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="btnRefresh" min="-2" pref="115" max="-2" attributes="0"/>
                                               <Component id="btnAddDetailProduct" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                                               <Component id="btnUpdateDetailProduct" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                                               <Component id="btnStatusDetailProd" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
+                                              <Component id="btnRefresh" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="-2" pref="383" max="-2" attributes="0"/>
+                                  <Component id="labelQuantityError" min="-2" pref="192" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -511,55 +527,53 @@
                               <Component id="labelNameProductTab2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                               <Component id="cbbNameProduct" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="35" max="32767" attributes="0"/>
+                          <EmptySpace pref="39" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="labelPriceIn" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
-                                      <Component id="txtPriceIn" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtPriceOrigin" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                                  <Component id="labelPriceOutError" min="-2" pref="16" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelPriceOut" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
+                                      <Component id="txtPriceSell" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelPriceOut1" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
+                                      <Component id="txtQuantity" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="labelDescription" min="-2" pref="42" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="labelQuantityError" min="-2" pref="16" max="-2" attributes="0"/>
+                                              <Component id="labelDescription" alignment="0" min="-2" pref="42" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jScrollPane3" min="-2" pref="76" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnAddDetailProduct" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnUpdateDetailProduct" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="btnStatusDetailProd" min="-2" pref="30" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="labelQuantityError" min="-2" pref="16" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="labelPriceInError" min="-2" pref="16" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="labelPriceOut" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
-                                                  <Component id="txtPriceOut" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="171" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
+                                  <Component id="labelPriceOutError" min="-2" pref="16" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="labelPriceInError" min="-2" pref="16" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnAddDetailProduct" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnUpdateDetailProduct" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="btnStatusDetailProd" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -583,7 +597,7 @@
                     <Property name="text" type="java.lang.String" value="Gi&#xe1; Nh&#x1ead;p"/>
                   </Properties>
                 </Component>
-                <Component class="app.view.swing.TextField" name="txtPriceIn">
+                <Component class="app.view.swing.TextField" name="txtPriceOrigin">
                   <Properties>
                     <Property name="labelText" type="java.lang.String" value="Gi&#xe1; Nh&#x1ead;p"/>
                   </Properties>
@@ -593,10 +607,10 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="GI&#xe1; B&#xe1;n"/>
+                    <Property name="text" type="java.lang.String" value="Gi&#xe1; B&#xe1;n"/>
                   </Properties>
                 </Component>
-                <Component class="app.view.swing.TextField" name="txtPriceOut">
+                <Component class="app.view.swing.TextField" name="txtPriceSell">
                   <Properties>
                     <Property name="labelText" type="java.lang.String" value="Gi&#xe1; B&#xe1;n"/>
                   </Properties>
@@ -710,6 +724,19 @@
                   </Events>
                 </Component>
                 <Component class="app.view.swing.ComboBoxSuggestion" name="cbbNameProduct">
+                </Component>
+                <Component class="javax.swing.JLabel" name="labelPriceOut1">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="S&#x1ed1; L&#x1b0;&#x1ee3;ng"/>
+                  </Properties>
+                </Component>
+                <Component class="app.view.swing.TextField" name="txtQuantity">
+                  <Properties>
+                    <Property name="labelText" type="java.lang.String" value="S&#x1ed1; L&#x1b0;&#x1ee3;ng"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -997,6 +1024,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnDownload" min="-2" pref="94" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnImport" min="-2" pref="94" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnExport" min="-2" pref="94" max="-2" attributes="0"/>
@@ -1043,11 +1072,12 @@
                               </Group>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" pref="555" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="543" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnImport" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnExport" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDownload" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -1114,6 +1144,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Import"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImportActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="app.view.swing.Button" name="btnExport">
                   <Properties>
@@ -1155,6 +1188,20 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetTableActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="app.view.swing.Button" name="btnDownload">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="33" green="23" red="17" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="T&#x1ea3;i M&#x1eab;u Excel"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownloadActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

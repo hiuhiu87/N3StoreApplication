@@ -32,5 +32,9 @@ public class SizeService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public boolean changeStatus(String name) {
+        return sizeRepository.updateStatus(name) > 0;
+    }
 
 }

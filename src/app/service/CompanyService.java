@@ -32,5 +32,9 @@ public class CompanyService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public boolean changeStatus(String name) {
+        return companyRepository.updateStatus(name) > 0;
+    }
 
 }

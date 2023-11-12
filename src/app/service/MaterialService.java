@@ -33,4 +33,9 @@ public class MaterialService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public boolean changeStatus(String name) {
+        return materialRepository.updateStatus(name) > 0;
+    }
+    
 }
