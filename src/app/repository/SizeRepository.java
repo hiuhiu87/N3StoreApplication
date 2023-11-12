@@ -46,6 +46,33 @@ public class SizeRepository implements CrudRepository<Size> {
             return null;
         }
     }
+    
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.SIZE
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Size size = findByName(name);
+            if (size != null) {
+                if (size.getDeleted() != true) {
+                    size.setDeleted(Boolean.TRUE);
+                } else {
+                    size.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, size.getDeleted());
+                stm.setObject(2, size.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     @Override
     public int add(Size t) {

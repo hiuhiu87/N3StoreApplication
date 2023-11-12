@@ -16,31 +16,31 @@ public class AddProductDetailRequest {
 
     private Double originPrice;
 
-    private String description;
-
     private String nameColor;
-
-    private String nameCompany;
 
     private String nameSole;
 
     private String nameMaterial;
 
     private String nameSize;
+    
+    private Integer quantity;
 
-    public AddProductDetailRequest(String nameProduct, Double sellPrice, Double originPrice, String description, String nameColor, String nameCompany, String nameSole, String nameMaterial, String nameSize) {
+    private String description;
+
+    public AddProductDetailRequest() {
+    }
+
+    public AddProductDetailRequest(String nameProduct, Double sellPrice, Double originPrice, String nameColor, String nameSole, String nameMaterial, String nameSize, Integer quantity, String description) {
         this.nameProduct = nameProduct;
         this.sellPrice = sellPrice;
         this.originPrice = originPrice;
-        this.description = description;
         this.nameColor = nameColor;
-        this.nameCompany = nameCompany;
         this.nameSole = nameSole;
         this.nameMaterial = nameMaterial;
         this.nameSize = nameSize;
-    }
-
-    public AddProductDetailRequest() {
+        this.quantity = quantity;
+        this.description = description;
     }
 
     public String getNameProduct() {
@@ -67,28 +67,12 @@ public class AddProductDetailRequest {
         this.originPrice = originPrice;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getNameColor() {
         return nameColor;
     }
 
     public void setNameColor(String nameColor) {
         this.nameColor = nameColor;
-    }
-
-    public String getNameCompany() {
-        return nameCompany;
-    }
-
-    public void setNameCompany(String nameCompany) {
-        this.nameCompany = nameCompany;
     }
 
     public String getNameSole() {
@@ -115,6 +99,22 @@ public class AddProductDetailRequest {
         this.nameSize = nameSize;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     
     
+   
 }

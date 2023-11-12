@@ -34,5 +34,9 @@ public class SoleService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public boolean changeStatus(String name) {
+        return soleRepository.updateStatus(name) > 0;
+    }
 
 }

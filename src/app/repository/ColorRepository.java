@@ -46,6 +46,33 @@ public class ColorRepository implements CrudRepository<Color> {
         }
     }
 
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.COLOR
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Color color = findByName(name);
+            if (color != null) {
+                if (color.getDeleted() != true) {
+                    color.setDeleted(Boolean.TRUE);
+                } else {
+                    color.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, color.getDeleted());
+                stm.setObject(2, color.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public int add(Color color) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """

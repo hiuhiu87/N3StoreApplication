@@ -86,7 +86,7 @@ public class SoleDialog extends javax.swing.JDialog {
             }
         });
 
-        btnUpdate.setText("Sửa");
+        btnUpdate.setText("Đổi Trạng Thái");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -194,7 +194,20 @@ public class SoleDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        int row = tblDisplay.getSelectedRow();
+        if (row >= 0) {
+            int column = 1;
+            String nameCategory = (String) tblDisplay.getValueAt(row, column);
+            boolean res = soleService.changeStatus(nameCategory);
+            if (res) {
+                JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
+                fillTable(soleService.getAllSoles());
+            } else {
+                JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Thương Hiệu");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
