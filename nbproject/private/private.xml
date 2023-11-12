@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/ADMIN/Documents/NetBeansProjects/DA1/N3StoreApplication/src/app/view/DiscountPanel.java</file>
             <file>file:/C:/Users/ADMIN/Documents/NetBeansProjects/DA1/N3StoreApplication/src/app/service/VoucherService.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/NetBeansProjects/DA1/N3StoreApplication/src/app/view/ProductPanel.java</file>
             <file>file:/C:/Users/ADMIN/Documents/NetBeansProjects/DA1/N3StoreApplication/src/app/view/MainApplicationView.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/NetBeansProjects/DA1/N3StoreApplication/src/app/repository/ProductRepository.java</file>
         </group>
     </open-files>
 </project-private>

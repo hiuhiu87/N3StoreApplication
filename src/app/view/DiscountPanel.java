@@ -98,14 +98,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
         String code = txtMaSo.getText().trim();
-//        if (code.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Mã không được bỏ trống!");
-//            return null;
-//        }
-//        if (name.matches("[0-9]+")) {
-//            JOptionPane.showMessageDialog(this, "Mã bao gồm là chữ và số!");
-//            return null;
-//        }
+
         String quantity = txtSoLuong.getText().trim();
         if (quantity.isEmpty()) {
             JOptionPane.showMessageDialog(this, "số lượng không được bỏ trống!");
@@ -125,6 +118,10 @@ public class DiscountPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ngày kết thúc không được bỏ trống!");
             return null;
         }
+        if(end_Date.getTime() < start_Date.getTime()){
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc phải sau ngày bắt đầu!");
+            return null;
+        }
         String min_values_condition = txtDKGiaTriMin.getText().trim();
         if (min_values_condition.isEmpty()) {
             JOptionPane.showMessageDialog(this, "điều kiện tối thiểu không được bỏ trống!");
@@ -135,7 +132,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
         String type = cbbKieu.getSelectedItem().toString();
-
+        
         String values = txtGiaTri.getText().trim();
         if (values.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Giá trị không được bỏ trống!");
@@ -144,6 +141,13 @@ public class DiscountPanel extends javax.swing.JPanel {
         if (!values.matches("[[0-9][.][0-9]]+")) {
             JOptionPane.showMessageDialog(this, "Giá trị phải là số");
             return null;
+        }
+        //-----------------
+        if(type.equals("Percentage")){
+            if(values.length() > 2){
+                JOptionPane.showMessageDialog(this, "Giá trị không được vượt quá 100%");
+                return null;
+            }
         }
         String max_values = txtGiaTriMax.getText().trim();
         if (max_values.isEmpty()) {
@@ -204,9 +208,12 @@ public class DiscountPanel extends javax.swing.JPanel {
         tbHienthiVoucher = new javax.swing.JTable();
         btnClear = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("QUẢN LÝ VOUCHER");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         txtTimKiem.setLabelText("Nhập Tên");
@@ -233,7 +240,7 @@ public class DiscountPanel extends javax.swing.JPanel {
                 .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,12 +255,14 @@ public class DiscountPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Tìm kiếm");
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         buttonGroup1.add(rdHoatDong);
         rdHoatDong.setText("Hoạt động");
 
         txtMaSo.setEditable(false);
+        txtMaSo.setBackground(new java.awt.Color(255, 255, 255));
         txtMaSo.setLabelText("Mã Số");
 
         txtSoLuong.setLabelText("Số Lượng");
@@ -362,7 +371,7 @@ public class DiscountPanel extends javax.swing.JPanel {
                         .addGap(29, 29, 29))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtGiaTriMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addGap(18, 18, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -373,6 +382,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Thông tin Voucher");
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/view/poster-giay.jpg"))); // NOI18N
@@ -397,6 +407,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Danh sách Voucher");
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         tbHienthiVoucher.setModel(new javax.swing.table.DefaultTableModel(
@@ -410,6 +421,7 @@ public class DiscountPanel extends javax.swing.JPanel {
                 "ID", "Mã Số", "Tên Voucher", "Số Lượng", "Ngày Bắt Đầu", "Ngày Kết Thúc", "Điều Kiện", "Kiểu", "Giá Trị", "Giá Trị Tối Đa", "Trạng thái"
             }
         ));
+        tbHienthiVoucher.setRowHeight(25);
         tbHienthiVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbHienthiVoucherMouseClicked(evt);
@@ -460,15 +472,19 @@ public class DiscountPanel extends javax.swing.JPanel {
                             .addComponent(jLabel5)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(21, 21, 21)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel2)
+                                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(21, 21, 21))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, Short.MAX_VALUE)
                                             .addComponent(btnClear))
                                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1188, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -506,14 +522,14 @@ public class DiscountPanel extends javax.swing.JPanel {
         int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "add", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             Voucher v = getform();
-
+            v.setCode(vcs.generateNextModelCode());
             if (vcs.add(v) > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm thành công");
                 loadDataTablePhanTrang(currentpage);
             }
-
+            
         }
-
+        
     }//GEN-LAST:event_btnAdd2ActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -557,7 +573,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     private void tbHienthiVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHienthiVoucherMouseClicked
         int row = tbHienthiVoucher.getSelectedRow();
         txtTen.setText(tbHienthiVoucher.getValueAt(row, 2).toString());
-        txtMaSo.setText(tbHienthiVoucher.getValueAt(row, 1).toString());
+        txtMaSo.setText((String)tbHienthiVoucher.getValueAt(row, 1));
         txtSoLuong.setText(tbHienthiVoucher.getValueAt(row, 3).toString());
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tbHienthiVoucher.getValueAt(row, 4).toString());

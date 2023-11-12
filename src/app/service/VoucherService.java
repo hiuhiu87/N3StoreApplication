@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -34,7 +35,7 @@ public class VoucherService implements VoucherInterface {
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
                 list.add(v);
             }
@@ -51,7 +52,7 @@ public class VoucherService implements VoucherInterface {
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
                 list.add(v);
             }
@@ -60,6 +61,7 @@ public class VoucherService implements VoucherInterface {
         }
         return list;
     }
+
     public ArrayList<Voucher> getListPhanTrang(int offset, int limit) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
@@ -69,7 +71,7 @@ public class VoucherService implements VoucherInterface {
             ps.setObject(2, limit);
             ps.execute();
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
                 list.add(v);
             }
@@ -78,14 +80,15 @@ public class VoucherService implements VoucherInterface {
         }
         return list;
     }
-    public int count(){
+
+    public int count() {
         try {
-            int count =0;
+            int count = 0;
             String q = "SELECT COUNT(*) FROM VOUCHER";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 count = rs.getInt(1);
             }
             return count;
@@ -94,31 +97,32 @@ public class VoucherService implements VoucherInterface {
             return 0;
         }
     }
+
     @Override
     public int add(Voucher v) {
         try {
-            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED) VALUES (?,'',?,?,?,?,?,?,?,?)";
+            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED) VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, v.getTen());
-//            ps.setString(2, v.getCode());
-            ps.setInt(2, v.getQuantity());
+            ps.setString(2, v.getCode());
+            ps.setInt(3, v.getQuantity());
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             String star_date = sdf1.format(v.getStart_Date());
-            ps.setString(3, star_date);
+            ps.setString(4, star_date);
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
             String end_date = sdf2.format(v.getEnd_Date());
-            ps.setString(4, end_date);
-            ps.setFloat(5, v.getMin_values_condition());
-            ps.setString(6, v.getType());
-            ps.setFloat(7, v.getValues());
-            ps.setFloat(8, v.getMax_values());
-            ps.setInt(9, v.getDeleted());
-            if(ps.executeUpdate() > 0){
+            ps.setString(5, end_date);
+            ps.setFloat(6, v.getMin_values_condition());
+            ps.setString(7, v.getType());
+            ps.setFloat(8, v.getValues());
+            ps.setFloat(9, v.getMax_values());
+            ps.setInt(10, v.getDeleted());
+            if (ps.executeUpdate() > 0) {
                 System.out.println("Thêm thành công");
                 return 1;
             }
         } catch (Exception e) {
-            System.out.println(""+e.toString());
+            System.out.println("" + e.toString());
         }
         return -1;
     }
@@ -126,15 +130,15 @@ public class VoucherService implements VoucherInterface {
     @Override
     public int remove(Voucher v) {
         try {
-            String q = "UPDATE VOUCHER SET DELETED = CASE WHEN DELETED = 0 THEN 1 WHEN DELETED = 1 THEN 0 END WHERE ID = ?;";
+            String q = "UPDATE VOUCHER SET DELETED = CASE WHEN DELETED = 0 THEN 1 WHEN DELETED = 1 THEN 0 END WHERE ID = ?";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setInt(1, v.getId());
-            if(ps.executeUpdate() > 0){
+            if (ps.executeUpdate() > 0) {
                 System.out.println("Xóa thành công");
                 return 1;
             }
         } catch (Exception e) {
-            System.out.println(""+e.toString());
+            System.out.println("" + e.toString());
         }
         return -1;
     }
@@ -160,11 +164,85 @@ public class VoucherService implements VoucherInterface {
             ps.setInt(10, v.getDeleted());
             ps.setInt(11, id);
             return ps.executeUpdate();
-            
+
         } catch (Exception e) {
-            System.out.println(""+e.toString());
+            System.out.println("" + e.toString());
             return -1;
         }
+    }
+
+    private boolean codeExistslnDatabase(String code) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnector.getConnection();
+            String q = "SELECT COUNT(*) FROM VOUCHER WHERE CODE=?";
+            stm = conn.prepareStatement(q);
+            stm.setObject(1, code);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+            return false;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                rs.close();
+            }
+            if (conn != null) {
+                rs.close();
+            }
+        }
+    }
+
+    public String generateNextModelCode() {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            String q = "SELECT MAX(CAST(SUBSTRING(CODE,8,LEN(CODE)-3)AS NVARCHAR(100))) FROM VOUCHER";
+            stm = conn.prepareStatement(q);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                int lastNumber = rs.getInt(1);
+                System.out.println(lastNumber);
+                if (lastNumber == 0) {
+                    return "VOUCHER1";
+                }
+                while (true) {
+                    lastNumber++;
+                    String nextCode = "VOUCHER" + lastNumber;
+                    if (!codeExistslnDatabase(nextCode)) {
+                        return nextCode;
+                    }
+                }
+            } else {
+                return "VOUCHER1";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    rs.close();
+                }
+                if (conn != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }
