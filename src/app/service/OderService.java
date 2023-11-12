@@ -27,9 +27,13 @@ public class OderService {
     public List<Oders> getAllOdersByStatus(int status) {
         return oderRepository.getAllListByStatus(status);
     }
-    
-    public int countOder(){
-       return oderRepository.countOder();
+
+    public int countOder() {
+        return oderRepository.countOder();
+    }
+
+    public void importDataFromExcel(String file) {
+        oderRepository.importDataFromExcel(file);
     }
 
 }

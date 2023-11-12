@@ -313,6 +313,9 @@
             </Property>
             <Property name="label" type="java.lang.String" value="Import"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="app.view.swing.Button" name="btnExport">
           <Properties>
@@ -324,6 +327,9 @@
             </Property>
             <Property name="label" type="java.lang.String" value="Export"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="app.view.swing.Pagination" name="paginationOder">
           <Properties>
