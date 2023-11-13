@@ -701,7 +701,6 @@ public class OrderPanel extends javax.swing.JPanel {
                 JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
                 JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
                 JasperViewer.viewReport(print, false);
-
             } catch (JRException ex) {
                 Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -254,10 +254,6 @@
 			<break>
 				<reportElement x="0" y="74" width="100" height="1" uuid="0347d50c-abd9-4549-9cff-c9d46f442e13"/>
 			</break>
-			<image>
-				<reportElement x="50" y="70" width="100" height="120" uuid="2e4b76e4-b195-4e99-9522-b50df94f6659"/>
-				<imageExpression><![CDATA["C:\\Users\\H.Long\\Downloads\\z4873757449335_ad77484297edfbf05925c3c0676c17df.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="1" y="22" width="114" height="15" uuid="bd799e96-f0a5-4456-8c75-4b56d06294cb"/>
 				<textElement verticalAlignment="Middle">
@@ -286,6 +282,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{payment}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="17" y="69" width="170" height="116" uuid="da840522-6f00-4723-b470-35fb8615eeb6"/>
+				<imageExpression><![CDATA["src\\app\\content\\anhQR.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</summary>
 </jasperReport>
