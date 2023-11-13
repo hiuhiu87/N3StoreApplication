@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -700,7 +701,17 @@ public class OrderPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
                 JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
                 JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
-                JasperViewer.viewReport(print, false);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                String timestamp = dateFormat.format(new Date());
+
+                String pdfFileName = "src/app/export/hoadon_" + timestamp + ".pdf";
+                JasperExportManager.exportReportToPdfFile(print, pdfFileName);
+                try {
+                    Desktop.getDesktop().open(new File(pdfFileName));
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//                JasperViewer.viewReport(print, false);
             } catch (JRException ex) {
                 Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
             }

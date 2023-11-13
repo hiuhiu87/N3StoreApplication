@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="842" columnWidth="204" leftMargin="11" rightMargin="11" topMargin="0" bottomMargin="0" uuid="70c3ab0b-d30a-4604-aeaf-b5a9abd3e164">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="238" pageHeight="842" columnWidth="216" leftMargin="11" rightMargin="11" topMargin="0" bottomMargin="0" uuid="70c3ab0b-d30a-4604-aeaf-b5a9abd3e164">
 	<property name="ireport.zoom" value="1.5234039505310406"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -58,7 +58,7 @@
 	<title>
 		<band height="41" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="10" width="204" height="20" uuid="74cf8c0f-e237-460e-ab50-62bd283bdbd5"/>
+				<reportElement x="0" y="10" width="216" height="20" uuid="74cf8c0f-e237-460e-ab50-62bd283bdbd5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Arial Black" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -70,7 +70,7 @@
 	<detail>
 		<band height="159" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="204" height="20" uuid="52c66d69-a66d-47a9-91bd-389e5abfa574"/>
+				<reportElement x="0" y="0" width="216" height="20" uuid="52c66d69-a66d-47a9-91bd-389e5abfa574"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
@@ -84,14 +84,14 @@
 				<text><![CDATA[Mã HD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="104" y="21" width="42" height="20" uuid="400dd5fc-3748-4462-bde5-d751b16cd4f7"/>
+				<reportElement x="115" y="21" width="42" height="20" uuid="400dd5fc-3748-4462-bde5-d751b16cd4f7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Thu ngân:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="106" y="45" width="39" height="20" uuid="dde34eeb-abf3-4753-b045-0a864e880b37"/>
+				<reportElement x="117" y="45" width="39" height="20" uuid="dde34eeb-abf3-4753-b045-0a864e880b37"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -116,7 +116,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tên giày]]></text>
+				<text><![CDATA[Product Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="table" x="103" y="70" width="14" height="12" uuid="21e23eea-b9d7-4181-9181-126021e05b19"/>
@@ -126,18 +126,18 @@
 				<text><![CDATA[SL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="156" y="70" width="48" height="12" uuid="1c3fb989-e2d3-4147-ba9a-84de100285bc"/>
+				<reportElement style="table" x="160" y="70" width="56" height="12" uuid="1c3fb989-e2d3-4147-ba9a-84de100285bc"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Thành Tiền]]></text>
+				<text><![CDATA[Total Money]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="117" y="70" width="39" height="12" uuid="1e9f13b8-f871-4a04-b9cd-76d572a6a5a2"/>
+				<reportElement style="table" x="117" y="70" width="43" height="12" uuid="1e9f13b8-f871-4a04-b9cd-76d572a6a5a2"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Đơn giá]]></text>
+				<text><![CDATA[Price]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="122" width="54" height="15" uuid="eccd7b47-fc57-41b2-83a9-e934e1f5904d"/>
@@ -148,7 +148,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="139" width="67" height="15" uuid="aaf9476c-ae46-4a78-99a6-f15a11c93fbe"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tiền chiết khấu :]]></text>
@@ -171,14 +171,14 @@
 				<textFieldExpression><![CDATA[$P{Code}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="45" width="59" height="20" uuid="62b48aac-11c7-449f-8d9e-1da4cb9fb7a8"/>
+				<reportElement x="156" y="45" width="59" height="20" uuid="62b48aac-11c7-449f-8d9e-1da4cb9fb7a8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dateCreate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="20" width="59" height="20" uuid="1ce1d9cf-030c-4683-bfe6-e5f4ef88ff4f"/>
+				<reportElement x="156" y="20" width="59" height="20" uuid="1ce1d9cf-030c-4683-bfe6-e5f4ef88ff4f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -193,34 +193,34 @@
 			</textField>
 			<textField>
 				<reportElement x="103" y="82" width="14" height="20" uuid="6b9ac039-acf5-41d8-9812-3b5e6f89dfa8"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="117" y="82" width="39" height="20" uuid="25270a63-9524-4770-b790-5f876b5636c8"/>
+				<reportElement x="117" y="82" width="43" height="20" uuid="25270a63-9524-4770-b790-5f876b5636c8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="156" y="82" width="48" height="20" uuid="58659eb1-5610-4a13-b806-345022017707"/>
+				<reportElement x="160" y="82" width="56" height="20" uuid="58659eb1-5610-4a13-b806-345022017707"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalMoney}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="122" width="58" height="15" uuid="d19bc395-e21e-4ae7-ae21-5483053ff035"/>
+				<reportElement x="157" y="122" width="58" height="15" uuid="d19bc395-e21e-4ae7-ae21-5483053ff035"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalMoney}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="139" width="58" height="15" uuid="b62456e3-0bdf-48bb-92e1-17382a96eebc"/>
+				<reportElement x="157" y="139" width="58" height="15" uuid="b62456e3-0bdf-48bb-92e1-17382a96eebc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -262,21 +262,21 @@
 				<text><![CDATA[Tiền khách trả :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="145" y="4" width="58" height="15" uuid="b81a6c70-9b2a-4d52-93d0-71079420b4d3"/>
+				<reportElement x="157" y="4" width="58" height="15" uuid="b81a6c70-9b2a-4d52-93d0-71079420b4d3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalMoneydiscount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="23" width="58" height="14" uuid="228f0b29-65de-407e-9bed-051293e99d50"/>
+				<reportElement x="157" y="23" width="58" height="14" uuid="228f0b29-65de-407e-9bed-051293e99d50"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{customerMoney}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="43" width="58" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
+				<reportElement x="157" y="43" width="58" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
