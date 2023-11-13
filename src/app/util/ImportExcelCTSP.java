@@ -171,7 +171,6 @@ public class ImportExcelCTSP {
                     chiTietSP.setSellPrice(Double.valueOf(giaBan));
                     chiTietSP.setOriginPrice(Double.valueOf(giaNhap));
                     listProductDetails.add(chiTietSP);
-//                    cTSanPhamRepository.saveOrUpdate(chiTietSP);
                 } else {
                     chiTietSPcheck.setSellPrice(Double.parseDouble(giaBan));
                     chiTietSPcheck.setOriginPrice(Double.parseDouble(giaNhap));
@@ -182,7 +181,6 @@ public class ImportExcelCTSP {
                         chiTietSPcheck.setQuantity((int) Double.parseDouble(soLuongTon));
                     }
                     listProductDetails.add(chiTietSPcheck);
-//                    cTSanPhamRepository.saveOrUpdate(chiTietSPcheck);
                 }
             }
             productDetailRepository.addAll(listProductDetails);

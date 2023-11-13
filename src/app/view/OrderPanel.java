@@ -674,10 +674,10 @@ public class OrderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-        if (tblDetailOrder.getRowCount() <= 0) {
-            return;
-        }
-
+//        if (tblDetailOrder.getRowCount() <= 0) {
+//            return;
+//        }
+        System.out.println("index: " + index);
         if (index >= 0) {
             try {
                 index = tblDisplayOrder.getSelectedRow();

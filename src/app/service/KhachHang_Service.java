@@ -45,7 +45,7 @@ public class KhachHang_Service {
  public ArrayList<KhachHang> getListPhanTrang(int offset, int limit) {
         ArrayList<KhachHang> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM CUSTOMER ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String q = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             PreparedStatement ps = con.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);

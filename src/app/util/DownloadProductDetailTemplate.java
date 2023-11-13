@@ -14,10 +14,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-/**
- *
- * @author HP
- */
 public class DownloadProductDetailTemplate {
 
     public static boolean ImportExcel() {
@@ -60,7 +56,7 @@ public class DownloadProductDetailTemplate {
             Cell cell7 = row.createCell(6);
             Cell cell8 = row.createCell(7);
             Cell cell9 = row.createCell(8);
-            Cell cell10 = row.createCell(10);
+            Cell cell10 = row.createCell(9);
 
             cell1.setCellValue(String.valueOf(1));
             cell2.setCellValue("Adidas");

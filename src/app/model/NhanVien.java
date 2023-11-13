@@ -11,16 +11,38 @@ import java.util.Date;
  * @author Admin
  */
 public class NhanVien {
-   Integer ID;
-   String Ten;
+
+    Integer ID;
+    String Ten;
     Date NgaySinh;
     String Email;
     boolean Gender;
     boolean RoLe;
     String Sdt;
     String DiaChi;
+    boolean Deleted;
+
+    public boolean isDeleted() {
+        return Deleted;
+    }
+
+    public void setDeleted(boolean Deleted) {
+        this.Deleted = Deleted;
+    }
 
     public NhanVien() {
+    }
+
+    public NhanVien(Integer ID, String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi, boolean Deleted) {
+        this.ID = ID;
+        this.Ten = Ten;
+        this.NgaySinh = NgaySinh;
+        this.Email = Email;
+        this.Gender = Gender;
+        this.RoLe = RoLe;
+        this.Sdt = Sdt;
+        this.DiaChi = DiaChi;
+        this.Deleted = Deleted;
     }
 
     public NhanVien(Integer ID, String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi) {
@@ -32,6 +54,7 @@ public class NhanVien {
         this.RoLe = RoLe;
         this.Sdt = Sdt;
         this.DiaChi = DiaChi;
+
     }
 
     public Integer getID() {
@@ -97,7 +120,8 @@ public class NhanVien {
     public void setDiaChi(String DiaChi) {
         this.DiaChi = DiaChi;
     }
-      public Object[] toDataRow(){
-       return new Object[]{this.ID,this.Ten,this.getEmail(),this.getNgaySinh(),this.Gender,this.RoLe,this.Sdt,this.DiaChi};
-      }
+
+    public Object[] toDataRow() {
+        return new Object[]{this.ID, this.Ten, this.getEmail(), this.getNgaySinh(), this.Gender, this.RoLe, this.Sdt, this.DiaChi};
+    }
 }

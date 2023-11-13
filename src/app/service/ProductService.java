@@ -20,30 +20,30 @@ import java.util.Optional;
  * @author Admin
  */
 public class ProductService {
-    
+
     private final ProductRepository productRepository = new ProductRepository();
-    
+
     private final CategoryRepository categoryRepository = new CategoryRepository();
-    
+
     private final CompanyRepository companyRepository = new CompanyRepository();
-    
+
     public String addProduct(AddProductRequest request) {
         String name = request.getName();
         Category optionalCategory = categoryRepository.findByName(request.getCategoryName());
         Company checkCompany = companyRepository.findByName(request.getCompanyName());
-        
+
         if (name.trim().isEmpty()) {
             return "Tên Sản Phẩm Không Được Để Trống";
         }
-        
+
         if (optionalCategory.getId() == null) {
             return "Không Tìm Thấy Danh Mục !";
         }
-        
+
         if (checkCompany.getId() == null) {
             return "Không Tìm Thấy Thương Hiệu!";
         }
-        
+
         Product product = new Product();
         product.setCode(productRepository.generateNextModelCode());
         product.setDeleted(false);
@@ -57,21 +57,25 @@ public class ProductService {
             return "Đã Xảy ra Lỗi";
         }
     }
-    
+
     public List<ProductResponse> getAllProductResponse() {
         return productRepository.getAllProductsView();
     }
-    
+
     public List<Product> getAllProducts() {
         return productRepository.getAll();
     }
-    
-    public List<ProductResponse> getAllProductPaging(int offset, int limit){
+
+    public List<ProductResponse> getAllProductPaging(int offset, int limit) {
         return productRepository.getAllProductsViewPagenation(offset, limit);
     }
-    
-    public int countProductRecord(){
+
+    public int countProductRecord() {
         return productRepository.countProductRecord();
     }
-    
+
+    public boolean changeStatus(String name) {
+        return productRepository.updateStatus(name) > 0;
+    }
+
 }
