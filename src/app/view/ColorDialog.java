@@ -98,7 +98,7 @@ public class ColorDialog extends javax.swing.JDialog {
 
         btnUpdate.setBackground(new java.awt.Color(0, 0, 0));
         btnUpdate.setForeground(new java.awt.Color(0, 0, 0));
-        btnUpdate.setText("Sửa");
+        btnUpdate.setText("Đổi Trạng Thái");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -214,7 +214,20 @@ public class ColorDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        int row = tblDisplay.getSelectedRow();
+        if (row >= 0) {
+            int column = 1;
+            String nameCategory = (String) tblDisplay.getValueAt(row, column);
+            boolean res = colorService.changeStatus(nameCategory);
+            if (res) {
+                JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
+                fillTable(colorService.getAllColors());
+            } else {
+                JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Màu Sắc");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

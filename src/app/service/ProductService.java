@@ -66,4 +66,12 @@ public class ProductService {
         return productRepository.getAll();
     }
     
+    public List<ProductResponse> getAllProductPaging(int offset, int limit){
+        return productRepository.getAllProductsViewPagenation(offset, limit);
+    }
+    
+    public int countProductRecord(){
+        return productRepository.countProductRecord();
+    }
+    
 }

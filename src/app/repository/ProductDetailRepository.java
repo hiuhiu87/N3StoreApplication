@@ -5,9 +5,19 @@
 package app.repository;
 
 import app.dbconnect.DBConnector;
+import app.model.Color;
+import app.model.Material;
+import app.model.Product;
 import app.model.ProductDetail;
+import app.model.Size;
+import app.model.Sole;
+import app.response.ProductDetailResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,30 +26,76 @@ import java.util.List;
  */
 public class ProductDetailRepository implements CrudRepository<ProductDetail> {
 
+    private final ProductRepository productRepository = new ProductRepository();
+    private final ColorRepository colorRepository = new ColorRepository();
+    private final MaterialRepository materialRepository = new MaterialRepository();
+    private final SizeRepository sizeRepository = new SizeRepository();
+    private final SoleRepository soleRepository = new SoleRepository();
+
     @Override
     public List<ProductDetail> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException();
+    }
+
+    public List<ProductDetailResponse> getAllViews() {
+        List<ProductDetailResponse> productDetailResponses = new ArrayList<>();
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT
+                         	pd.CODE,
+                                p.NAME,
+                         	s.NAME,
+                         	m.NAME,
+                         	c.NAME,
+                         	s1.NAME,
+                         	SELL_PRICE,
+                                ORIGIN_PRICE,
+                         	QUANTITY,
+                         	pd.DELETED
+                         FROM
+                         	N3STORESNEAKER.dbo.PRODUCT_DETAIL pd
+                         LEFT JOIN PRODUCT p ON
+                         	pd.ID_PRODUCT = p.ID
+                         LEFT JOIN SIZE s on
+                         	pd.ID_SIZE = s.ID
+                         LEFT JOIN MATERIAL m on
+                         	pd.ID_MATERIAL = m.ID
+                         LEFT JOIN COLOR c on
+                         	pd.ID_COLOR = c.ID
+                         LEFT JOIN SOLE s1 on
+                         	pd.ID_SOLE = s1.ID;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                ProductDetailResponse detailResponse = new ProductDetailResponse();
+                detailResponse.setCode(rs.getString(1));
+                detailResponse.setProduct(rs.getString(2));
+                detailResponse.setSize(rs.getString(3));
+                detailResponse.setMaterial(rs.getString(4));
+                detailResponse.setColor(rs.getString(5));
+                detailResponse.setSole(rs.getString(6));
+                detailResponse.setSellPrice(rs.getString(7));
+                detailResponse.setOriginPrice(rs.getString(8));
+                detailResponse.setQuantity(rs.getString(9));
+                detailResponse.setDeleted(rs.getBoolean(10));
+                productDetailResponses.add(detailResponse);
+            }
+            return productDetailResponses;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public int add(ProductDetail t) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
-                         INSERT
-                         	INTO
-                         	N3STORESNEAKER.dbo.PRODUCT_DETAIL
-                         (ID_SIZE,
-                         ID_PRODUCT,
-                         ID_MATERIAL,
-                         ID_COLOR,
-                         ID_SOLE,
-                         IMAGE_PRODUCT,
-                         SELL_PRICE,
-                         QUANTITY,
-                         WEIGHT,
-                         DELETED,
-                         ORIGIN_PRICE)
-                         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                         INSERT INTO N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                         (ID_SIZE, ID_PRODUCT, ID_MATERIAL, ID_COLOR, ID_SOLE, IMAGE_PRODUCT, SELL_PRICE, QUANTITY, DELETED, ORIGIN_PRICE, CODE, DESCRIPTION)
+                         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, t.getIdSize());
@@ -47,15 +103,53 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             stm.setObject(3, t.getIdMaterial());
             stm.setObject(4, t.getIdColor());
             stm.setObject(5, t.getIdSole());
-            stm.setObject(6, t.getImageProduct());
+            stm.setBytes(6, t.getImageProduct());
             stm.setObject(7, t.getSellPrice());
             stm.setObject(8, t.getQuantity());
-            stm.setObject(9, t.getWeight());
-            stm.setObject(10, t.getDeleted());
-            stm.setObject(11, t.getOriginPrice());
+            stm.setObject(9, t.getDeleted());
+            stm.setObject(10, t.getOriginPrice());
+            stm.setObject(11, t.getCode());
+            stm.setObject(12, t.getDescription());
 
             int res = stm.executeUpdate();
             return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int addAll(List<ProductDetail> productList) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                     INSERT INTO N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                     (ID_SIZE, ID_PRODUCT, ID_MATERIAL, ID_COLOR, ID_SOLE, IMAGE_PRODUCT, SELL_PRICE, QUANTITY, DELETED, ORIGIN_PRICE, CODE, DESCRIPTION)
+                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                     """;
+
+            try (PreparedStatement stm = con.prepareStatement(sql)) {
+                for (ProductDetail t : productList) {
+                    stm.setObject(1, t.getIdSize());
+                    stm.setObject(2, t.getIdProduct());
+                    stm.setObject(3, t.getIdMaterial());
+                    stm.setObject(4, t.getIdColor());
+                    stm.setObject(5, t.getIdSole());
+                    stm.setBytes(6, t.getImageProduct());
+                    stm.setObject(7, t.getSellPrice());
+                    stm.setObject(8, t.getQuantity());
+                    stm.setObject(9, Boolean.FALSE);
+                    stm.setObject(10, t.getOriginPrice());
+                    stm.setObject(11, t.getCode());
+                    stm.setObject(12, t.getDescription());
+                    stm.addBatch();
+                }
+
+                int[] results = stm.executeBatch();
+
+                int totalAffectedRows = Arrays.stream(results).sum();
+
+                return totalAffectedRows;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -70,6 +164,195 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
     @Override
     public ProductDetail findByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public ProductDetail findByAtribute(String nameProduct, String nameSize, String nameMaterial, String nameSole, String nameColor) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                     SELECT ID, ID_SIZE, ID_PRODUCT, ID_MATERIAL, ID_COLOR, ID_SOLE, IMAGE_PRODUCT, SELL_PRICE, QUANTITY, DELETED, ORIGIN_PRICE, CODE, DESCRIPTION
+                     FROM N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                     WHERE ID_SIZE = ? and ID_PRODUCT = ? and ID_MATERIAL = ? and ID_COLOR = ? and ID_SOLE = ?;
+                     """;
+
+            PreparedStatement stm = con.prepareStatement(sql);
+            Size size = sizeRepository.findByName(nameSize);
+            Product product = productRepository.findByName(nameProduct);
+            Material material = materialRepository.findByName(nameMaterial);
+            Sole sole = soleRepository.findByName(nameSole);
+            Color color = colorRepository.findByName(nameColor);
+
+            // Đặt giá trị cho các tham số
+            stm.setInt(1, size.getId());
+            stm.setInt(2, product.getId());
+            stm.setInt(3, material.getId());
+            stm.setInt(4, color.getId());
+            stm.setInt(5, sole.getId());
+            ProductDetail productDetail = new ProductDetail();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                productDetail.setId(rs.getInt(1));
+                productDetail.setIdSize(rs.getInt(2));
+                productDetail.setIdProduct(rs.getInt(3));
+                productDetail.setIdMaterial(rs.getInt(4));
+                productDetail.setIdColor(rs.getInt(5));
+                productDetail.setIdSole(rs.getInt(6));
+                productDetail.setImageProduct(rs.getBytes(7));
+                productDetail.setSellPrice(rs.getDouble(8));
+                productDetail.setQuantity(rs.getInt(9));
+                productDetail.setDeleted(rs.getBoolean(10));
+                productDetail.setOriginPrice(rs.getDouble(11));
+                productDetail.setCode(rs.getString(12));
+                productDetail.setDescription(rs.getString(13));
+            }
+            return productDetail;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Trả về null nếu không tìm thấy sản phẩm
+        return null;
+    }
+
+    public String generateNextModelCode() {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            String sql = "SELECT MAX(CAST(SUBSTRING(CODE, 5, LEN(CODE) - 4) AS INT)) FROM PRODUCT WHERE CODE LIKE 'CTSP%'";
+            stm = conn.prepareStatement(sql);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                int lastNumber = rs.getInt(1);
+                System.out.println(lastNumber);
+
+                if (lastNumber == 0) {
+                    return "CTSP1";
+                }
+
+                // Loop until finding the next available code
+                while (true) {
+                    lastNumber++;
+                    String nextCode = "CTSP" + lastNumber;
+                    if (!codeExistsInDatabase(nextCode)) {
+                        return nextCode;
+                    }
+                }
+            } else {
+                return "CTSP1";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+
+                if (stm != null) {
+                    stm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public int generateNextModelCodeNumber() {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            String sql = "SELECT MAX(CAST(SUBSTRING(CODE, 5, LEN(CODE) - 4) AS INT)) FROM PRODUCT WHERE CODE LIKE 'CTSP%'";
+            stm = conn.prepareStatement(sql);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                int lastNumber = rs.getInt(1);
+                System.out.println(lastNumber);
+
+                if (lastNumber == 0) {
+                    return 1;
+                }
+
+                // Loop until finding the next available code
+                while (true) {
+                    lastNumber++;
+                    String nextCode = "CTSP" + lastNumber;
+                    if (!codeExistsInDatabase(nextCode)) {
+                        return lastNumber;
+                    }
+                }
+            } else {
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+
+                if (stm != null) {
+                    stm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
+    }
+
+    private boolean codeExistsInDatabase(String code) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            String sql = "SELECT COUNT(*) FROM PRODUCT_DETAIL WHERE CODE = ?";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, code);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+
+            return false;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+
+            if (stm != null) {
+                stm.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        ProductDetail list = new ProductDetailRepository().findByAtribute("Nike Runner", "37", "Ni Lon", "Đế Cao", "Blue");
+        System.out.println(list.getCode());
     }
 
 }

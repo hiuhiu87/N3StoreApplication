@@ -5,14 +5,20 @@
 package app.service;
 
 import app.model.Color;
+import app.model.Material;
 import app.model.Product;
+import app.model.ProductDetail;
+import app.model.Size;
+import app.model.Sole;
 import app.repository.ColorRepository;
-import app.repository.CompanyRepository;
 import app.repository.MaterialRepository;
+import app.repository.ProductDetailRepository;
 import app.repository.ProductRepository;
 import app.repository.SizeRepository;
 import app.repository.SoleRepository;
 import app.request.AddProductDetailRequest;
+import app.response.ProductDetailResponse;
+import java.util.List;
 
 /**
  *
@@ -23,13 +29,73 @@ public class ProductDetailService {
     private final ProductRepository productRepository = new ProductRepository();
     private final ColorRepository colorRepository = new ColorRepository();
     private final MaterialRepository materialRepository = new MaterialRepository();
-    private final CompanyRepository companyRepository = new CompanyRepository();
     private final SizeRepository sizeRepository = new SizeRepository();
     private final SoleRepository soleRepository = new SoleRepository();
+    private final ProductDetailRepository detailRepository = new ProductDetailRepository();
 
-//    public String addProductDetail(AddProductDetailRequest request) {
-//        Product checkProduct = productRepository.findByName(request.getNameProduct());
-//        Color checkColor = colorRepository.findByName(request.getNameColor());
-//    }
+    public String addProductDetail(AddProductDetailRequest request) {
+        Product checkProduct = productRepository.findByName(request.getNameProduct());
+        Color checkColor = colorRepository.findByName(request.getNameColor());
+        Material checkMaterial = materialRepository.findByName(request.getNameMaterial());
+        Size checkSize = sizeRepository.findByName(request.getNameSize());
+        Sole checkSole = soleRepository.findByName(request.getNameSole());
+        Double checkOriginPrice = request.getOriginPrice();
+        Double checkSellPrice = request.getSellPrice();
+        byte[] image = null;
+
+        if (checkColor.getId() == null) {
+            return "Không Tìm Thấy Màu Sắc";
+        }
+
+        if (checkProduct.getId() == null) {
+            return "Không Tìm Thấy Sản Phẩm";
+        }
+
+        if (checkMaterial.getId() == null) {
+            return "Không Tìm Thấy Chất Liệu";
+        }
+
+        if (checkSole.getId() == null) {
+            return "Không Tìm Thấy Đế Giày";
+        }
+
+        if (checkSize.getId() == null) {
+            return "Không Tìm Thấy Kích Cỡ";
+        }
+
+        if (checkSellPrice.isNaN()) {
+            return "Giá Bán Phải Là Số";
+        }
+
+        if (checkOriginPrice.isNaN()) {
+            return "Giá Gốc Phải Là Số";
+        }
+
+        ProductDetail productDetail = new ProductDetail();
+        productDetail.setCode(detailRepository.generateNextModelCode());
+        productDetail.setIdSole(checkSole.getId());
+        productDetail.setIdColor(checkColor.getId());
+        productDetail.setIdProduct(checkProduct.getId());
+        productDetail.setIdMaterial(checkMaterial.getId());
+        productDetail.setIdSize(checkSize.getId());
+        productDetail.setDeleted(Boolean.FALSE);
+        productDetail.setDescription(request.getDescription());
+        productDetail.setImageProduct(null);
+        productDetail.setSellPrice(checkSellPrice);
+        productDetail.setOriginPrice(checkOriginPrice);
+        productDetail.setQuantity(request.getQuantity());
+        int res = detailRepository.add(productDetail);
+
+        if (res > 0) {
+            return "Thêm Sản Phẩm Thành Công";
+        } else {
+            return "Đã Xảy Ra Lỗi Vui Lòng Thử Lại";
+        }
+
+    }
+
+    public List<ProductDetailResponse> getAllListProducts() {
+        return detailRepository.getAllViews();
+    }
 
 }
