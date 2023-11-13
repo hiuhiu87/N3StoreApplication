@@ -18,7 +18,7 @@ public class KhachHang {
   
     private String PHONE_NUMBER;
     private String Address;
-  private String BIRTHDATE;
+  private Date BIRTHDATE;
 
     @Override
     public String toString() {
@@ -45,7 +45,7 @@ public class KhachHang {
         this.Address = Address;
     }
 
-    public void setBIRTHDATE(String BIRTHDATE) {
+    public void setBIRTHDATE(Date BIRTHDATE) {
         this.BIRTHDATE = BIRTHDATE;
     }
 
@@ -69,11 +69,11 @@ public class KhachHang {
         return Address;
     }
 
-    public String getBIRTHDATE() {
+    public Date getBIRTHDATE() {
         return BIRTHDATE;
     }
 
-    public KhachHang(int id, String FULLNAME, String EMAIL, String PHONE_NUMBER, String Address, String BIRTHDATE) {
+    public KhachHang(int id, String FULLNAME, String EMAIL, String PHONE_NUMBER, String Address, Date BIRTHDATE) {
         this.id = id;
         this.FULLNAME = FULLNAME;
         this.EMAIL = EMAIL;
