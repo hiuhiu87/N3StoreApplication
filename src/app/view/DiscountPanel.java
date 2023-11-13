@@ -118,7 +118,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ngày kết thúc không được bỏ trống!");
             return null;
         }
-        if(end_Date.getTime() < start_Date.getTime()){
+        if (end_Date.getTime() < start_Date.getTime()) {
             JOptionPane.showMessageDialog(this, "Ngày kết thúc phải sau ngày bắt đầu!");
             return null;
         }
@@ -132,7 +132,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
         String type = cbbKieu.getSelectedItem().toString();
-        
+
         String values = txtGiaTri.getText().trim();
         if (values.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Giá trị không được bỏ trống!");
@@ -143,8 +143,8 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
         //-----------------
-        if(type.equals("Percentage")){
-            if(values.length() > 2){
+        if (type.equals("Percentage")) {
+            if (Integer.parseInt(values) > 100) {
                 JOptionPane.showMessageDialog(this, "Giá trị không được vượt quá 100%");
                 return null;
             }
@@ -527,9 +527,9 @@ public class DiscountPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Thêm thành công");
                 loadDataTablePhanTrang(currentpage);
             }
-            
+
         }
-        
+
     }//GEN-LAST:event_btnAdd2ActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -539,10 +539,10 @@ public class DiscountPanel extends javax.swing.JPanel {
             String name = txtTimKiem.getText();
             int id = Integer.valueOf(tbHienthiVoucher.getValueAt(row, 0).toString());
             Voucher v = this.getform();
-            vcs.update(v, id);
-            JOptionPane.showMessageDialog(this, "Cập nhật thành công");
-            loadDataTablePhanTrang(currentpage);
-
+            if (vcs.update(v, id) > 0) {
+                JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+                loadDataTablePhanTrang(currentpage);
+            }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -554,7 +554,6 @@ public class DiscountPanel extends javax.swing.JPanel {
             Voucher v = vcs.getList(name).get(row);
             vcs.remove(v);
             JOptionPane.showMessageDialog(this, "cập nhật thành công");
-//            loadDataTablePhanTrang(currentpage);
             loadTable();
 
         }
@@ -573,7 +572,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     private void tbHienthiVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHienthiVoucherMouseClicked
         int row = tbHienthiVoucher.getSelectedRow();
         txtTen.setText(tbHienthiVoucher.getValueAt(row, 2).toString());
-        txtMaSo.setText((String)tbHienthiVoucher.getValueAt(row, 1));
+        txtMaSo.setText((String) tbHienthiVoucher.getValueAt(row, 1));
         txtSoLuong.setText(tbHienthiVoucher.getValueAt(row, 3).toString());
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tbHienthiVoucher.getValueAt(row, 4).toString());

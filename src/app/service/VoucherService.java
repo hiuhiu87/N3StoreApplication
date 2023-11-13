@@ -31,7 +31,7 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getList(String name) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER WHERE NAME LIKE '%" + name + "%'";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED FROM VOUCHER WHERE NAME LIKE '%" + name + "%'";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
@@ -48,7 +48,7 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListAll() {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER ";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED FROM VOUCHER ";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
@@ -65,7 +65,7 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListPhanTrang(int offset, int limit) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED FROM VOUCHER ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);
