@@ -25,7 +25,7 @@ public class KhachHang_Service {
     ResultSet rs = null;
 
     public List<KhachHang> getAll() {
-        sql = "SELECT * FROM CUSTOMER";
+        sql = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER";
         List<KhachHang> lstSV = new ArrayList<>();
         try {
             con = DBConnector.getConnection();

@@ -134,7 +134,7 @@ Pattern pattern = Pattern.compile(phoneRegex);
 Matcher matcher = pattern.matcher(txtPhoneNumber.getText());
 
 if(!matcher.matches()) {
-  JOptionPane.showMessageDialog(this, "Số điện thoại phải đúng định dạng Việt Nam");
+  JOptionPane.showMessageDialog(this, "Số điện thoại phải đúng định dạng");
   txtPhoneNumber.requestFocus();
   return false;
 }
@@ -142,7 +142,26 @@ if(!matcher.matches()) {
         return true;
 
     }
-
+ boolean checkTrung() {
+        List<KhachHang> lstXM = listPhanTrangkh;
+        for (int i = 0; i < lstXM.size(); i++) {
+            if (txtPhoneNumber.getText().equalsIgnoreCase(lstXM.get(i).getPHONE_NUMBER())) {
+                JOptionPane.showMessageDialog(this, "Trùng số điện thoại");
+                return false;
+            }
+        }
+        return true;
+    }
+  boolean checkTrung1() {
+        List<KhachHang> lstXM = listPhanTrangkh;
+        for (int i = 0; i < lstXM.size(); i++) {
+            if (txtEmail.getText().equalsIgnoreCase(lstXM.get(i).getEMAIL())) {
+                JOptionPane.showMessageDialog(this, "Trùng gmail");
+                return false;
+            }
+        }
+        return true;
+    }
     void reset() {
         txtAddress.setText("");
         txtCode.setText("");
@@ -440,7 +459,7 @@ if(!matcher.matches()) {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        if (check()) {
+        if (check()&&checkTrung()&&checkTrung1()) {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn thêm nữa không?");
             if (a == 0) {
                 KhachHang cd = reafrom();
@@ -461,7 +480,7 @@ if(!matcher.matches()) {
         row = tblListCustomer.getSelectedRow();
         KhachHang cd = reafrom();
         int ma = Integer.parseInt(tblListCustomer.getValueAt(row, 0).toString());
-        if (check()) {
+        if (check()&&checkTrung()&&checkTrung1()) {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
             if (a == 0) {
                 if (service.updateSV(cd, ma) > 0) {
