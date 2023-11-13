@@ -10,11 +10,39 @@ import app.service.OderDetailService;
 import app.service.OderService;
 import app.view.swing.EventPagination;
 import app.view.swing.PaginationItemRenderStyle1;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -92,7 +120,7 @@ public class OrderPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
+
     public void loadDataOdersDetail(int page) {
         int limit = 10;
         int offset = (page - 1) * limit;
@@ -164,6 +192,7 @@ public class OrderPanel extends javax.swing.JPanel {
         btnImport = new app.view.swing.Button();
         btnExport = new app.view.swing.Button();
         paginationOder = new app.view.swing.Pagination();
+        btnPrint = new app.view.swing.Button();
         panelOrderDetail = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDetailOrder = new javax.swing.JTable();
@@ -257,12 +286,31 @@ public class OrderPanel extends javax.swing.JPanel {
         btnImport.setBackground(new java.awt.Color(23, 35, 51));
         btnImport.setForeground(new java.awt.Color(255, 255, 255));
         btnImport.setLabel("Import");
+        btnImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportActionPerformed(evt);
+            }
+        });
 
         btnExport.setBackground(new java.awt.Color(23, 35, 51));
         btnExport.setForeground(new java.awt.Color(255, 255, 255));
         btnExport.setLabel("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         paginationOder.setBackground(new java.awt.Color(204, 204, 204));
+
+        btnPrint.setBackground(new java.awt.Color(23, 35, 51));
+        btnPrint.setForeground(new java.awt.Color(255, 255, 255));
+        btnPrint.setText("Print");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelOrderLayout = new javax.swing.GroupLayout(panelOrder);
         panelOrder.setLayout(panelOrderLayout);
@@ -280,16 +328,18 @@ public class OrderPanel extends javax.swing.JPanel {
                         .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addComponent(rdCancel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
                             .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addComponent(rdAll)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(14, 14, 14)
                                 .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(102, 102, 102)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)))))
                 .addContainerGap())
             .addGroup(panelOrderLayout.createSequentialGroup()
                 .addGap(226, 226, 226)
@@ -317,7 +367,8 @@ public class OrderPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -520,6 +571,162 @@ public class OrderPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_formComponentShown
 
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        List<Oders> listOdersEx = oderService.getAllOders();
+
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("DataOder");
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("ID");
+            headerRow.createCell(1).setCellValue("Code");
+            headerRow.createCell(2).setCellValue("Customer");
+            headerRow.createCell(3).setCellValue("Employee");
+            headerRow.createCell(4).setCellValue("Phone");
+            headerRow.createCell(5).setCellValue("Payment");
+            headerRow.createCell(6).setCellValue("Customer money");
+            headerRow.createCell(7).setCellValue("Total money");
+            headerRow.createCell(8).setCellValue("Money reduce");
+            headerRow.createCell(9).setCellValue("Date create");
+            headerRow.createCell(10).setCellValue("Status");
+            headerRow.createCell(11).setCellValue("Note");
+
+            for (int i = 0; i < listOdersEx.size(); i++) {
+                Oders oders = listOdersEx.get(i);
+                Row excelRow = sheet.createRow(i + 1);
+
+                Cell id = excelRow.createCell(0);
+                id.setCellValue(oders.getIdOrder());
+
+                Cell code = excelRow.createCell(1);
+                code.setCellValue(oders.getCode());
+
+                Cell customer = excelRow.createCell(2);
+                customer.setCellValue(oders.getNameCustomer());
+
+                Cell employee = excelRow.createCell(3);
+                employee.setCellValue(oders.getNameEmployee());
+
+                Cell phone = excelRow.createCell(4);
+                phone.setCellValue(oders.getPhoneNumber());
+
+                Cell payment = excelRow.createCell(5);
+                payment.setCellValue(oders.getPaymentMethod());
+
+                Cell customerMoney = excelRow.createCell(6);
+                customerMoney.setCellValue(oders.getCustomerMoney() + "");
+
+                Cell totalMoney = excelRow.createCell(7);
+                totalMoney.setCellValue(oders.getTotalMoney() + "");
+
+                Cell moneyReduce = excelRow.createCell(8);
+                moneyReduce.setCellValue(oders.getMoneyReduce());
+
+                CellStyle dateCellStyle = workbook.createCellStyle();
+                CreationHelper createHelper = workbook.getCreationHelper();
+                dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+                Cell dateCreate = excelRow.createCell(9);
+                dateCreate.setCellValue(oders.getDateCreateDate());
+                dateCreate.setCellStyle(dateCellStyle);
+
+                Cell status = excelRow.createCell(10);
+                status.setCellValue(oders.getStatus());
+
+                Cell note = excelRow.createCell(11);
+                note.setCellValue(oders.getNote());
+            }
+            for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String filePath = "dataOder_" + dateFormat.format(new Date()) + ".xlsx";
+
+            try ( FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                workbook.write(outputStream);
+                JOptionPane.showMessageDialog(this, "Export Thành công");
+                openExcelFile(filePath);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx");
+            fileChooser.setFileFilter(filter);
+            int returnValue = fileChooser.showOpenDialog(null);
+            if ((returnValue == JFileChooser.APPROVE_OPTION)) {
+                File selectedFile = fileChooser.getSelectedFile();
+                String excelFilePath = selectedFile.getAbsolutePath();
+                oderService.importDataFromExcel(excelFilePath);
+                JOptionPane.showMessageDialog(null, "Import thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Import Lỗi!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnImportActionPerformed
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        if (tblDetailOrder.getRowCount() <= 0) {
+            return;
+        }
+
+        if (index >= 0) {
+            try {
+                index = tblDisplayOrder.getSelectedRow();
+                Oders oders = oderService.getAllOders().get(index);
+                System.out.println(oders.getNameCustomer());
+                System.out.println(oders.getCode());
+                Map<String, Object> map = new HashMap<>();
+                map.put("stt", "1");
+                map.put("Custommer", oders.getNameCustomer());
+                map.put("employee", oders.getNameEmployee());
+                map.put("Code", oders.getCode());
+                map.put("dateCreate", oders.getDateCreateDate() + "");
+                map.put("productName", "Giày 1");
+                map.put("quantity", "2");
+                map.put("price", "250,000");
+                map.put("totalMoney", "500,000");
+                map.put("moneyReduce", "50,000");
+                map.put("totalMoneydiscount", "450,000");
+                map.put("customerMoney", "500,000");
+                map.put("payment", oders.getPaymentMethod());
+                JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
+                JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
+                JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                String timestamp = dateFormat.format(new Date());
+
+                String pdfFileName = "src/app/export/hoadon_" + timestamp + ".pdf";
+                JasperExportManager.exportReportToPdfFile(print, pdfFileName);
+                try {
+                    Desktop.getDesktop().open(new File(pdfFileName));
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//                JasperViewer.viewReport(print, false);
+            } catch (JRException ex) {
+                Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_btnPrintActionPerformed
+
+    private void openExcelFile(String filePath) {
+        try {
+            Desktop.getDesktop().open(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void clearTable(DefaultTableModel model) {
         while (model.getRowCount() > 0) {
             model.removeRow(0);
@@ -530,6 +737,7 @@ public class OrderPanel extends javax.swing.JPanel {
     private app.view.swing.Button btnExport;
     private javax.swing.ButtonGroup btnGroupOrderStatus;
     private app.view.swing.Button btnImport;
+    private app.view.swing.Button btnPrint;
     private javax.swing.JComboBox<String> cbxPaymentMethod;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
