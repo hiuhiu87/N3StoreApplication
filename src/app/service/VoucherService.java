@@ -134,7 +134,7 @@ public class VoucherService implements VoucherInterface {
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setInt(1, v.getId());
             if (ps.executeUpdate() > 0) {
-                System.out.println("Xóa thành công");
+                System.out.println("Cập thật thành công");
                 return 1;
             }
         } catch (Exception e) {

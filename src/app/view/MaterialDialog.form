@@ -122,7 +122,7 @@
         </Component>
         <Component class="app.view.swing.ButtonOutLine" name="btnUpdate">
           <Properties>
-            <Property name="text" type="java.lang.String" value="S&#x1eed;a"/>
+            <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i Tr&#x1ea1;ng Th&#xe1;i"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>

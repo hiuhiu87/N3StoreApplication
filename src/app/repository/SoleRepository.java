@@ -66,6 +66,33 @@ public class SoleRepository implements CrudRepository<Sole> {
         }
     }
 
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.SOLE
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Sole sole = findByName(name);
+            if (sole != null) {
+                if (sole.getDeleted() != true) {
+                    sole.setDeleted(Boolean.TRUE);
+                } else {
+                    sole.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, sole.getDeleted());
+                stm.setObject(2, sole.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     @Override
     public int update(Integer id, Sole t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -73,7 +100,25 @@ public class SoleRepository implements CrudRepository<Sole> {
 
     @Override
     public Sole findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.SOLE
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Sole sole = new Sole();
+            while (rs.next()) {
+                sole.setId(rs.getInt(1));
+                sole.setName(rs.getString(2));
+                sole.setDeleted(rs.getBoolean(3));
+            }
+            return sole;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

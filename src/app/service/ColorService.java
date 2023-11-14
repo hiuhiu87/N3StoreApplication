@@ -32,5 +32,9 @@ public class ColorService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public boolean changeStatus(String name) {
+        return colorRepository.updateStatus(name) > 0;
+    }
 
 }

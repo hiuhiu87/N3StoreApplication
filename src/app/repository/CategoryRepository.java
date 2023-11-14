@@ -17,7 +17,7 @@ import java.util.List;
  * @author Admin
  */
 public class CategoryRepository implements CrudRepository<Category> {
-    
+
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
@@ -37,10 +37,11 @@ public class CategoryRepository implements CrudRepository<Category> {
             }
             return list;
         } catch (Exception e) {
+            e.printStackTrace();
             return list;
         }
     }
-    
+
     public int add(Category category) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -57,7 +58,7 @@ public class CategoryRepository implements CrudRepository<Category> {
             return 0;
         }
     }
-    
+
     public int update(Integer id, Category category) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -75,7 +76,34 @@ public class CategoryRepository implements CrudRepository<Category> {
             return 0;
         }
     }
-    
+
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.CATEGORY
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Category category = findByName(name);
+            if (category != null) {
+                if (category.getDeleted() != true) {
+                    category.setDeleted(Boolean.TRUE);
+                } else {
+                    category.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, category.getDeleted());
+                stm.setObject(2, category.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public Category findByName(String name) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -97,5 +125,5 @@ public class CategoryRepository implements CrudRepository<Category> {
             return null;
         }
     }
-    
+
 }

@@ -259,6 +259,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         buttonGroup1.add(rdHoatDong);
+        rdHoatDong.setSelected(true);
         rdHoatDong.setText("Hoạt động");
 
         txtMaSo.setEditable(false);
@@ -547,14 +548,15 @@ public class DiscountPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn cập nhật trạng thái?", "remove", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn cập nhật trạng thái?", "update trạng thái", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
             String name = txtTimKiem.getText();
             Voucher v = vcs.getList(name).get(row);
-            vcs.remove(v);
-            JOptionPane.showMessageDialog(this, "cập nhật thành công");
-            loadTable();
+            if (vcs.remove(v) > 0) {
+                loadTable();
+                JOptionPane.showMessageDialog(this, "cập nhật thành công");
+            }
 
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
@@ -610,6 +612,10 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtGiaTri.setText("");
         txtGiaTriMax.setText("");
         txtDKGiaTriMin.setText("");
+        jDateNgayBatDau.setDate(null);
+        jDateNgayKetThuc.setDate(null);
+        rdHoatDong.setSelected(true);
+        rdHetHan.setSelected(false);
 
     }//GEN-LAST:event_btnClearActionPerformed
 

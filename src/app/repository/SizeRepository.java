@@ -46,6 +46,33 @@ public class SizeRepository implements CrudRepository<Size> {
             return null;
         }
     }
+    
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.SIZE
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Size size = findByName(name);
+            if (size != null) {
+                if (size.getDeleted() != true) {
+                    size.setDeleted(Boolean.TRUE);
+                } else {
+                    size.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, size.getDeleted());
+                stm.setObject(2, size.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     @Override
     public int add(Size t) {
@@ -73,7 +100,25 @@ public class SizeRepository implements CrudRepository<Size> {
 
     @Override
     public Size findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.Size
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Size size = new Size();
+            while (rs.next()) {
+                size.setId(rs.getInt(1));
+                size.setName(rs.getString(2));
+                size.setDeleted(rs.getBoolean(3));
+            }
+            return size;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
