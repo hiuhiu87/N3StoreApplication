@@ -3,11 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package app.view.swing;
-
-/**
- *
- * @author H.Long
- */
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -21,12 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-
-
-
+/**
+ *
+ * @author tuanl
+ */
 public class PaginationItemRenderStyle1 extends DefaultPaginationItemRender {
-
-    @Override
+     @Override
     public JButton createButton(Object value, boolean isPrevious, boolean isNext, boolean enable) {
         JButton button = super.createButton(value, isPrevious, isNext, enable);
         button.setUI(new ButtonUI());

@@ -8,11 +8,10 @@ import java.util.List;
 
 /**
  *
- * @author H.Long
+ * @author tuanl
  */
 public class Page {
-
-    public int getCurrent() {
+      public int getCurrent() {
         return current;
     }
 

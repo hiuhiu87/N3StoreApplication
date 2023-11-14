@@ -178,6 +178,33 @@ public class ProductRepository implements CrudRepository<Product> {
     public int update(Integer id, Product t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.PRODUCT
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Product product = findByName(name);
+            if (product != null) {
+                if (product.getDeleted() != true) {
+                    product.setDeleted(Boolean.TRUE);
+                } else {
+                    product.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, product.getDeleted());
+                stm.setObject(2, product.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     @Override
     public Product findByName(String name) {

@@ -6,6 +6,7 @@ package app.service;
 
 import app.dbconnect.DBConnector;
 import app.model.KhachHang;
+import app.model.Voucher;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class KhachHang_Service {
     ResultSet rs = null;
 
     public List<KhachHang> getAll() {
-        sql = "SELECT * FROM CUSTOMER";
+        sql = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER";
         List<KhachHang> lstSV = new ArrayList<>();
         try {
             con = DBConnector.getConnection();
@@ -32,7 +33,7 @@ public class KhachHang_Service {
             rs = ps.executeQuery();
             while (rs.next()) {
                 //  public SinhVien(String maSV, String tenSV, int tuoi, int kyHoc, String nganhHoc, double diemTB, b
-                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
                 lstSV.add(s);
             }
             return lstSV;
@@ -41,7 +42,42 @@ public class KhachHang_Service {
             return null;
         }
     }
-
+ public ArrayList<KhachHang> getListPhanTrang(int offset, int limit) {
+        ArrayList<KhachHang> list = new ArrayList<>();
+        try {
+            String q = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.setObject(1, offset);
+            ps.setObject(2, limit);
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                   KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
+                list.add(s);
+              
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public int count(){
+        try {
+            int count =0;
+            String q = "SELECT COUNT(*) FROM CUSTOMER";
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                count = rs.getInt(1);
+            }
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
     public int addSach(KhachHang s) {
         sql = "INSERT INTO CUSTOMER(FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE) VALUES(?,?,?,?,?)";
         try {

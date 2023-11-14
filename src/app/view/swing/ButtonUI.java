@@ -3,11 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package app.view.swing;
-
-/**
- *
- * @author H.Long
- */
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -21,9 +16,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-
+/**
+ *
+ * @author tuanl
+ */
 public class ButtonUI extends BasicButtonUI {
-
     private boolean hover;
     private JButton button;
 

@@ -3,17 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package app.view.swing;
-
-/**
- *
- * @author H.Long
- */
 import javax.swing.Icon;
 import javax.swing.JButton;
-
+/**
+ *
+ * @author tuanl
+ */
 public class DefaultPaginationItemRender implements PaginationItemRender {
-
-    @Override
+     @Override
     public JButton createPaginationItem(Object value, boolean isPrevious, boolean isNext, boolean enable) {
         JButton cmd = createButton(value, isPrevious, isNext, enable);
         if (isPrevious) {
