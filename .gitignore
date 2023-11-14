@@ -1,5 +1,5 @@
 /dist/
-/nbproject/private/
+nbproject/
 /nbbuild/
 /dist/
 /nbdist/
@@ -7,3 +7,4 @@
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+.env
