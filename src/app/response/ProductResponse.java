@@ -9,21 +9,24 @@ package app.response;
  * @author Admin
  */
 public class ProductResponse {
-    
+
     private String code;
-    
+
     private String name;
-    
+
     private Integer quantity;
-    
+
     private String category;
-    
+
+    private String company;
+
     private Boolean deleted;
 
-    public ProductResponse(String code, String name, Integer quantity, String category, Boolean deleted) {
+    public ProductResponse(String code, String name, Integer quantity, String category, String company, Boolean deleted) {
         this.name = name;
         this.quantity = quantity;
         this.category = category;
+        this.company = company;
         this.deleted = deleted;
     }
 
@@ -69,5 +72,13 @@ public class ProductResponse {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
-    
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
 }

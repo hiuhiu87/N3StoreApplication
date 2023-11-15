@@ -32,4 +32,8 @@ public class CategoryService {
         }
     }
 
+    public boolean changeStatus(String name) {
+        return categoryRepository.updateStatus(name) > 0;
+    }
+
 }

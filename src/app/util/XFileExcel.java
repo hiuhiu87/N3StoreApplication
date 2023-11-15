@@ -4,7 +4,10 @@
  */
 package app.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -88,6 +91,65 @@ public class XFileExcel {
 
         }
         return false;
+    }
+
+    public void importExcelToJtableJava(DefaultTableModel model) {
+
+        File excelFile;
+        FileInputStream excelFIS = null;
+        BufferedInputStream excelBIS = null;
+        XSSFWorkbook excelImportToJTable = null;
+        String defaultCurrentDirectoryPath = "D:\\Downloads";
+        JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+        excelFileChooser.setDialogTitle("Select Excel File");
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+        excelFileChooser.setFileFilter(fnef);
+        int excelChooser = excelFileChooser.showOpenDialog(null);
+
+        if (excelChooser == JFileChooser.APPROVE_OPTION) {
+            try {
+                excelFile = excelFileChooser.getSelectedFile();
+                excelFIS = new FileInputStream(excelFile);
+                excelBIS = new BufferedInputStream(excelFIS);
+                excelImportToJTable = new XSSFWorkbook(excelBIS);
+                XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+                for (int row = 0; row < excelSheet.getLastRowNum(); row++) {
+                    XSSFRow excelRow = excelSheet.getRow(row);
+
+                    XSSFCell excelName = excelRow.getCell(0);
+                    XSSFCell excelGender = excelRow.getCell(1);
+                    XSSFCell excelProgrammingLanguage = excelRow.getCell(2);
+                    XSSFCell excelSubject = excelRow.getCell(3);
+
+                  
+                    Object[] rowData = {
+                        (excelName != null) ? excelName.toString() : null,
+                        (excelGender != null) ? excelGender.toString() : null,
+                        (excelProgrammingLanguage != null) ? excelProgrammingLanguage.toString() : null,
+                        (excelSubject != null) ? excelSubject.toString() : null
+                    };
+
+                    model.addRow(rowData);
+                }
+            } catch (IOException iOException) {
+                iOException.printStackTrace();
+            } finally {
+                try {
+                    if (excelFIS != null) {
+                        excelFIS.close();
+                    }
+                    if (excelBIS != null) {
+                        excelBIS.close();
+                    }
+                    if (excelImportToJTable != null) {
+                        excelImportToJTable.close();
+                    }
+                } catch (IOException iOException) {
+                    iOException.printStackTrace();
+                }
+            }
+        }
     }
 
 }

@@ -27,13 +27,10 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelListCustomer" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <Component id="panelListCustomer" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Component id="panelCustomerInfor" min="-2" pref="649" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="panelCustomerBought" min="-2" pref="512" max="-2" attributes="0"/>
@@ -50,10 +47,10 @@
               <Component id="labelPanelCustomer" min="-2" pref="26" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCustomerInfor" min="-2" max="-2" attributes="0"/>
                   <Component id="panelCustomerBought" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelCustomerInfor" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="panelListCustomer" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -82,42 +79,42 @@
                       <Group type="103" alignment="1" groupAlignment="1" attributes="0">
                           <Component id="txtFullname" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
                           <Component id="labelNameError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                          <Component id="txtngaysinh" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="labelDateError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
-                      <Component id="txtDate" alignment="1" min="-2" pref="238" max="-2" attributes="0"/>
                       <Group type="103" alignment="1" groupAlignment="1" attributes="0">
                           <Component id="txtCode" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
                           <Component id="labelNameError1" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="labelDateError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="txtAddress" alignment="0" pref="238" max="32767" attributes="0"/>
+                      <Component id="labelEmailError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                      <Component id="txtPhoneNumber" alignment="0" pref="238" max="32767" attributes="0"/>
+                      <Component id="labelPhoneNumberError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                      <Component id="txtEmail" alignment="0" pref="238" max="32767" attributes="0"/>
+                  </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelAddressError" min="-2" pref="232" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="txtAddress" min="-2" pref="238" max="-2" attributes="0"/>
-                              <Component id="labelEmailError" min="-2" pref="232" max="-2" attributes="0"/>
-                              <Component id="txtPhoneNumber" min="-2" pref="238" max="-2" attributes="0"/>
-                              <Component id="labelPhoneNumberError" min="-2" pref="232" max="-2" attributes="0"/>
-                              <Component id="txtEmail" min="-2" pref="238" max="-2" attributes="0"/>
-                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnAdd" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
                               <Component id="btnUpdate" alignment="1" min="-2" pref="112" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          <Component id="labelAddressError" min="-2" pref="232" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace min="35" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
@@ -136,19 +133,13 @@
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="76" pref="76" max="-2" attributes="0"/>
-                                  <Component id="txtDate" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="labelDateError" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="txtFullname" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="labelNameError" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="txtFullname" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="labelNameError" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="txtngaysinh" min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="labelDateError" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
@@ -170,7 +161,7 @@
                           <Component id="labelAddressError" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="29" max="32767" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -258,11 +249,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="app.view.swing.TextField" name="txtDate">
-          <Properties>
-            <Property name="labelText" type="java.lang.String" value="Ng&#xe0;y Sinh"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="labelDateError">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -287,6 +273,11 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[0, 14]"/>
             </Property>
+          </Properties>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="txtngaysinh">
+          <Properties>
+            <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -363,18 +354,31 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="322" max="-2" attributes="0"/>
+                  <Component id="ph" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane2" pref="1156" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="txtSearchCustomer" min="-2" pref="588" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="509" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="txtSearchCustomer" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="223" max="-2" attributes="0"/>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="129" max="-2" attributes="0"/>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <Component id="ph" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -443,6 +447,17 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="app.view.swing.Pagination" name="ph">
+        </Component>
+        <Component class="app.view.swing.TextField" name="txtSearchCustomer">
+          <Properties>
+            <Property name="labelText" type="java.lang.String" value="T&#xec;m Ki&#x1ebf;m"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSearchCustomerActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtSearchCustomerKeyReleased"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="labelPanelCustomer">
