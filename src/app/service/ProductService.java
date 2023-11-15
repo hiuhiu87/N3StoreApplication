@@ -5,8 +5,10 @@
 package app.service;
 
 import app.model.Category;
+import app.model.Company;
 import app.model.Product;
 import app.repository.CategoryRepository;
+import app.repository.CompanyRepository;
 import app.repository.ProductRepository;
 import app.request.AddProductRequest;
 import app.response.ProductResponse;
@@ -23,9 +25,13 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository = new CategoryRepository();
 
+    private final CompanyRepository companyRepository = new CompanyRepository();
+
     public String addProduct(AddProductRequest request) {
         String name = request.getName();
         Category optionalCategory = categoryRepository.findByName(request.getCategoryName());
+        Company checkCompany = companyRepository.findByName(request.getCompanyName());
+
         if (name.trim().isEmpty()) {
             return "Tên Sản Phẩm Không Được Để Trống";
         }
@@ -34,10 +40,15 @@ public class ProductService {
             return "Không Tìm Thấy Danh Mục !";
         }
 
+        if (checkCompany.getId() == null) {
+            return "Không Tìm Thấy Thương Hiệu!";
+        }
+
         Product product = new Product();
         product.setCode(productRepository.generateNextModelCode());
         product.setDeleted(false);
         product.setIdCategory(optionalCategory.getId());
+        product.setIdBrand(checkCompany.getId());
         product.setName(name);
         int res = productRepository.add(product);
         if (res > 0) {
@@ -53,6 +64,18 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.getAll();
+    }
+
+    public List<ProductResponse> getAllProductPaging(int offset, int limit) {
+        return productRepository.getAllProductsViewPagenation(offset, limit);
+    }
+
+    public int countProductRecord() {
+        return productRepository.countProductRecord();
+    }
+
+    public boolean changeStatus(String name) {
+        return productRepository.updateStatus(name) > 0;
     }
 
 }

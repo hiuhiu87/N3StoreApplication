@@ -3,21 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package app.view.swing;
-
-/**
- *
- * @author H.Long
- */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
-public class Pagination extends JPanel {
-
-    public PaginationItemRender getPaginationItemRender() {
+/**
+ *
+ * @author tuanl
+ */
+public class Pagination extends JPanel{
+     public PaginationItemRender getPaginationItemRender() {
         return paginationItemRender;
     }
 

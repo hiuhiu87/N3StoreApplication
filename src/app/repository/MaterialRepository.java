@@ -49,6 +49,33 @@ public class MaterialRepository implements CrudRepository<Material> {
         }
     }
 
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.MATERIAL
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Material material = findByName(name);
+            if (material != null) {
+                if (material.getDeleted() != true) {
+                    material.setDeleted(Boolean.TRUE);
+                } else {
+                    material.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, material.getDeleted());
+                stm.setObject(2, material.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     @Override
     public int add(Material t) {
         try (Connection con = DBConnector.getConnection()) {
@@ -75,7 +102,25 @@ public class MaterialRepository implements CrudRepository<Material> {
 
     @Override
     public Material findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.MATERIAL
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Material material = new Material();
+            while (rs.next()) {
+                material.setId(rs.getInt(1));
+                material.setName(rs.getString(2));
+                material.setDeleted(rs.getBoolean(3));
+            }
+            return material;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

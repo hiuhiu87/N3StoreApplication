@@ -22,6 +22,7 @@ public class DBConnector {
     private static final String DBNAME = "N3STORESNEAKER";
     private static final String USERNAME = dotenv.get("DATABASE_USERNAME");
     private static final String PASSWORD = dotenv.get("DATABASE_PASSWORD");
+
     public static Connection getConnection() {
 
         // Create a variable for the connection string.

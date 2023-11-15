@@ -12,44 +12,47 @@ public class ProductDetail {
 
     private Integer id;
 
+    private String code;
+
     private Integer idSize;
 
     private Integer idProduct;
-
-    private Integer idBrand;
 
     private Integer idMaterial;
 
     private Integer idColor;
 
-    private Integer idSolor;
-    
-    private String name;
-    
-    private Double price;
-    
+    private Integer idSole;
+
+    private byte[] imageProduct;
+
+    private Double sellPrice;
+
+    private Double originPrice;
+
     private Integer quantity;
     
-    private Double weight;
-    
+    private String description;
+
     private Boolean deleted;
 
-    public ProductDetail(Integer id, Integer idSize, Integer idProduct, Integer idBrand, Integer idMaterial, Integer idColor, Integer idSolor, String name, Double price, Integer quantity, Double weight, Boolean deleted) {
-        this.id = id;
-        this.idSize = idSize;
-        this.idProduct = idProduct;
-        this.idBrand = idBrand;
-        this.idMaterial = idMaterial;
-        this.idColor = idColor;
-        this.idSolor = idSolor;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.weight = weight;
-        this.deleted = deleted;
+    public ProductDetail() {
     }
 
-    public ProductDetail() {
+    public ProductDetail(Integer id, String code, Integer idSize, Integer idProduct, Integer idMaterial, Integer idColor, Integer idSole, byte[] imageProduct, Double sellPrice, Double originPrice, Integer quantity, String description, Boolean deleted) {
+        this.id = id;
+        this.code = code;
+        this.idSize = idSize;
+        this.idProduct = idProduct;
+        this.idMaterial = idMaterial;
+        this.idColor = idColor;
+        this.idSole = idSole;
+        this.imageProduct = imageProduct;
+        this.sellPrice = sellPrice;
+        this.originPrice = originPrice;
+        this.quantity = quantity;
+        this.description = description;
+        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -58,6 +61,14 @@ public class ProductDetail {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getIdSize() {
@@ -76,14 +87,6 @@ public class ProductDetail {
         this.idProduct = idProduct;
     }
 
-    public Integer getIdBrand() {
-        return idBrand;
-    }
-
-    public void setIdBrand(Integer idBrand) {
-        this.idBrand = idBrand;
-    }
-
     public Integer getIdMaterial() {
         return idMaterial;
     }
@@ -100,28 +103,36 @@ public class ProductDetail {
         this.idColor = idColor;
     }
 
-    public Integer getIdSolor() {
-        return idSolor;
+    public Integer getIdSole() {
+        return idSole;
     }
 
-    public void setIdSolor(Integer idSolor) {
-        this.idSolor = idSolor;
+    public void setIdSole(Integer idSole) {
+        this.idSole = idSole;
     }
 
-    public String getName() {
-        return name;
+    public byte[] getImageProduct() {
+        return imageProduct;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setImageProduct(byte[] imageProduct) {
+        this.imageProduct = imageProduct;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getSellPrice() {
+        return sellPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public Double getOriginPrice() {
+        return originPrice;
+    }
+
+    public void setOriginPrice(Double originPrice) {
+        this.originPrice = originPrice;
     }
 
     public Integer getQuantity() {
@@ -132,12 +143,12 @@ public class ProductDetail {
         this.quantity = quantity;
     }
 
-    public Double getWeight() {
-        return weight;
+    public String getDescription() {
+        return description;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Boolean getDeleted() {
@@ -147,7 +158,7 @@ public class ProductDetail {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
-    
+
     
 
 }

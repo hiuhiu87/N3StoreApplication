@@ -19,10 +19,11 @@ public class KhachHang {
     private String PHONE_NUMBER;
     private String Address;
   private Date BIRTHDATE;
+ private Boolean deleted;
 
     @Override
     public String toString() {
-        return "KhachHang{" + "id=" + id + ", FULLNAME=" + FULLNAME + ", EMAIL=" + EMAIL + ", PHONE_NUMBER=" + PHONE_NUMBER + ", Address=" + Address + ", BIRTHDATE=" + BIRTHDATE + '}';
+        return "KhachHang{" + "id=" + id + ", FULLNAME=" + FULLNAME + ", EMAIL=" + EMAIL + ", PHONE_NUMBER=" + PHONE_NUMBER + ", Address=" + Address + ", BIRTHDATE=" + BIRTHDATE + ", deleted=" + deleted + '}';
     }
 
     public void setId(int id) {
@@ -49,6 +50,10 @@ public class KhachHang {
         this.BIRTHDATE = BIRTHDATE;
     }
 
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public int getId() {
         return id;
     }
@@ -73,19 +78,27 @@ public class KhachHang {
         return BIRTHDATE;
     }
 
-    public KhachHang(int id, String FULLNAME, String EMAIL, String PHONE_NUMBER, String Address, Date BIRTHDATE) {
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public KhachHang(int id, String FULLNAME, String EMAIL, String PHONE_NUMBER, String Address, Date BIRTHDATE, Boolean deleted) {
         this.id = id;
         this.FULLNAME = FULLNAME;
         this.EMAIL = EMAIL;
         this.PHONE_NUMBER = PHONE_NUMBER;
         this.Address = Address;
         this.BIRTHDATE = BIRTHDATE;
+        this.deleted = deleted;
     }
+ 
 
     public KhachHang() {
     }
    
       public Object[] toDaTaRow() {//lay du lieu vao dong cua bang
-        return new Object[]{this.id,this.FULLNAME,this.EMAIL,this.PHONE_NUMBER,this.Address,this.BIRTHDATE};
+        return new Object[]{this.id,this.FULLNAME,this.EMAIL,this.PHONE_NUMBER,this.Address,this.BIRTHDATE,this.deleted? "Ngừng hoạt động" : "Đang hoạt động"};
     }
+
+  
 }

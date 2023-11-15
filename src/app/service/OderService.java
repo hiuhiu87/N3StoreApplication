@@ -13,16 +13,27 @@ import java.util.List;
  * @author H.Long
  */
 public class OderService {
-    
+
     OderRepository oderRepository = new OderRepository();
-    
-    public List<Oders> getAllOders(){
+
+    public List<Oders> getAllOders() {
         return oderRepository.getAllOders();
     }
-    
-    public List<Oders> getAllOdersByStatus(int status){
+
+    public List<Oders> getPaginatedOders(int offset, int limit) {
+        return oderRepository.getPaginatedOders(offset, limit);
+    }
+
+    public List<Oders> getAllOdersByStatus(int status) {
         return oderRepository.getAllListByStatus(status);
     }
-    
-    
+
+    public int countOder() {
+        return oderRepository.countOder();
+    }
+
+    public void importDataFromExcel(String file) {
+        oderRepository.importDataFromExcel(file);
+    }
+
 }

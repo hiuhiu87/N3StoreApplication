@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Admin
  */
-public class ColorRepository implements CrudRepository<Color>{
+public class ColorRepository implements CrudRepository<Color> {
 
     public List<Color> getAll() {
         try (Connection con = DBConnector.getConnection()) {
@@ -46,6 +46,33 @@ public class ColorRepository implements CrudRepository<Color>{
         }
     }
 
+    public int updateStatus(String name) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.COLOR
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            Color color = findByName(name);
+            if (color != null) {
+                if (color.getDeleted() != true) {
+                    color.setDeleted(Boolean.TRUE);
+                } else {
+                    color.setDeleted(Boolean.FALSE);
+                }
+
+                stm.setObject(1, color.getDeleted());
+                stm.setObject(2, color.getName());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public int add(Color color) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -71,7 +98,25 @@ public class ColorRepository implements CrudRepository<Color>{
 
     @Override
     public Color findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.COLOR
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Color color = new Color();
+            while (rs.next()) {
+                color.setId(rs.getInt(1));
+                color.setName(rs.getString(2));
+                color.setDeleted(rs.getBoolean(3));
+            }
+            return color;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
