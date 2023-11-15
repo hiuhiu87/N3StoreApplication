@@ -552,12 +552,7 @@ if(!matcher.matches()) {
     }//GEN-LAST:event_txtSearchCustomerKeyReleased
 
     private void btnnewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnewActionPerformed
- txtAddress.setText("");
-        txtCode.setText("");
-        txtngaysinh.setDate(null);
-        txtEmail.setText("");
-        txtFullname.setText("");
-        txtPhoneNumber.setText("");       
+reset();
     }//GEN-LAST:event_btnnewActionPerformed
     private void clearTable(DefaultTableModel model) {
         while (model.getRowCount() > 0) {

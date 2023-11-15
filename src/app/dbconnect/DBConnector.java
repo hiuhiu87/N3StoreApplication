@@ -4,6 +4,7 @@
  */
 package app.dbconnect;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,13 +15,13 @@ import java.sql.SQLException;
  */
 public class DBConnector {
 
+    private static Dotenv dotenv = Dotenv.load();
     protected Connection connection;
-    private static final String HOSTNAME = "localhost";
+    private static final String HOSTNAME = dotenv.get("DATABASE_HOSTNAME");
     private static final String PORT = "1433";
     private static final String DBNAME = "N3STORESNEAKER";
-    private static final String USERNAME = "sa";
-    private static final String PASSWORD = "truongdeptrai11";
-
+    private static final String USERNAME = dotenv.get("DATABASE_USERNAME");
+    private static final String PASSWORD = dotenv.get("DATABASE_PASSWORD");
     public static Connection getConnection() {
 
         // Create a variable for the connection string.
