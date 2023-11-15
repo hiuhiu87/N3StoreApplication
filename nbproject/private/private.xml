@@ -4,6 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/MainApplicationView.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/LoginFrame.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/CustomerPanel.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/DiscountPanel.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/MaterialDialog.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/CategoryDialog.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/ProductPanel.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/ColorDialog.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/ProductChooseView.java</file>
+            <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/CompanyDialog.java</file>
             <file>file:/C:/Users/H.Long/Desktop/DA1/N3StoreApplication/src/app/view/OrderPanel.java</file>
         </group>
     </open-files>
