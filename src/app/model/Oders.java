@@ -24,12 +24,30 @@ public class Oders {
     private Date dateCreateDate;
     private int status;
     private String note;
+    private int quantityProduct;
+    private double sellProduct;
+    private String nameProduct;
     private boolean deleted;
 
     public Oders() {
     }
 
-    public Oders(int idOrder, String code, String nameCustomer, String nameEmployee, String phoneNumber, String paymentMethod, double customerMoney, double totalMoney, double moneyReduce, Date dateCreateDate, int status, String note, boolean deleted) {
+    public Oders(
+            int idOrder
+            , String code
+            , String nameCustomer
+            , String nameEmployee
+            ,String phoneNumber
+            , String paymentMethod
+            , double customerMoney
+            , double totalMoney
+            , double moneyReduce
+            , Date dateCreateDate
+            , int status
+            , String note
+            , boolean deleted
+    ) 
+    {
         this.idOrder = idOrder;
         this.code = code;
         this.nameCustomer = nameCustomer;
@@ -44,6 +62,60 @@ public class Oders {
         this.note = note;
         this.deleted = deleted;
     }
+
+    public Oders( String code
+            , String nameCustomer
+            , String nameEmployee
+            ,  String paymentMethod
+            , double customerMoney
+            , double totalMoney
+            , double moneyReduce
+            , Date dateCreateDate
+            ,  int quantityProduct
+            , double sellProduct
+            , String nameProduct
+    ) 
+    {
+        this.code = code;
+        this.nameCustomer = nameCustomer;
+        this.nameEmployee = nameEmployee;
+        this.paymentMethod = paymentMethod;
+        this.customerMoney = customerMoney;
+        this.totalMoney = totalMoney;
+        this.moneyReduce = moneyReduce;
+        this.dateCreateDate = dateCreateDate;
+        this.quantityProduct = quantityProduct;
+        this.sellProduct = sellProduct;
+        this.nameProduct = nameProduct;
+    }
+
+    public int getQuantityProduct() {
+        return quantityProduct;
+    }
+
+    public void setQuantityProduct(int quantityProduct) {
+        this.quantityProduct = quantityProduct;
+    }
+
+    public double getSellProduct() {
+        return sellProduct;
+    }
+
+    public void setSellProduct(double sellProduct) {
+        this.sellProduct = sellProduct;
+    }
+
+    public String getNameProduct() {
+        return nameProduct;
+    }
+
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
+    }
+    
+    
+    
+    
 
     public String getNameEmployee() {
         return nameEmployee;
@@ -155,7 +227,6 @@ public class Oders {
 
     public Object[] toDataOrder() {
         String statusString = (this.status == 1) ? "Chờ thanh toán" : (this.status == 2) ? "Đã thanh toán" : "Hủy" ;
-
         return new Object[]{
             this.idOrder,
             this.code,
@@ -169,7 +240,7 @@ public class Oders {
             this.dateCreateDate,
             statusString,
             this.note,
-            this.deleted
+            this.deleted ? "Đang hoạt động" : "Ngưng hoạt động"
         };
     }
 

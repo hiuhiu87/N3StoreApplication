@@ -65,7 +65,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Hoạt động" : "Đã hết hạn"});
         }
 
-    }
+    }    
 
     public void loadDataTablePhanTrang(int page) {
         int limit = 5;

@@ -35,5 +35,13 @@ public class OderService {
     public void importDataFromExcel(String file) {
         oderRepository.importDataFromExcel(file);
     }
+    
+    public List<Oders> getAllListPrintOders(){
+        return oderRepository.getAllListPrintOder();
+    }
+    
+    public int updateDeleted(boolean deleted , int id){
+        return oderRepository.updateDeleted(deleted, id);
+    }
 
 }

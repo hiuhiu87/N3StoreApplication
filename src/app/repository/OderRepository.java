@@ -131,6 +131,13 @@ public class OderRepository {
                         rs.getString(12),
                         rs.getBoolean(13)
                 );
+                if (rs.getInt(11) != 1) {
+                    updateDeleted(false, rs.getInt(1));
+                }
+                if (rs.getInt(11) == 1) {
+                    updateDeleted(true, rs.getInt(1));
+                }
+
                 listOdersPhanTrang.add(oders);
             }
             return listOdersPhanTrang;
@@ -255,8 +262,8 @@ public class OderRepository {
                 ps.setDouble(8, Double.parseDouble(getStringCellValue(row.getCell(8))));
                 ps.setTimestamp(9, new Timestamp(row.getCell(9).getDateCellValue().getTime()));
                 ps.setDouble(10, Double.parseDouble(getStringCellValue(row.getCell(8))));
-                String nameEmployee =  String.valueOf(getStringCellValue(row.getCell(3)));
-                String nameVoucher = String.valueOf( getStringCellValue(row.getCell(4)));
+                String nameEmployee = String.valueOf(getStringCellValue(row.getCell(3)));
+                String nameVoucher = String.valueOf(getStringCellValue(row.getCell(4)));
 //                int orderId = (int) row.getCell(0).getNumericCellValue();
 
 //                if (!isEmployeeExists(nameEmployee)) {
@@ -268,14 +275,13 @@ public class OderRepository {
 //                    System.out.println("Voucher không tồn tại, vui lòng kiểm tra lại ở dòng " + i);
 //                    continue;
 //                }
-
 //                if (isOderExists(orderId)) {
 //                    System.out.println("Đơn hàng đã tồn tại, vui lòng kiểm tra lại ở dòng " + i);
 //                    continue;
 //                }
                 ps.setString(11, nameEmployee);
                 ps.setString(12, nameVoucher);
-                
+
                 ps.executeUpdate();
             }
             ps.close();
@@ -353,5 +359,76 @@ public class OderRepository {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Oders> getAllListPrintOder() {
+        String sql = """
+                         SELECT
+                         CUST.FULLNAME AS 'CustomerName',
+                         EMP.FULLNAME AS 'EmployeeName',
+                         ORD.CODE AS 'OrderCode',
+                         ORD.DATECREATE AS 'DateCreated',
+                         DET.QUANTITY AS 'OrderDetailQuantity',
+                         PROD_DETAIL.SELL_PRICE AS 'ProductDetailSellPrice',
+                         DET.TOTAL_MONEY AS 'OrderDetailTotalMoney',
+                         ORD.MONEY_REDUCED AS 'MoneyReducedTotal',
+                         ORD.CUSTOMERMONEY AS 'CustomerMoney',
+                         ORD.PAYMENT_METHOD AS 'PaymentMethod',
+                         PROD.NAME AS 'NameProduct'
+                     FROM
+                         N3STORESNEAKER.dbo.ORDERS ORD
+                     JOIN
+                         N3STORESNEAKER.dbo.CUSTOMER CUST ON ORD.ID_CUSTOMER = CUST.ID
+                     JOIN
+                         N3STORESNEAKER.dbo.EMPLOYEE EMP ON ORD.ID_EMPLOYEE = EMP.ID
+                     JOIN
+                         N3STORESNEAKER.dbo.ORDER_DETAIL DET ON ORD.ID = DET.ID_ORDER
+                     JOIN
+                         N3STORESNEAKER.dbo.PRODUCT_DETAIL PROD_DETAIL ON DET.ID_PRODUCT_DETAIL = PROD_DETAIL.ID
+                     JOIN
+                         N3STORESNEAKER.dbo.PRODUCT PROD ON PROD_DETAIL.ID_PRODUCT = PROD.ID;
+                     """;
+
+        List<Oders> listOders = new ArrayList<>();
+        try {
+            con = DBConnector.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Oders oderPrint = new Oders();
+                oderPrint.setNameCustomer(rs.getString(1));
+                oderPrint.setNameEmployee(rs.getString(2));
+                oderPrint.setCode(rs.getString(3));
+                oderPrint.setDateCreateDate(rs.getDate(4));
+                oderPrint.setQuantityProduct(rs.getInt(5));
+                oderPrint.setSellProduct(rs.getDouble(6));
+                oderPrint.setTotalMoney(rs.getDouble(7));
+                oderPrint.setMoneyReduce(rs.getDouble(8));
+                oderPrint.setCustomerMoney(rs.getDouble(9));
+                oderPrint.setPaymentMethod(rs.getString(10));
+                oderPrint.setNameProduct(rs.getString(11));
+                listOders.add(oderPrint);
+            }
+            return listOders;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public int updateDeleted(boolean deleted, int id) {
+        String sql = """
+                     UPDATE ORDERS SET DELETED = ? WHERE ID = ?
+                     """;
+        try {
+            con = DBConnector.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setObject(1, deleted);
+            ps.setObject(2, id);
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

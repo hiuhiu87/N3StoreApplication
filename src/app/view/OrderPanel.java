@@ -252,13 +252,13 @@ public class OrderPanel extends javax.swing.JPanel {
 
         tblDisplayOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Code", "Customer", "Employee", "Phone", "Payment", "Customer money", "Total money", "Money reduce", "Date create", "status", "note"
+                "ID", "Code", "Customer", "Employee", "Phone", "Payment", "Customer money", "Total money", "Money reduce", "Date create", "Status", "Note", "Deleted"
             }
         ));
         tblDisplayOrder.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -267,6 +267,10 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblDisplayOrder);
+        if (tblDisplayOrder.getColumnModel().getColumnCount() > 0) {
+            tblDisplayOrder.getColumnModel().getColumn(6).setResizable(false);
+            tblDisplayOrder.getColumnModel().getColumn(10).setResizable(false);
+        }
 
         txtSearch.setLabelText("Tìm Kiếm");
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -398,14 +402,14 @@ public class OrderPanel extends javax.swing.JPanel {
         panelOrderDetail.setLayout(panelOrderDetailLayout);
         panelOrderDetailLayout.setHorizontalGroup(
             panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelOrderDetailLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrderDetailLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(133, 133, 133))
+            .addGroup(panelOrderDetailLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelOrderDetailLayout.setVerticalGroup(
             panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,7 +495,7 @@ public class OrderPanel extends javax.swing.JPanel {
                     .addComponent(panelInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelOrderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -681,7 +685,7 @@ public class OrderPanel extends javax.swing.JPanel {
         if (index >= 0) {
             try {
                 index = tblDisplayOrder.getSelectedRow();
-                Oders oders = oderService.getAllOders().get(index);
+                Oders oders = oderService.getAllListPrintOders().get(index);
                 System.out.println(oders.getNameCustomer());
                 System.out.println(oders.getCode());
                 Map<String, Object> map = new HashMap<>();
@@ -690,13 +694,13 @@ public class OrderPanel extends javax.swing.JPanel {
                 map.put("employee", oders.getNameEmployee());
                 map.put("Code", oders.getCode());
                 map.put("dateCreate", oders.getDateCreateDate() + "");
-                map.put("productName", "Giày 1");
-                map.put("quantity", "2");
-                map.put("price", "250,000");
-                map.put("totalMoney", "500,000");
-                map.put("moneyReduce", "50,000");
+                map.put("productName", oders.getNameProduct());
+                map.put("quantity", oders.getQuantityProduct()+"");
+                map.put("price", oders.getSellProduct()+"");
+                map.put("totalMoney", oders.getTotalMoney()+"");
+                map.put("moneyReduce", oders.getMoneyReduce()+"");
                 map.put("totalMoneydiscount", "450,000");
-                map.put("customerMoney", "500,000");
+                map.put("customerMoney", oders.getCustomerMoney()+"");
                 map.put("payment", oders.getPaymentMethod());
                 JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
                 JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
