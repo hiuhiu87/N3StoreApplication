@@ -12,116 +12,116 @@ import java.util.Date;
  */
 public class NhanVien {
 
-    Integer ID;
-    String Ten;
-    Date NgaySinh;
-    String Email;
-    boolean Gender;
-    boolean RoLe;
-    String Sdt;
-    String DiaChi;
-    boolean Deleted;
+    private Integer id;
+    private String ten;
+    private Date ngaySinh;
+    private String email;
+    private boolean gender;
+    private boolean roLe;
+    private String sdt;
+    private String diaChi;
+    private boolean deleted;
 
     public boolean isDeleted() {
-        return Deleted;
+        return deleted;
     }
 
     public void setDeleted(boolean Deleted) {
-        this.Deleted = Deleted;
+        this.deleted = Deleted;
     }
 
     public NhanVien() {
     }
 
-    public NhanVien(Integer ID, String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi, boolean Deleted) {
-        this.ID = ID;
-        this.Ten = Ten;
-        this.NgaySinh = NgaySinh;
-        this.Email = Email;
-        this.Gender = Gender;
-        this.RoLe = RoLe;
-        this.Sdt = Sdt;
-        this.DiaChi = DiaChi;
-        this.Deleted = Deleted;
+    public NhanVien(Integer id, String ten, Date ngaySinh, String email, boolean gender, boolean roLe, String sdt, String diaChi, boolean deleted) {
+        this.id = id;
+        this.ten = ten;
+        this.ngaySinh = ngaySinh;
+        this.email = email;
+        this.gender = gender;
+        this.roLe = roLe;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
+        this.deleted = deleted;
     }
 
-    public NhanVien(Integer ID, String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi) {
-        this.ID = ID;
-        this.Ten = Ten;
-        this.NgaySinh = NgaySinh;
-        this.Email = Email;
-        this.Gender = Gender;
-        this.RoLe = RoLe;
-        this.Sdt = Sdt;
-        this.DiaChi = DiaChi;
+    public NhanVien(Integer id, String ten, Date ngaySinh, String email, boolean gender, boolean roLe, String Sdt, String diaChi) {
+        this.id = id;
+        this.ten = ten;
+        this.ngaySinh = ngaySinh;
+        this.email = email;
+        this.gender = gender;
+        this.roLe = roLe;
+        this.sdt = Sdt;
+        this.diaChi = diaChi;
 
     }
 
     public Integer getID() {
-        return ID;
+        return id;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setID(Integer id) {
+        this.id = id;
     }
 
     public String getTen() {
-        return Ten;
+        return ten;
     }
 
-    public void setTen(String Ten) {
-        this.Ten = Ten;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
     public Date getNgaySinh() {
-        return NgaySinh;
+        return ngaySinh;
     }
 
-    public void setNgaySinh(Date NgaySinh) {
-        this.NgaySinh = NgaySinh;
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isGender() {
-        return Gender;
+        return gender;
     }
 
-    public void setGender(boolean Gender) {
-        this.Gender = Gender;
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
     public boolean isRoLe() {
-        return RoLe;
+        return roLe;
     }
 
-    public void setRoLe(boolean RoLe) {
-        this.RoLe = RoLe;
+    public void setRoLe(boolean roLe) {
+        this.roLe = roLe;
     }
 
     public String getSdt() {
-        return Sdt;
+        return sdt;
     }
 
     public void setSdt(String Sdt) {
-        this.Sdt = Sdt;
+        this.sdt = Sdt;
     }
 
     public String getDiaChi() {
-        return DiaChi;
+        return diaChi;
     }
 
-    public void setDiaChi(String DiaChi) {
-        this.DiaChi = DiaChi;
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
     }
 
     public Object[] toDataRow() {
-        return new Object[]{this.ID, this.Ten, this.getEmail(), this.getNgaySinh(), this.Gender, this.RoLe, this.Sdt, this.DiaChi};
+        return new Object[]{this.id, this.ten, this.getEmail(), this.getNgaySinh(), this.gender, this.roLe, this.sdt, this.diaChi};
     }
 }
