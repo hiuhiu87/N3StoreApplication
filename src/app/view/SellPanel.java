@@ -4,6 +4,7 @@
  */
 package app.view;
 
+import app.service.SellService;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -15,7 +16,9 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -23,6 +26,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,9 +46,13 @@ public class SellPanel extends javax.swing.JPanel {
     private final int TYPE_PAIED = 1;
     private WebcamPanel panel = null;
     private Webcam webcam = null;
+    private final CustommerDialog custommerDialog;
+    private final SellService sellService;
 
-    public SellPanel() {
+    public SellPanel(JFrame parentFrame) {
         initComponents();
+        sellService = new SellService();
+        custommerDialog = new CustommerDialog(parentFrame, true);
 //        Thread threadCam = new Thread(() -> {
 //            initWebcam();
 //        });
@@ -61,10 +70,21 @@ public class SellPanel extends javax.swing.JPanel {
         tblDisplayOrder.setModel(tblModelOrder);
         tblDisplayCart.setModel(tblModelCart);
         cbbTypePayment.setModel(comboBoxModelTypePaymen);
-
+        setKhachHangBanLe();
     }
-
- 
+    
+    private void setKhachHangBanLe(){
+        txtPhoneNumber.setText("0999999999");
+        txtNameCustomer.setText("Khách lẻ");
+        if(txtNameCustomer.getText().equals("Khách lẻ")){
+            txtPhoneNumber.setEnabled(false);
+            txtNameCustomer.setEnabled(false);
+            txtPhoneNumber.setForeground(Color.red);
+            txtPhoneNumber.setFont(txtPhoneNumber.getFont().deriveFont(Font.BOLD));
+        }
+    }
+    
+    
 
     private void initWebcam() {
 //        Dimension size = WebcamResolution.QVGA.getSize();
@@ -111,7 +131,7 @@ public class SellPanel extends javax.swing.JPanel {
             }
 
             if (result != null) {
-            
+
             }
 
         } while (true);
@@ -151,6 +171,7 @@ public class SellPanel extends javax.swing.JPanel {
         txtPhoneNumber = new app.view.swing.TextField();
         txtNameCustomer = new app.view.swing.TextField();
         btnChoose = new app.view.swing.Button();
+        btnChoose1 = new app.view.swing.Button();
         txtNameStaff = new app.view.swing.TextField();
         txtCreateDate = new app.view.swing.TextField();
         txtTotalMoney = new app.view.swing.TextField();
@@ -186,13 +207,13 @@ public class SellPanel extends javax.swing.JPanel {
 
         tblDisplayOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Mã Hoá Đơn", "Ngày Tạo", "Nhân Viên Tạo", "Tên Khách Hàng", "Trạng thái hoá đơn"
             }
         ));
         tblDisplayOrder.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -376,20 +397,20 @@ public class SellPanel extends javax.swing.JPanel {
             .addGroup(panelProductLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
                     .addGroup(panelProductLayout.createSequentialGroup()
                         .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelProductLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addGap(22, 22, 22))))
         );
         panelProductLayout.setVerticalGroup(
             panelProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         panelPay.setBackground(new java.awt.Color(255, 255, 255));
@@ -398,7 +419,7 @@ public class SellPanel extends javax.swing.JPanel {
         panelCustomer.setBackground(new java.awt.Color(255, 255, 255));
         panelCustomer.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Khách Hàng"));
 
-        txtPhoneNumber.setLabelText("Số Điện Thoại");
+        txtPhoneNumber.setLabelText("Số điện thoại");
 
         txtNameCustomer.setLabelText("Tên Khách Hàng");
 
@@ -411,6 +432,15 @@ public class SellPanel extends javax.swing.JPanel {
             }
         });
 
+        btnChoose1.setBackground(new java.awt.Color(23, 35, 51));
+        btnChoose1.setForeground(new java.awt.Color(255, 255, 255));
+        btnChoose1.setText("Thay đổi");
+        btnChoose1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChoose1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelCustomerLayout = new javax.swing.GroupLayout(panelCustomer);
         panelCustomer.setLayout(panelCustomerLayout);
         panelCustomerLayout.setHorizontalGroup(
@@ -420,22 +450,24 @@ public class SellPanel extends javax.swing.JPanel {
                 .addGroup(panelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                     .addComponent(txtNameCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79))
+                .addGap(18, 18, 18)
+                .addGroup(panelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnChoose1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(btnChoose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(62, 62, 62))
         );
         panelCustomerLayout.setVerticalGroup(
             panelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerLayout.createSequentialGroup()
                 .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtNameCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNameCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnChoose1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addGroup(panelCustomerLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         txtNameStaff.setEditable(false);
@@ -626,20 +658,55 @@ public class SellPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-  
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnChooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseActionPerformed
-   
+        custommerDialog.setVisible(true);
+//        onCloseJDialog(custommerDialog, "CustommerDialog");
     }//GEN-LAST:event_btnChooseActionPerformed
-
+//    private void onCloseJDialog(JDialog dialog, String nameFill) {
+//        dialog.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosed(WindowEvent e) {
+//                switch (nameFill) {
+//                    case "CustommerDialog" -> {
+//                        fillComboBoxColor(sellService.getAllKhachHang());
+//
+//                    }
+//                    case "Category" -> {
+//                        fillComboBoxCategory(categoryService.getAll());
+//                    }
+//
+//                    case "Company" -> {
+//                        fillComboBoxCompany(companyService.getAllCompany());
+//                    }
+//                    case "Size" -> {
+//                        fillComboBoxSize(sizeService.getAllSizes());
+//                    }
+//                    case "Sole" -> {
+//                        fillComboBoxSole(soleService.getAllSoles());
+//                    }
+//                    case "Material" -> {
+//                        fillComboBoxMaterial(materialService.getAllMaterials());
+//                    }
+//                    case "Product" -> {
+//                        fillComboBoxProduct(productService.getAllProducts());
+//                    }
+//                    default ->
+//                        throw new AssertionError();
+//                }
+//            }
+//
+//        });
+//    }
     private void tblDisplayProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayProductMouseClicked
 
 
     }//GEN-LAST:event_tblDisplayProductMouseClicked
 
     private void tblDisplayOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayOrderMouseClicked
-  
+
     }//GEN-LAST:event_tblDisplayOrderMouseClicked
 
     private void btnDeleteCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCartActionPerformed
@@ -654,7 +721,7 @@ public class SellPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_rdPaiedActionPerformed
 
     private void rdWaitPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdWaitPayActionPerformed
- 
+
     }//GEN-LAST:event_rdWaitPayActionPerformed
 
     private void rdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdCancelActionPerformed
@@ -717,10 +784,15 @@ public class SellPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txtBankingFocusLost
 
+    private void btnChoose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoose1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChoose1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.Button btnAdd;
     private app.view.swing.Button btnChoose;
+    private app.view.swing.Button btnChoose1;
     private app.view.swing.Button btnDeleteCart;
     private javax.swing.ButtonGroup btnGroupStatusOrder;
     private app.view.swing.Button btnPay;

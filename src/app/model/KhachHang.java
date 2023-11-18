@@ -11,81 +11,140 @@ import java.util.Date;
  * @author ACER
  */
 public class KhachHang {
-    
+
     private int id;
-    private String FULLNAME;
-    private String EMAIL;
-  
-    private String PHONE_NUMBER;
-    private String Address;
-  private Date BIRTHDATE;
+    private String fullName;
+    private String email;
+    private boolean gender;
+    private String phoneNumber;
+    private String address;
+    private Date birthDate;
+    private boolean deleted;
 
-    @Override
-    public String toString() {
-        return "KhachHang{" + "id=" + id + ", FULLNAME=" + FULLNAME + ", EMAIL=" + EMAIL + ", PHONE_NUMBER=" + PHONE_NUMBER + ", Address=" + Address + ", BIRTHDATE=" + BIRTHDATE + '}';
+    public KhachHang() {
     }
 
-    public void setId(int id) {
+    public KhachHang(
+             int id,
+             String fullName,
+             String email,
+             boolean gender,
+             boolean deleted,
+             String address,
+             String phoneNumber
+    ) {
         this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.deleted = deleted;
+    }
+    
+     public KhachHang(
+             String fullName,
+             String email,
+             boolean gender,
+             boolean deleted,
+             String address,
+             String phoneNumber
+    ) {
+        this.fullName = fullName;
+        this.email = email;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.deleted = deleted;
     }
 
-    public void setFULLNAME(String FULLNAME) {
-        this.FULLNAME = FULLNAME;
+    public KhachHang(int id, String fullName, String email, String phoneNumber, String address, Date birthDate) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.birthDate = birthDate;
     }
 
-    public void setEMAIL(String EMAIL) {
-        this.EMAIL = EMAIL;
+    public boolean isGender() {
+        return gender;
     }
 
-    public void setPHONE_NUMBER(String PHONE_NUMBER) {
-        this.PHONE_NUMBER = PHONE_NUMBER;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setAddress(String Address) {
-        this.Address = Address;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
-    public void setBIRTHDATE(Date BIRTHDATE) {
-        this.BIRTHDATE = BIRTHDATE;
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getFULLNAME() {
-        return FULLNAME;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getEMAIL() {
-        return EMAIL;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getPHONE_NUMBER() {
-        return PHONE_NUMBER;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
-    public Date getBIRTHDATE() {
-        return BIRTHDATE;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public KhachHang(int id, String FULLNAME, String EMAIL, String PHONE_NUMBER, String Address, Date BIRTHDATE) {
-        this.id = id;
-        this.FULLNAME = FULLNAME;
-        this.EMAIL = EMAIL;
-        this.PHONE_NUMBER = PHONE_NUMBER;
-        this.Address = Address;
-        this.BIRTHDATE = BIRTHDATE;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public KhachHang() {
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
-   
-      public Object[] toDaTaRow() {//lay du lieu vao dong cua bang
-        return new Object[]{this.id,this.FULLNAME,this.EMAIL,this.PHONE_NUMBER,this.Address,this.BIRTHDATE};
+
+    public Object[] toDaTaRow() {//lay du lieu vao dong cua bang
+        return new Object[]{this.id, this.fullName, this.email, this.phoneNumber, this.address, this.birthDate};
+    }
+
+    public Object[] toDaTaRowLong() {//lay du lieu vao dong cua bang
+        
+        return new Object[]{
+            this.id,
+            this.fullName,
+            this.email,
+            this.gender ? "Nam" : "Nữ",
+            this.phoneNumber,
+            this.address,
+            this.deleted ? "Đang hoạt động" : "Ngưng hoạt động"
+        };
     }
 }

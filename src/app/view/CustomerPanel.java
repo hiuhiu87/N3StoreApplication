@@ -76,20 +76,20 @@ public class CustomerPanel extends javax.swing.JPanel {
     void showdata(int index) {
         KhachHang kh = listPhanTrangkh.get(index);
         txtCode.setText(String.valueOf(kh.getId()));
-        txtFullname.setText(kh.getFULLNAME());
-        txtEmail.setText(kh.getEMAIL());
-        txtPhoneNumber.setText(kh.getPHONE_NUMBER());
+        txtFullname.setText(kh.getFullName());
+        txtEmail.setText(kh.getEmail());
+        txtPhoneNumber.setText(kh.getPhoneNumber());
         txtAddress.setText(kh.getAddress());
-        txtngaysinh.setDate(kh.getBIRTHDATE());
+        txtngaysinh.setDate(kh.getBirthDate());
     }
 
     KhachHang reafrom() {
         KhachHang cd = new KhachHang();
-        cd.setFULLNAME(txtFullname.getText());
-        cd.setEMAIL(txtEmail.getText());
-        cd.setPHONE_NUMBER(txtPhoneNumber.getText());
+        cd.setFullName(txtFullname.getText());
+        cd.setEmail(txtEmail.getText());
+        cd.setPhoneNumber(txtPhoneNumber.getText());
         cd.setAddress(txtAddress.getText());
-        cd.setBIRTHDATE(txtngaysinh.getDate());
+        cd.setBirthDate(txtngaysinh.getDate());
         return cd;
     }
 
@@ -145,7 +145,7 @@ if(!matcher.matches()) {
  boolean checkTrung() {
         List<KhachHang> lstXM = listPhanTrangkh;
         for (int i = 0; i < lstXM.size(); i++) {
-            if (txtPhoneNumber.getText().equalsIgnoreCase(lstXM.get(i).getPHONE_NUMBER())) {
+            if (txtPhoneNumber.getText().equalsIgnoreCase(lstXM.get(i).getPhoneNumber())) {
                 JOptionPane.showMessageDialog(this, "Trùng số điện thoại");
                 return false;
             }
@@ -155,7 +155,7 @@ if(!matcher.matches()) {
   boolean checkTrung1() {
         List<KhachHang> lstXM = listPhanTrangkh;
         for (int i = 0; i < lstXM.size(); i++) {
-            if (txtEmail.getText().equalsIgnoreCase(lstXM.get(i).getEMAIL())) {
+            if (txtEmail.getText().equalsIgnoreCase(lstXM.get(i).getEmail())) {
                 JOptionPane.showMessageDialog(this, "Trùng gmail");
                 return false;
             }
@@ -512,7 +512,7 @@ if(!matcher.matches()) {
 
         for (KhachHang khachhang : list) {
             String idString = String.valueOf(khachhang.getId());
-            String fullName = khachhang.getFULLNAME().toLowerCase();
+            String fullName = khachhang.getFullName().toLowerCase();
             if (idString.contains(textSearch) || fullName.contains(textSearch)) {
                 listSearch.add(khachhang);
             }

@@ -84,12 +84,12 @@ public class KhachHang_Service {
             con = DBConnector.getConnection();
             ps = con.prepareStatement(sql);
 
-            ps.setObject(1, s.getFULLNAME());
-            ps.setObject(2, s.getEMAIL());
+            ps.setObject(1, s.getFullName());
+            ps.setObject(2, s.getEmail());
 
-            ps.setObject(3, s.getPHONE_NUMBER());
+            ps.setObject(3, s.getPhoneNumber());
             ps.setObject(4, s.getAddress());
-            ps.setObject(5, s.getBIRTHDATE());
+            ps.setObject(5, s.getBirthDate());
             return ps.executeUpdate();
             //insert delete, update:executeUpdate()
         } catch (Exception e) {
@@ -98,19 +98,19 @@ public class KhachHang_Service {
         }
     }
 
-    public int updateSV(KhachHang cd, int id) {
+    public int updateSV(KhachHang s, int id) {
         //truyền vào đối tượng mới, khóa chính đối tượng cũ
         //MASACH,TENSACH,THELOAI,DONGIA
         sql = "update CUSTOMER set FULLNAME=?,EMAIL=?,PHONE_NUMBER=?,Address=?,BIRTHDATE=? where id=?";
         try {
             con = DBConnector.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setObject(1, cd.getFULLNAME());
-            ps.setObject(2, cd.getEMAIL());
+            ps.setObject(1, s.getFullName());
+            ps.setObject(2, s.getEmail());
 
-            ps.setObject(3, cd.getPHONE_NUMBER());
-            ps.setObject(4, cd.getAddress());
-            ps.setObject(5, cd.getBIRTHDATE());
+            ps.setObject(3, s.getPhoneNumber());
+            ps.setObject(4, s.getAddress());
+            ps.setObject(5, s.getBirthDate());
             ps.setObject(6, id);
             return ps.executeUpdate();
         } catch (Exception e) {

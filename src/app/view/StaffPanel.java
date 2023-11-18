@@ -46,6 +46,7 @@ public class StaffPanel extends javax.swing.JPanel {
             }
         });
         loadDataTablePhanTrang(1);
+        
     }
 
     /**
@@ -472,7 +473,7 @@ public class StaffPanel extends javax.swing.JPanel {
 
     private void tblDisplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayMouseClicked
         index = tblDisplay.getSelectedRow();
-        this.showData(index);
+        showData(index);
     }//GEN-LAST:event_tblDisplayMouseClicked
 
     private void btnChangeStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatusActionPerformed
@@ -480,21 +481,21 @@ public class StaffPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChangeStatusActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (checkTrung()&&checkTrung1()) {
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn Sửa?", "Sửa", JOptionPane.YES_NO_OPTION);
-        index = tblDisplay.getSelectedRow();
-        int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
-        if (validates()) {
-            NhanVien nv = readForm();
-            if (a == JOptionPane.YES_OPTION) {
-                if (nvService.updateSV(nv, id) > 0) {
-                    JOptionPane.showMessageDialog(this, "update thanh cong");
-                    loadDataTablePhanTrang(1);
-                } else {
-                    JOptionPane.showMessageDialog(this, "update that bai");
+        if (checkTrung() && checkTrung1()) {
+            int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn Sửa?", "Sửa", JOptionPane.YES_NO_OPTION);
+            index = tblDisplay.getSelectedRow();
+            int id = Integer.parseInt(tblDisplay.getValueAt(index, 0).toString());
+            if (validates()) {
+                NhanVien nv = readForm();
+                if (a == JOptionPane.YES_OPTION) {
+                    if (nvService.updateSV(nv, id) > 0) {
+                        JOptionPane.showMessageDialog(this, "update thanh cong");
+                        loadDataTablePhanTrang(1);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "update that bai");
+                    }
                 }
             }
-        }
     }//GEN-LAST:event_btnUpdateActionPerformed
     }
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -512,21 +513,21 @@ public class StaffPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
-        if (checkTrung()&&checkTrung1()) {
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "thêm", JOptionPane.YES_NO_OPTION);
+        if (checkTrung() && checkTrung1()) {
+            int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "thêm", JOptionPane.YES_NO_OPTION);
 
-        if (validates()) {
-            NhanVien sv = this.readForm();
-            if (a == JOptionPane.YES_OPTION) {
-                if (nvService.addStudent(sv) > 0) {
-                    JOptionPane.showMessageDialog(this, "Thêm thành công");
-                    loadDataTablePhanTrang(1);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Thêm thất bại");
+            if (validates()) {
+                NhanVien sv = this.readForm();
+                if (a == JOptionPane.YES_OPTION) {
+                    if (nvService.addStudent(sv) > 0) {
+                        JOptionPane.showMessageDialog(this, "Thêm thành công");
+                        loadDataTablePhanTrang(1);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm thất bại");
+                    }
                 }
-            }
 
-        }
+            }
         }
     }//GEN-LAST:event_btnAddMouseClicked
 
@@ -589,14 +590,16 @@ public class StaffPanel extends javax.swing.JPanel {
     }
 
     public void showData(int index) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String ngaySinhString = dateFormat.format(nv.getNgaySinh());
         NhanVien nv = nvService.getAll().get(index);
-        String ngaySinhString = dateFormat.format(nv.getNgaySinh());
+        if(nv == null){
+            System.out.println("null");
+        }
 
         txtCodeStaff.setText(nv.getID().toString());
         txtFullName.setText(nv.getTen());
-        txtAddress.setText(nv.getDiaChi());
+        txtAddress.setText(nv.getDiaChi()+"");
         txtEmail.setText(nv.getEmail());
         txtPhoneNumber.setText(nv.getSdt());
         txtDate.setDate(nv.getNgaySinh());
@@ -718,7 +721,8 @@ public class StaffPanel extends javax.swing.JPanel {
 
         return true;
     }
-boolean checkTrung() {
+
+    boolean checkTrung() {
         List<NhanVien> lstXM = listPhanTrangNhanVien;
         for (int i = 0; i < lstXM.size(); i++) {
             if (txtPhoneNumber.getText().equalsIgnoreCase(lstXM.get(i).getSdt())) {
@@ -728,7 +732,8 @@ boolean checkTrung() {
         }
         return true;
     }
-  boolean checkTrung1() {
+
+    boolean checkTrung1() {
         List<NhanVien> lstXM = listPhanTrangNhanVien;
         for (int i = 0; i < lstXM.size(); i++) {
             if (txtEmail.getText().equalsIgnoreCase(lstXM.get(i).getEmail())) {
