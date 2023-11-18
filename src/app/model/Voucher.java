@@ -27,7 +27,9 @@ public class Voucher {
     public Voucher() {
     }
 
-    public Voucher(int id, String ten, String code, int quantity, Date start_Date, Date end_Date, float min_values_condition, String type, float values, float max_values, int deleted) {
+    public Voucher(int id, String ten, String code, int quantity,
+            Date start_Date, Date end_Date, float min_values_condition,
+            String type, float values, float max_values, int deleted) {
         this.id = id;
         this.ten = ten;
         this.code = code;
@@ -41,7 +43,9 @@ public class Voucher {
         this.deleted = deleted;
     }
 
-    public Voucher(String ten, String code, int quantity, Date start_Date, Date end_Date, float min_values_condition, String type, float values, float max_values, int deleted) {
+    public Voucher(String ten, String code, int quantity, Date start_Date, 
+            Date end_Date, float min_values_condition, String type, 
+            float values, float max_values, int deleted) {
         this.ten = ten;
         this.code = code;
         this.quantity = quantity;
@@ -52,6 +56,20 @@ public class Voucher {
         this.values = values;
         this.max_values = max_values;
         this.deleted = deleted;
+    }
+    
+      public Voucher(String ten, String code, int quantity, Date start_Date, 
+              Date end_Date, float min_values_condition, String type,
+              float values, float max_values) {
+        this.ten = ten;
+        this.code = code;
+        this.quantity = quantity;
+        this.start_Date = start_Date;
+        this.end_Date = end_Date;
+        this.min_values_condition = min_values_condition;
+        this.type = type;
+        this.values = values;
+        this.max_values = max_values;
     }
     
 
