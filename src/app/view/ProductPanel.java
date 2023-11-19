@@ -4,6 +4,12 @@
  */
 package app.view;
 
+import app.view.propertiesproductview.SoleDialog;
+import app.view.propertiesproductview.SizeDialog;
+import app.view.propertiesproductview.MaterialDialog;
+import app.view.propertiesproductview.CompanyDialog;
+import app.view.propertiesproductview.ColorDialog;
+import app.view.propertiesproductview.CategoryDialog;
 import app.model.Category;
 import app.model.Color;
 import app.model.Company;

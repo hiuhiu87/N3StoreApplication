@@ -364,8 +364,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Trả về null nếu không tìm thấy sản phẩm
         return null;
     }
     

@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package app.view;
+package app.view.propertiesproductview;
 
-import app.model.Size;
-import app.model.Sole;
-import app.service.SoleService;
+import app.model.Color;
+import app.model.Company;
+import app.service.CompanyService;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +15,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class SoleDialog extends javax.swing.JDialog {
+public class CompanyDialog extends javax.swing.JDialog {
 
-    private final SoleService soleService = new SoleService();
-    private DefaultTableModel tableModelSole;
+    private final CompanyService companyService = new CompanyService();
+    private DefaultTableModel tableModelCompany;
 
     /**
      * Creates new form ColorDialog
@@ -26,32 +26,32 @@ public class SoleDialog extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public SoleDialog(java.awt.Frame parent, boolean modal) {
+    public CompanyDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tableModelSole = new DefaultTableModel();
-        tblDisplay.setModel(tableModelSole);
+        tableModelCompany = new DefaultTableModel();
+        tblDisplay.setModel(tableModelCompany);
         addColumTable();
-        fillTable(soleService.getAllSoles());
+        fillTable(companyService.getAllCompany());
     }
 
     private void addColumTable() {
-        tableModelSole.addColumn("STT");
-        tableModelSole.addColumn("Tên");
-        tableModelSole.addColumn("Trạng Thái");
+        tableModelCompany.addColumn("STT");
+        tableModelCompany.addColumn("Tên");
+        tableModelCompany.addColumn("Trạng Thái");
     }
 
-    private void fillTable(List<Sole> list) {
+    private void fillTable(List<Company> list) {
         int stt = 0;
-        tableModelSole.setRowCount(0);
-        for (Sole sole : list) {
+        tableModelCompany.setRowCount(0);
+        for (Company conmpany : list) {
             stt++;
             Object[] row = {
                 stt,
-                sole.getName(),
-                sole.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
+                conmpany.getName(),
+                conmpany.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
             };
-            tableModelSole.addRow(row);
+            tableModelCompany.addRow(row);
         }
     }
 
@@ -64,18 +64,18 @@ public class SoleDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtNameSole = new app.view.swing.TextField();
+        txtNameCompany = new app.view.swing.TextField();
         panelFunction = new javax.swing.JPanel();
         btnAdd = new app.view.swing.ButtonOutLine();
         btnUpdate = new app.view.swing.ButtonOutLine();
         btnExit = new app.view.swing.ButtonOutLine();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplay = new javax.swing.JTable();
-        labelNameGpuError = new javax.swing.JLabel();
+        labelNameCompanyError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        txtNameSole.setLabelText("Tên Đế Giày");
+        txtNameCompany.setLabelText("Tên Hãng");
 
         panelFunction.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức Năng"));
 
@@ -137,7 +137,7 @@ public class SoleDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tblDisplay);
 
-        labelNameGpuError.setForeground(new java.awt.Color(255, 51, 102));
+        labelNameCompanyError.setForeground(new java.awt.Color(255, 51, 102));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,8 +153,8 @@ public class SoleDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(labelNameGpuError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtNameSole, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(labelNameCompanyError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtNameCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -165,9 +165,9 @@ public class SoleDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(txtNameSole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNameCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelNameGpuError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelNameCompanyError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -181,15 +181,15 @@ public class SoleDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtNameSole.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tên Đế Giày Không Được Để Trống");
+        if (txtNameCompany.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên Hãng Không Được Để Trống");
         } else {
-            String nameCompany = txtNameSole.getText();
-            Sole sole = new Sole();
-            sole.setName(nameCompany);
-            String result = soleService.addSole(sole);
+            String nameCompany = txtNameCompany.getText();
+            Company company = new Company();
+            company.setName(nameCompany);
+            String result = companyService.addCompany(company);
             JOptionPane.showMessageDialog(this, result);
-            fillTable(soleService.getAllSoles());
+            fillTable(companyService.getAllCompany());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -198,10 +198,10 @@ public class SoleDialog extends javax.swing.JDialog {
         if (row >= 0) {
             int column = 1;
             String nameCategory = (String) tblDisplay.getValueAt(row, column);
-            boolean res = soleService.changeStatus(nameCategory);
+            boolean res = companyService.changeStatus(nameCategory);
             if (res) {
                 JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
-                fillTable(soleService.getAllSoles());
+                fillTable(companyService.getAllCompany());
             } else {
                 JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
             }
@@ -231,20 +231,20 @@ public class SoleDialog extends javax.swing.JDialog {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(SoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                SoleDialog dialog = new SoleDialog(new javax.swing.JFrame(), true);
+//                CompanyDialog dialog = new CompanyDialog(new javax.swing.JFrame(), true);
 //                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 //                    @Override
 //                    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -261,9 +261,9 @@ public class SoleDialog extends javax.swing.JDialog {
     private app.view.swing.ButtonOutLine btnExit;
     private app.view.swing.ButtonOutLine btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelNameGpuError;
+    private javax.swing.JLabel labelNameCompanyError;
     private javax.swing.JPanel panelFunction;
     private javax.swing.JTable tblDisplay;
-    private app.view.swing.TextField txtNameSole;
+    private app.view.swing.TextField txtNameCompany;
     // End of variables declaration//GEN-END:variables
 }

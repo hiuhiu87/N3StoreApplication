@@ -5,6 +5,7 @@
 package app.view;
 
 import app.model.KhachHang;
+import app.service.KhachHang_Service;
 import app.service.SellService;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,7 +21,9 @@ public class CustommerDialog extends javax.swing.JDialog {
 
     DefaultTableModel model;
     private int index = -1;
-    SellService sellService = new SellService();
+    private final SellService sellService = new SellService();
+    private final KhachHang_Service khachHangService = new KhachHang_Service();
+    private KhachHang khachHang;
 
     /**
      * Creates new form CustommerDialog
@@ -30,6 +33,10 @@ public class CustommerDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         fillTable(sellService.getAllKhachHang());
+    }
+
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
     void fillTable(List<KhachHang> list) {
@@ -176,6 +183,11 @@ public class CustommerDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tblKhachHang);
 
         btnChonKH.setText("Chọn");
+        btnChonKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonKHActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -370,6 +382,16 @@ public class CustommerDialog extends javax.swing.JDialog {
         index = tblKhachHang.getSelectedRow();
         showData(index);
     }//GEN-LAST:event_tblKhachHangMouseClicked
+
+    private void btnChonKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonKHActionPerformed
+        int row = tblKhachHang.getSelectedRow();
+        if (row >= 0) {
+            int id = (int) tblKhachHang.getValueAt(row, 0);
+            KhachHang khachHangChose = khachHangService.findById(id);
+            this.khachHang = khachHangChose;
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnChonKHActionPerformed
 
     /**
      * @param args the command line arguments
