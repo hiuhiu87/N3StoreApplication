@@ -25,6 +25,7 @@ public class MainApplicationView extends javax.swing.JFrame {
     private CustomerPanel customerPanel;
     private OrderPanel orderPanel;
     private DiscountPanel discountPanel;
+    
 
     public MainApplicationView() {
         initComponents();
@@ -34,6 +35,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         customerPanel = new CustomerPanel();
         orderPanel = new OrderPanel();
         discountPanel = new DiscountPanel();
+        
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
     }
@@ -616,7 +618,7 @@ public class MainApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_userLbMouseClicked
 
     private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
-        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
+        JOptionPane.showMessageDialog(this, "Chưa phát triển");
     }//GEN-LAST:event_statisticLbMouseClicked
 
     private void exitLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLbMouseClicked

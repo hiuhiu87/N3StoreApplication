@@ -51,11 +51,9 @@ public class DiscountPanel extends javax.swing.JPanel {
             }
         });
         loadDataTablePhanTrang(1);
-//        DiscountPanel panel = new DiscountPanel();
-//        panel.scheduleUpdateTask();
         updateNgayHH();
     }
-
+    
     public void loadTable() {
         try {
             String name = txtTimKiem.getText();
@@ -221,23 +219,9 @@ public class DiscountPanel extends javax.swing.JPanel {
                 loadDataTablePhanTrang(1);
             }
 
-            if (!(ngayHT.after(v.getEnd_Date()))) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String format = dateFormat.format(v.getEnd_Date());
-                vcs.updateDeleted(true, v.getId());
-                loadDataTablePhanTrang(1);
-            }
         }
     }
     
-//    public void scheduleUpdateTask() {
-//        scheduler.scheduleAtFixedRate(() -> {
-//            updateNgayHH();
-//        }, 0, 30, TimeUnit.SECONDS);
-//    }
-//    public void shutdownScheduler() {
-//        scheduler.shutdown();
-//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -615,10 +599,12 @@ public class DiscountPanel extends javax.swing.JPanel {
                 , "update trạng thái", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
+            int column = 2;
+            String pasd = tbHienthiVoucher.getValueAt(row, column).toString();
             String name = txtTimKiem.getText();
-            Voucher v = vcs.getList(name).get(row);
+            Voucher v = vcs.getList(pasd).get(row);
             if (vcs.remove(v) > 0) {
-                loadTable();
+                loadDataTablePhanTrang(1);
                 JOptionPane.showMessageDialog(this
                         , "cập nhật thành công");
             }
@@ -682,8 +668,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtDKGiaTriMin.setText("");
         jDateNgayBatDau.setDate(null);
         jDateNgayKetThuc.setDate(null);
-//        rdHoatDong.setSelected(true);
-//        rdHetHan.setSelected(false);
 
     }//GEN-LAST:event_btnClearActionPerformed
 

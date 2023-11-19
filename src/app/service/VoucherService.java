@@ -158,9 +158,9 @@ public class VoucherService implements VoucherInterface {
         try {
             String q = "UPDATE VOUCHER SET DELETED = CASE "
                     + "WHEN DELETED = 0 THEN 1 WHEN DELETED = 1 THEN 0 END "
-                    + "WHERE ID = ?";
+                    + "WHERE NAME = ?";
             PreparedStatement ps = conn.prepareStatement(q);
-            ps.setInt(1, v.getId());
+            ps.setString(1, v.getTen());
             if (ps.executeUpdate() > 0) {
                 System.out.println("Cập thật thành công");
                 return 1;
