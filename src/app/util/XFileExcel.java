@@ -64,6 +64,10 @@ public class XFileExcel {
                     }
                 }
 
+                for (int x = 0; x < excelSheet.getRow(0).getPhysicalNumberOfCells(); x++) {
+                    excelSheet.autoSizeColumn(x);
+                }
+
                 //Append xlsx file extensions to selected files. To create unique file names
                 excelFOU = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
                 excelBOU = new BufferedOutputStream(excelFOU);
@@ -122,7 +126,6 @@ public class XFileExcel {
                     XSSFCell excelProgrammingLanguage = excelRow.getCell(2);
                     XSSFCell excelSubject = excelRow.getCell(3);
 
-                  
                     Object[] rowData = {
                         (excelName != null) ? excelName.toString() : null,
                         (excelGender != null) ? excelGender.toString() : null,

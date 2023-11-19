@@ -24,9 +24,19 @@ public class ProductRepository implements CrudRepository<Product> {
         List<Product> list = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
-                         SELECT ID, CODE, ID_CATEGORY, NAME, ID_BRAND, DELETED
-                         FROM N3STORESNEAKER.dbo.PRODUCT
-                         ORDER BY ID DESC;
+                         SELECT
+                         	ID,
+                         	CODE,
+                         	ID_CATEGORY,
+                         	NAME,
+                         	ID_BRAND,
+                         	DELETED
+                         FROM
+                         	N3STORESNEAKER.dbo.PRODUCT
+                         WHERE
+                         	DELETED = 0
+                         ORDER BY
+                         	ID DESC;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
