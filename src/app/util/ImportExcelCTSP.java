@@ -172,11 +172,11 @@ public class ImportExcelCTSP {
                     chiTietSP.setOriginPrice(Double.valueOf(giaNhap));
                     listProductDetails.add(chiTietSP);
                 } else {
-                    chiTietSPcheck.setSellPrice(Double.parseDouble(giaBan));
-                    chiTietSPcheck.setOriginPrice(Double.parseDouble(giaNhap));
+                    chiTietSPcheck.setSellPrice(Double.valueOf(giaBan));
+                    chiTietSPcheck.setOriginPrice(Double.valueOf(giaNhap));
                     chiTietSPcheck.setDescription(moTa);
                     if (chiTietSPcheck.getQuantity() != null) {
-                        chiTietSPcheck.setQuantity((int) Double.parseDouble(soLuongTon) + chiTietSPcheck.getQuantity());
+                        chiTietSPcheck.setQuantity((int) Double.parseDouble(soLuongTon));
                     } else {
                         chiTietSPcheck.setQuantity((int) Double.parseDouble(soLuongTon));
                     }

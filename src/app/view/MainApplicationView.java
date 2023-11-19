@@ -28,6 +28,7 @@ public class MainApplicationView extends javax.swing.JFrame {
 
     public MainApplicationView() {
         initComponents();
+        this.setResizable(false);
         panelSell = new SellPanel();
         panelStaff = new StaffPanel();
         panelProduct = new ProductPanel(this);

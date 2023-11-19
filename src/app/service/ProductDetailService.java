@@ -97,5 +97,34 @@ public class ProductDetailService {
     public List<ProductDetailResponse> getAllListProducts() {
         return detailRepository.getAllViews();
     }
+    
+    public List<ProductDetailResponse> selectListDetailByNameProduct(String nameProduct){
+        return detailRepository.findListByNameProduct(nameProduct);
+    }
+    
+    public int countProductRecord() {
+        return detailRepository.countProductRecord();
+    }
+    
+    public int countProductRecordWithNameProduct(String name) {
+        Product product = productRepository.findByName(name);
+        return detailRepository.countProductRecordWithNameProduct(product.getId());
+    }
+    
+    public List<ProductDetailResponse> getListProductDetailViewPagntion(int offset, int limit) {
+        return detailRepository.getAllViewsPagnation(offset, limit);
+    }
+    
+    public List<ProductDetailResponse> getListProductDetailViewPagntionWithNameProduct(int offset, int limit, String nameProduct) {
+        return detailRepository.getAllViewsPagnationWithNameProduct(offset, limit, nameProduct);
+    }
+    
+    public ProductDetail findByCode(String code){
+        return detailRepository.findByName(code);
+    }
+    
+    public boolean updateStatus(String code){
+        return detailRepository.updateStatus(code) > 0;
+    }
 
 }
