@@ -3,13 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/service/ProductDetailService.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/view/SellPanel.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/request/NewOrderRequest.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/request/UpdateOrderDetailExist.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/service/OrderDetailService.java</file>
+            <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/repository/ProductDetailRepository.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/repository/OrderDetailRepository.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/service/SellService.java</file>
             <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/model/OrderDetail.java</file>
+            <file>file:/D:/Workspace/DuAn_1/3NShoesApplication/src/app/repository/OrderRepository.java</file>
         </group>
     </open-files>
 </project-private>

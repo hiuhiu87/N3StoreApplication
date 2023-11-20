@@ -8,6 +8,7 @@ import app.model.KhachHang;
 import app.model.Order;
 import app.model.OrderDetail;
 import app.model.ProductDetail;
+import app.model.Voucher;
 import app.request.NewOrderRequest;
 import app.response.CartResponse;
 import app.response.OrderResponse;
@@ -20,6 +21,7 @@ import app.service.OrderService;
 import app.service.ProductDetailService;
 import app.service.ProductService;
 import app.service.SellService;
+import app.service.VoucherService;
 import app.util.XDate;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamException;
@@ -54,49 +56,59 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SellPanel extends javax.swing.JPanel {
 
+    private WebcamPanel panel = null;
+    private Webcam webcam = null;
     private DefaultTableModel tblModelOrder = new DefaultTableModel();
     private DefaultTableModel tblModelOrderDetail = new DefaultTableModel();
     private DefaultTableModel tblModelProductDetail = new DefaultTableModel();
     private DefaultTableModel tblModelProduct = new DefaultTableModel();
     private DefaultComboBoxModel ccbModelPayment = new DefaultComboBoxModel();
+    private DefaultComboBoxModel comboBoxModelVoucher = new DefaultComboBoxModel();
+
     private KhachHang khachHang;
     private Order orderChose;
+    private Voucher voucher;
+
     private final int TYPE_PAIED = 1;
-    private WebcamPanel panel = null;
-    private Webcam webcam = null;
+    private Double totalMoneyLast = null;
+
     private final CustommerDialog custommerDialog;
-    private final SellService sellService;
+    private final JFrame parentFrame;
+
+    private final SellService sellService = new SellService();
     private final KhachHang_Service khachHangService = new KhachHang_Service();
     private final NhanVienService nhanVienService = new NhanVienService();
     private final OrderService orderService = new OrderService();
     private final OrderDetailService orderDetailService = new OrderDetailService();
     private final ProductDetailService productDetailService = new ProductDetailService();
     private final ProductService productService = new ProductService();
-    private final JFrame parentFrame;
+    private final VoucherService voucherService = new VoucherService();
 
     public SellPanel(JFrame parentFrame) {
         initComponents();
-        sellService = new SellService();
+
         custommerDialog = new CustommerDialog(parentFrame, true);
-//        Thread threadCam = new Thread(() -> {
-//            initWebcam();
-//        });
-//        threadCam.start();
-//        Thread threadScan = new Thread(() -> {
-//            try {
-//                Thread.sleep(5000);
-//                scan();
-//            } catch (InterruptedException ex) {
-//                
-//            }
-//        });
-//        threadScan.start();
+        Thread threadCam = new Thread(() -> {
+            initWebcam();
+        });
+        threadCam.start();
+        Thread threadScan = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+                scan();
+            } catch (InterruptedException ex) {
+
+            }
+        });
+        threadScan.start();
         this.parentFrame = parentFrame;
+        this.btnAddQuantity.setVisible(false);
         tblDisplayProduct.setModel(tblModelProduct);
         tblDisplayProductDetail.setModel(tblModelProductDetail);
         tblDisplayOrder.setModel(tblModelOrder);
         tblDisplayCart.setModel(tblModelOrderDetail);
         cbbTypePayment.setModel(ccbModelPayment);
+        cbbVoucher.setModel(comboBoxModelVoucher);
         addComlumnOrder();
         addColumnOrderDetail();
         addColumnTableProductDetailAll();
@@ -106,6 +118,7 @@ public class SellPanel extends javax.swing.JPanel {
         onCloseJDialog(custommerDialog);
         fillTableOrder(orderService.getAllOrderView());
         fillTableProduct(productService.getAllProductResponse());
+        fillCbbVoucher(voucherService.getListAll());
     }
 
     private void setKhachHangBanLe() {
@@ -126,54 +139,58 @@ public class SellPanel extends javax.swing.JPanel {
     }
 
     private void initWebcam() {
-//        Dimension size = WebcamResolution.QVGA.getSize();
-//        try {
-//            webcam = Webcam.getWebcams().get(0);
-//            webcam.setViewSize(size);
-//
-//            panel = new WebcamPanel(webcam);
-//            panel.setPreferredSize(size);
-//
-//            panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 300));
-//            panelBarcode.revalidate();
-//        } catch (WebcamException e) {
-//            if (this.isEnabled()) {
-//                JOptionPane.showMessageDialog(this, "Lỗi Cam");
-//            }
-//        }
+        Dimension size = WebcamResolution.QVGA.getSize();
+        try {
+            webcam = Webcam.getWebcams().get(1);
+            webcam.setViewSize(size);
+
+            panel = new WebcamPanel(webcam);
+            panel.setPreferredSize(size);
+
+            panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 300));
+            panelBarcode.revalidate();
+        } catch (WebcamException e) {
+            if (this.isEnabled()) {
+                JOptionPane.showMessageDialog(this, "Lỗi Cam");
+            }
+        }
     }
 
     private void scan() {
-        do {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                System.out.println(ex.getMessage());
-            }
-
-            Result result = null;
-            BufferedImage image = null;
-
-            if (webcam.isOpen()) {
-                if ((image = webcam.getImage()) == null) {
-                    continue;
+        try {
+            do {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getMessage());
                 }
-            }
 
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
+                Result result = null;
+                BufferedImage image = null;
 
-            try {
-                result = new MultiFormatReader().decode(binaryBitmap);
-            } catch (NotFoundException ex) {
-                System.out.println(ex.getMessage());
-            }
+                if (webcam.isOpen()) {
+                    if ((image = webcam.getImage()) == null) {
+                        continue;
+                    }
+                }
 
-            if (result != null) {
+                LuminanceSource source = new BufferedImageLuminanceSource(image);
+                BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
-            }
+                try {
+                    result = new MultiFormatReader().decode(binaryBitmap);
+                } catch (NotFoundException ex) {
+                    System.out.println(ex.getMessage());
+                }
 
-        } while (true);
+                if (result != null) {
+                    System.out.println(result);
+                }
+
+            } while (true);
+        } catch (Exception e) {
+            System.out.println("Tắt Webcam");
+        }
     }
 
     private void fillTableProduct(List<ProductResponse> list) {
@@ -196,6 +213,16 @@ public class SellPanel extends javax.swing.JPanel {
                 }
             }
         }
+    }
+
+    private void fillCbbVoucher(List<Voucher> list) {
+        List<String> listName = new ArrayList<>();
+        listName.add("Chọn Voucher");
+        for (Voucher v : list) {
+            listName.add(v.getCode());
+        }
+        comboBoxModelVoucher.addAll(listName);
+        cbbVoucher.setSelectedIndex(0);
     }
 
     private void fillTableCart(List<CartResponse> list) {
@@ -244,6 +271,9 @@ public class SellPanel extends javax.swing.JPanel {
                 khachHang = dialog.getKhachHang();
                 if (khachHang != null) {
                     showCustomerInfor(khachHang);
+                    boolean resUpdateCustomer = sellService.updateCustomerForOrder(khachHang.getId(), khachHang.getPhoneNumber(), orderChose.getCode());
+                    fillTableOrder(orderService.getAllOdersByStatus(1));
+                    rdWaitPay.setSelected(true);
                 } else {
                     setKhachHangBanLe();
                 }
@@ -380,7 +410,25 @@ public class SellPanel extends javax.swing.JPanel {
         if (res) {
             JOptionPane.showMessageDialog(this, "Tạo Hóa Đơn Thành Công");
             Order o = orderService.findByCode(codeOrder);
+            this.orderChose = o;
             showInforOrder(o);
+        }
+    }
+
+    private void checkOrderTotalMoney(Order order) {
+        Double totalMoney = sellService.getTotalMoney(order.getCode());
+        txtTotalMoney.setText(String.valueOf(totalMoney));
+    }
+
+    private void checkTotalMoney() {
+        if (this.voucher != null) {
+            if (voucher.getType().equals("Percentage")) {
+                totalMoneyLast = orderChose.getTotalMoney() * voucher.getValues() / 100;
+                txtTotalMoneyAfterMinus.setText(String.valueOf(totalMoneyLast));
+            } else {
+                totalMoneyLast = orderChose.getTotalMoney() - voucher.getValues();
+                txtTotalMoneyAfterMinus.setText(String.valueOf(totalMoneyLast));
+            }
         }
     }
 
@@ -414,6 +462,7 @@ public class SellPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDisplayCart = new javax.swing.JTable();
         btnDeleteCart = new app.view.swing.Button();
+        btnAddQuantity = new app.view.swing.Button();
         panelProduct = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDisplayProduct = new javax.swing.JTable();
@@ -436,7 +485,8 @@ public class SellPanel extends javax.swing.JPanel {
         txtCodeOrder = new app.view.swing.TextField();
         labelCashError = new javax.swing.JLabel();
         labelBankingError = new javax.swing.JLabel();
-        cbbVoucher = new app.view.swing.Combobox();
+        txtTotalMoneyAfterMinus = new app.view.swing.TextField();
+        cbbVoucher = new app.view.swing.ComboBoxSuggestion();
 
         productDetailDialog.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -607,32 +657,10 @@ public class SellPanel extends javax.swing.JPanel {
         panelBarcodeContainer.setBackground(new java.awt.Color(255, 255, 255));
         panelBarcodeContainer.setBorder(javax.swing.BorderFactory.createTitledBorder("Barcode"));
         panelBarcodeContainer.setPreferredSize(new java.awt.Dimension(0, 10));
+        panelBarcodeContainer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout panelBarcodeLayout = new javax.swing.GroupLayout(panelBarcode);
-        panelBarcode.setLayout(panelBarcodeLayout);
-        panelBarcodeLayout.setHorizontalGroup(
-            panelBarcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-        panelBarcodeLayout.setVerticalGroup(
-            panelBarcodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout panelBarcodeContainerLayout = new javax.swing.GroupLayout(panelBarcodeContainer);
-        panelBarcodeContainer.setLayout(panelBarcodeContainerLayout);
-        panelBarcodeContainerLayout.setHorizontalGroup(
-            panelBarcodeContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBarcodeContainerLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(panelBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        panelBarcodeContainerLayout.setVerticalGroup(
-            panelBarcodeContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBarcodeContainerLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(panelBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        panelBarcode.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelBarcodeContainer.add(panelBarcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 240, 210));
 
         panelCart.setBackground(new java.awt.Color(255, 255, 255));
         panelCart.setBorder(javax.swing.BorderFactory.createTitledBorder("Giỏ Hàng"));
@@ -648,6 +676,12 @@ public class SellPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblDisplayCart.setRowHeight(35);
+        tblDisplayCart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDisplayCartMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblDisplayCart);
 
         btnDeleteCart.setBackground(new java.awt.Color(23, 35, 51));
@@ -655,6 +689,14 @@ public class SellPanel extends javax.swing.JPanel {
         btnDeleteCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteCartActionPerformed(evt);
+            }
+        });
+
+        btnAddQuantity.setBackground(new java.awt.Color(23, 35, 51));
+        btnAddQuantity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/plus.png"))); // NOI18N
+        btnAddQuantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddQuantityActionPerformed(evt);
             }
         });
 
@@ -668,13 +710,17 @@ public class SellPanel extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCartLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAddQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDeleteCart, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
         panelCartLayout.setVerticalGroup(
             panelCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCartLayout.createSequentialGroup()
-                .addComponent(btnDeleteCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDeleteCart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -852,7 +898,9 @@ public class SellPanel extends javax.swing.JPanel {
         labelBankingError.setForeground(new java.awt.Color(255, 51, 0));
         labelBankingError.setPreferredSize(new java.awt.Dimension(0, 12));
 
-        cbbVoucher.setLabeText("Voucher");
+        txtTotalMoneyAfterMinus.setEditable(false);
+        txtTotalMoneyAfterMinus.setLabelText("Tổng Tiền Sau Giảm Giá");
+
         cbbVoucher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbVoucherActionPerformed(evt);
@@ -871,26 +919,27 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(panelPayLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtCodeOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-                                .addComponent(txtNameStaff, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCreateDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtTotalMoney, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbbTypePayment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbbVoucher, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtPayBack, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbbVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelPayLayout.createSequentialGroup()
-                                .addGap(3, 3, 3)
                                 .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtBanking, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCash, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(32, 32, 32)
-                        .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelBankingError, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelCashError, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelPayLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtCodeOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                                        .addComponent(txtNameStaff, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtCreateDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtTotalMoney, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbbTypePayment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtTotalMoneyAfterMinus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(panelPayLayout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
+                                        .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtBanking, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCash, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtPayBack, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(32, 32, 32)
+                                .addGroup(panelPayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelBankingError, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCashError, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelPayLayout.setVerticalGroup(
@@ -906,17 +955,19 @@ public class SellPanel extends javax.swing.JPanel {
                         .addComponent(labelBankingError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelPayLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCodeOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addComponent(txtNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCreateDate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTotalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
-                        .addComponent(cbbVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTotalMoneyAfterMinus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbbVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
                         .addComponent(cbbTypePayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)
                         .addComponent(txtCash, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -924,9 +975,9 @@ public class SellPanel extends javax.swing.JPanel {
                         .addComponent(txtBanking, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPayBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -954,7 +1005,7 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                            .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -978,7 +1029,10 @@ public class SellPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-
+        clearFormInforSell();
+        createOrder();
+        fillTableOrder(orderService.getAllOdersByStatus(1));
+        rdWaitPay.setSelected(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnChooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseActionPerformed
@@ -986,15 +1040,20 @@ public class SellPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChooseActionPerformed
 
     private void tblDisplayProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayProductMouseClicked
-        int row = tblDisplayProduct.getSelectedRow();
-        if (row >= 0) {
-            String nameProduct = (String) tblDisplayProduct.getValueAt(row, 2);
-            fillTableProductDetail(productDetailService.selectListDetailByNameProduct(nameProduct));
-            productDetailDialog = new JDialog(parentFrame);
-            productDetailDialog.getContentPane().add(panelProductDetail);
-            productDetailDialog.pack();
-            productDetailDialog.setLocationRelativeTo(null);
-            productDetailDialog.setVisible(true);
+        if (orderChose != null) {
+            int row = tblDisplayProduct.getSelectedRow();
+            if (row >= 0) {
+                String nameProduct = (String) tblDisplayProduct.getValueAt(row, 2);
+                fillTableProductDetail(productDetailService.selectListDetailByNameProduct(nameProduct));
+                productDetailDialog = new JDialog(parentFrame);
+                productDetailDialog.getContentPane().add(panelProductDetail);
+                productDetailDialog.pack();
+                productDetailDialog.setLocationRelativeTo(null);
+                productDetailDialog.setVisible(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui Lòng Chọn Hóa Đơn Trước");
+            tblDisplayProduct.clearSelection();
         }
 
     }//GEN-LAST:event_tblDisplayProductMouseClicked
@@ -1016,27 +1075,36 @@ public class SellPanel extends javax.swing.JPanel {
             if (chose == JOptionPane.YES_OPTION) {
                 String productDetailCode = (String) tblDisplayCart.getValueAt(row, 0);
                 ProductDetail productDetail = productDetailService.findByCode(productDetailCode);
+                int quantityInStore = productDetailService.getQuantityProductDetailByCode(productDetailCode);
+                int quantityInCart = sellService.getQuantityInCart(productDetailCode);
                 boolean res = sellService.deleteFromCart(productDetail.getId());
-                JOptionPane.showMessageDialog(parentFrame, "Xóa Thành Công");
-                fillTableCart(sellService.getAllListCart(this.orderChose.getCode()));
+                boolean resUpdateStore = productDetailService.updateQuantityInStore(productDetailCode, quantityInCart + quantityInStore);
+                if (res && resUpdateStore) {
+                    JOptionPane.showMessageDialog(parentFrame, "Xóa Thành Công");
+                    fillTableCart(sellService.getAllListCart(this.orderChose.getCode()));
+                    fillTableProduct(productService.getAllProductResponse());
+                    fillTableProductDetail(productDetailService.getAllListProducts());
+                    checkOrderTotalMoney(orderChose);
+                }
             }
 
         }
     }//GEN-LAST:event_btnDeleteCartActionPerformed
 
     private void rdPaiedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdPaiedActionPerformed
+        fillTableOrder(orderService.getAllOdersByStatus(2));
     }//GEN-LAST:event_rdPaiedActionPerformed
 
     private void rdWaitPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdWaitPayActionPerformed
-
+        fillTableOrder(orderService.getAllOdersByStatus(1));
     }//GEN-LAST:event_rdWaitPayActionPerformed
 
     private void rdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdCancelActionPerformed
-
+        fillTableOrder(orderService.getAllOdersByStatus(3));
     }//GEN-LAST:event_rdCancelActionPerformed
 
     private void rdAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdAllActionPerformed
-
+        fillTableOrder(orderService.getAllOrderView());
     }//GEN-LAST:event_rdAllActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
@@ -1095,10 +1163,6 @@ public class SellPanel extends javax.swing.JPanel {
         setKhachHangBanLe();
     }//GEN-LAST:event_btnChoose1ActionPerformed
 
-    private void cbbVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbVoucherActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbVoucherActionPerformed
-
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         fillTableProduct(productService.getAllProductResponse());
         fillTableProductDetail(productDetailService.getAllListProducts());
@@ -1108,12 +1172,22 @@ public class SellPanel extends javax.swing.JPanel {
         int row = tblDisplayProductDetail.getSelectedRow();
         if (row >= 0) {
             String productDetailCode = (String) tblDisplayProductDetail.getValueAt(row, 1);
+            int quantityInUse = productDetailService.getQuantityProductDetailByCode(productDetailCode);
             ProductDetail productDetail = productDetailService.findByCode(productDetailCode);
+//            OrderDetail orderDetail = 
             String quantity = JOptionPane.showInputDialog("Nhập Vào Số Lượng");
             int quantityOrderDetail = 0;
+            boolean resUpdateQuantity = false;
             if (!quantity.isEmpty()) {
                 try {
                     quantityOrderDetail = Integer.parseInt(quantity);
+                    if (quantityOrderDetail > quantityInUse) {
+                        JOptionPane.showMessageDialog(this, "Só Lượng Bán Đang Lớn Hơn Số Lượng Tồn");
+                        return;
+                    } else {
+                        int quantityNew = quantityInUse - quantityOrderDetail;
+                        resUpdateQuantity = productDetailService.updateQuantityInStore(productDetailCode, quantityNew);
+                    }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, "Số Lượng Phải Là Số");
                 }
@@ -1124,10 +1198,13 @@ public class SellPanel extends javax.swing.JPanel {
                 orderDetail.setQuantity(quantityOrderDetail);
                 orderDetail.setTotalMoney(productDetail.getSellPrice() * quantityOrderDetail);
                 boolean res = sellService.addToCart(orderDetail);
-                if (res) {
+                if (res || resUpdateQuantity) {
                     JOptionPane.showMessageDialog(this, "Thêm Thành Công");
                     productDetailDialog.dispose();
                     fillTableCart(sellService.getAllListCart(orderChose.getCode()));
+                    fillTableProduct(productService.getAllProductResponse());
+                    fillTableProductDetail(productDetailService.getAllListProducts());
+                    checkOrderTotalMoney(orderChose);
                 } else {
                     JOptionPane.showMessageDialog(this, "Đã Xảy ra Lỗi");
                 }
@@ -1135,9 +1212,31 @@ public class SellPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblDisplayProductDetailMouseClicked
 
+    private void tblDisplayCartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayCartMouseClicked
+        this.btnAddQuantity.setVisible(true);
+    }//GEN-LAST:event_tblDisplayCartMouseClicked
+
+    private void btnAddQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddQuantityActionPerformed
+        int row = tblDisplayCart.getSelectedRow();
+        if (row >= 0) {
+
+        }
+    }//GEN-LAST:event_btnAddQuantityActionPerformed
+
+    private void cbbVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbVoucherActionPerformed
+        String codeVoucher = (String) cbbVoucher.getSelectedItem();
+        if (!codeVoucher.equals("Chọn Voucher")) {
+            Voucher voucherchose = voucherService.findByCode(codeVoucher);
+            this.voucher = voucherchose;
+            checkTotalMoney();
+        }
+
+    }//GEN-LAST:event_cbbVoucherActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.Button btnAdd;
+    private app.view.swing.Button btnAddQuantity;
     private app.view.swing.Button btnChoose;
     private app.view.swing.Button btnChoose1;
     private app.view.swing.Button btnDeleteCart;
@@ -1145,7 +1244,7 @@ public class SellPanel extends javax.swing.JPanel {
     private app.view.swing.Button btnPay;
     private app.view.swing.MyButton btnRefresh;
     private app.view.swing.Combobox cbbTypePayment;
-    private app.view.swing.Combobox cbbVoucher;
+    private app.view.swing.ComboBoxSuggestion cbbVoucher;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1181,5 +1280,6 @@ public class SellPanel extends javax.swing.JPanel {
     private app.view.swing.TextField txtSearchCodeProductDetail;
     private app.view.swing.TextField txtSearchProduct;
     private app.view.swing.TextField txtTotalMoney;
+    private app.view.swing.TextField txtTotalMoneyAfterMinus;
     // End of variables declaration//GEN-END:variables
 }

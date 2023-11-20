@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class OrderRepository {
 
+    private final OrderDetailRepository orderDetailRepository = new OrderDetailRepository();
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -115,7 +116,7 @@ public class OrderRepository {
                 order.setNameCustomer(rs.getString(2));
                 order.setNameEmployee(rs.getString(3));
                 order.setPhoneNumber(rs.getString(4));
-                order.setTotalMoney(rs.getDouble(5));
+                order.setTotalMoney(orderDetailRepository.getTotalMoneyOrder(rs.getString(1)));
                 order.setCreateDate(rs.getString(6));
                 order.setStatus(rs.getInt(7));
                 listOrderPagnation.add(order);
@@ -161,7 +162,7 @@ public class OrderRepository {
                 order.setNameCustomer(rs.getString(2));
                 order.setNameEmployee(rs.getString(3));
                 order.setPhoneNumber(rs.getString(4));
-                order.setTotalMoney(rs.getDouble(5));
+                order.setTotalMoney(orderDetailRepository.getTotalMoneyOrder(rs.getString(1)));
                 order.setCreateDate(rs.getString(6));
                 order.setStatus(rs.getInt(7));
                 listOrderPagnation.add(order);
@@ -214,7 +215,7 @@ public class OrderRepository {
                      WHERE
                      	O.STATUS = ?
                      ORDER BY
-                     	O.ID
+                     	O.ID DESC
                      """;
         try {
             con = DBConnector.getConnection();
@@ -227,7 +228,7 @@ public class OrderRepository {
                 order.setNameCustomer(rs.getString(2));
                 order.setNameEmployee(rs.getString(3));
                 order.setPhoneNumber(rs.getString(4));
-                order.setTotalMoney(rs.getDouble(5));
+                order.setTotalMoney(orderDetailRepository.getTotalMoneyOrder(rs.getString(1)));
                 order.setCreateDate(rs.getString(6));
                 order.setStatus(rs.getInt(7));
                 listOrderResponse.add(order);
@@ -303,6 +304,23 @@ public class OrderRepository {
             ps = con.prepareStatement(sql);
             ps.setObject(1, deleted);
             ps.setObject(2, id);
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateCustomerForOrder(int idCustomer, String phoneNumber, String orderCode) {
+        String sql = """
+                     UPDATE ORDERS SET ID_CUSTOMER  = ?, PHONE_NUMBER = ? WHERE CODE = ?
+                     """;
+        try {
+            con = DBConnector.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setObject(1, idCustomer);
+            ps.setObject(2, phoneNumber);
+            ps.setObject(3, orderCode);
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

@@ -224,4 +224,65 @@ public class OrderDetailRepository {
         }
     }
 
+    public int getQuantityByProductDetailCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT od.QUANTITY
+                         FROM N3STORESNEAKER.dbo.ORDER_DETAIL od
+                         JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd on od.ID_PRODUCT_DETAIl = pd.ID 
+                         WHERE pd.CODE = ? ;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, code);
+            int quantity = 0;
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                quantity = rs.getInt(1);
+                return quantity;
+            }
+            return quantity;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public Double getTotalMoneyOrder(String orderCode) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT SUM(od.TOTAL_MONEY) 
+                         FROM N3STORESNEAKER.dbo.ORDER_DETAIL od 
+                         LEFT JOIN N3STORESNEAKER.dbo.ORDERS o on od.ID_ORDER = o.ID 
+                         WHERE o.CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, orderCode);
+            Double totalMoney = null;
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                totalMoney = rs.getDouble(1);
+            }
+            return totalMoney;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public int updateQuantityById(int quantity, int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.ORDER_DETAIL
+                         SET QUANTITY = ?
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, quantity);
+            stm.setObject(2, id);
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }

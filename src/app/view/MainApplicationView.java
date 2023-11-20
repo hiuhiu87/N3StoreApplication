@@ -538,8 +538,8 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
 

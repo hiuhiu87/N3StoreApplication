@@ -28,6 +28,6 @@ public class OrderDetailService {
     public int countOderDetail() {
         return oderDetailRepository.countOderDetail();
     }
-    
+   
     
 }

@@ -245,4 +245,35 @@ public class VoucherService implements VoucherInterface {
         return null;
     }
 
+    public Voucher findByCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, CODE, QUANTITY, START_DATE, END_DATE, MIN_VALUE_CONDITION, [TYPE], VALUE, MAX_VALUE, DELETED
+                         FROM N3STORESNEAKER.dbo.VOUCHER
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, code);
+            Voucher voucher = new Voucher();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                voucher.setId(rs.getInt(1));
+                voucher.setTen(rs.getString(2));
+                voucher.setCode(rs.getString(3));
+                voucher.setQuantity(rs.getInt(4));
+                voucher.setStart_Date(rs.getDate(5));
+                voucher.setEnd_Date(rs.getDate(6));
+                voucher.setMin_values_condition(rs.getInt(7));
+                voucher.setType(rs.getString(8));
+                voucher.setValues(rs.getFloat(9));
+                voucher.setMax_values(rs.getFloat(10));
+                voucher.setDeleted(rs.getInt(11));
+            }
+            return voucher;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

@@ -65,4 +65,20 @@ public class SellService {
         return orderDetailRepository.deleteOrderDetail(productDetailCode) > 0;
     }
 
+    public int getQuantityInCart(String code) {
+        return orderDetailRepository.getQuantityByProductDetailCode(code);
+    }
+
+    public Double getTotalMoney(String orderCode) {
+        return orderDetailRepository.getTotalMoneyOrder(orderCode);
+    }
+
+    public boolean updateQuantityById(int quantity, int id) {
+        return orderDetailRepository.updateQuantityById(quantity, id) > 0;
+    }
+
+    public boolean updateCustomerForOrder(int idCustomer, String phoneNumber, String orderCode) {
+        return orderRepository.updateCustomerForOrder(idCustomer, phoneNumber, orderCode) > 0;
+    }
+
 }
