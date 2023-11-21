@@ -154,7 +154,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        --------------------
+//      --------------------
         String min_values_condition = txtDKGiaTriMin.getText().trim();
         if (min_values_condition.isEmpty()) {
             JOptionPane.showMessageDialog(this
@@ -175,7 +175,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             return null;
         }
 
-        //-----------------
+//      -----------------
         if (type.equals("Percentage")) {
             if (Integer.parseInt(values) > 100) {
                 JOptionPane.showMessageDialog(this
@@ -601,7 +601,6 @@ public class DiscountPanel extends javax.swing.JPanel {
             int row = tbHienthiVoucher.getSelectedRow();
             int column = 2;
             String pasd = tbHienthiVoucher.getValueAt(row, column).toString();
-            String name = txtTimKiem.getText();
             Voucher v = vcs.getList(pasd).get(row);
             if (vcs.remove(v) > 0) {
                 loadDataTablePhanTrang(1);
@@ -644,11 +643,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtGiaTri.setText(tbHienthiVoucher.getValueAt(row, 8).toString());
         txtGiaTriMax.setText(tbHienthiVoucher.getValueAt(row, 9).toString());
         String deleted = tbHienthiVoucher.getValueAt(row, 10).toString();
-//        if (deleted.equals("Hoạt động")) {
-//            rdHoatDong.setSelected(true);
-//        } else {
-//            rdHetHan.setSelected(true);
-//        }
     }//GEN-LAST:event_tbHienthiVoucherMouseClicked
 
     private void txtTimKiemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimKiemCaretUpdate
