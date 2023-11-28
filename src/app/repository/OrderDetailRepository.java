@@ -139,6 +139,10 @@ public class OrderDetailRepository {
                          SELECT
                          	pd.CODE,
                          	p.NAME,
+                         	s.NAME,
+                         	m.NAME,
+                         	c.NAME,
+                         	s2.NAME, 
                          	pd.SELL_PRICE,
                          	od.QUANTITY,
                          	od.TOTAL_MONEY
@@ -148,8 +152,14 @@ public class OrderDetailRepository {
                          	od.ID_PRODUCT_DETAIl = pd.ID
                          JOIN N3STORESNEAKER.dbo.PRODUCT p on
                          	pd.ID_PRODUCT = p.ID
-                         JOIN N3STORESNEAKER.dbo.ORDERS o on od.ID_ORDER = o.ID 
-                         WHERE o.CODE = ?;
+                         JOIN N3STORESNEAKER.dbo.ORDERS o on
+                         	od.ID_ORDER = o.ID
+                         JOIN N3STORESNEAKER.dbo.[SIZE] s on pd.ID_SIZE = s.ID 
+                         JOIN N3STORESNEAKER.dbo.MATERIAL m on pd.ID_MATERIAL = m.ID 
+                         JOIN N3STORESNEAKER.dbo.COLOR c on pd.ID_COLOR = c.ID 
+                         JOIN N3STORESNEAKER.dbo.SOLE s2 on pd.ID_SOLE = s2.ID 
+                         WHERE
+                         	o.CODE = ?;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, orderCode);
@@ -158,9 +168,13 @@ public class OrderDetailRepository {
                 CartResponse cartResponse = new CartResponse();
                 cartResponse.setProductDetailCode(rs.getString(1));
                 cartResponse.setNameProduct(rs.getString(2));
-                cartResponse.setPrice(rs.getDouble(3));
-                cartResponse.setQuantity(rs.getInt(4));
-                cartResponse.setTotaMoney(rs.getDouble(5));
+                cartResponse.setNameSize(rs.getString(3));
+                cartResponse.setNameMaterial(rs.getString(4));
+                cartResponse.setNameColor(rs.getString(5));
+                cartResponse.setNameSole(rs.getString(6));
+                cartResponse.setPrice(rs.getDouble(7));
+                cartResponse.setQuantity(rs.getInt(8));
+                cartResponse.setTotaMoney(rs.getDouble(9));
                 cartResponses.add(cartResponse);
             }
             return cartResponses;
@@ -230,7 +244,7 @@ public class OrderDetailRepository {
                          SELECT od.QUANTITY
                          FROM N3STORESNEAKER.dbo.ORDER_DETAIL od
                          JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd on od.ID_PRODUCT_DETAIl = pd.ID 
-                         WHERE pd.CODE = ? ;
+                         WHERE pd.CODE = ?;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, code);
@@ -279,6 +293,49 @@ public class OrderDetailRepository {
             stm.setObject(2, id);
             int res = stm.executeUpdate();
             return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateQuantityInCart(String orderCode, String productDetailCode, int quantity) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE od
+                         SET od.QUANTITY = ?
+                         FROM N3STORESNEAKER.dbo.ORDER_DETAIL od
+                         JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd ON od.ID_PRODUCT_DETAIL = pd.ID
+                         JOIN N3STORESNEAKER.dbo.ORDERS o ON od.ID_ORDER = o.ID
+                         WHERE pd.CODE = ?
+                         AND o.CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, quantity);
+            stm.setObject(2, productDetailCode);
+            stm.setObject(3, orderCode);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int getQuantityOrderDetail(String orderCode, String productDetailCode) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         select od.QUANTITY  FROM N3STORESNEAKER.dbo.ORDER_DETAIL od 
+                            join N3STORESNEAKER.dbo.ORDERS o on od.ID_ORDER = o.ID 
+                            JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd on od.ID_PRODUCT_DETAIl = pd.ID 
+                            WHERE pd.CODE = ? and o.CODE = ?
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, productDetailCode);
+            stm.setObject(2, orderCode);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

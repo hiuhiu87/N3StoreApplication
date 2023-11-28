@@ -35,10 +35,14 @@ public class XGenerateQRCode {
             hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             generateQRcode(code, path, charset, hashMap, 200, 200);
             return true;
-//            System.out.println("QR Code created successfully.");
         } catch (WriterException | IOException e) {
             return false;
         }
 
     }
+    
+    public static void main(String[] args) {
+        XGenerateQRCode.doGenerate("CTSP1", "Cai Gì day");
+    }
+    
 }

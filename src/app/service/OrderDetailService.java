@@ -28,6 +28,9 @@ public class OrderDetailService {
     public int countOderDetail() {
         return oderDetailRepository.countOderDetail();
     }
-   
-    
+
+    public int getQuantityOrderDetail(String orderCode, String productDetailCode) {
+        return oderDetailRepository.getQuantityOrderDetail(orderCode, productDetailCode);
+    }
+
 }

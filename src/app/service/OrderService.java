@@ -48,4 +48,12 @@ public class OrderService {
         return oderRepository.findByCode(code);
     }
 
+    public boolean updateTotalMoney(Double totalMoney, Integer orderId) {
+        return oderRepository.updateTotalMoneyOrder(totalMoney, orderId) > 0;
+    }
+
+    public boolean payOrder(String paymentMethod, Double customerMoney, Integer orderId) {
+        return oderRepository.payOrder(paymentMethod, customerMoney, orderId) > 0;
+    }
+
 }

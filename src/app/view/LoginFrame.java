@@ -45,7 +45,6 @@ public class LoginFrame extends javax.swing.JFrame {
 
         pswAccount.setForeground(new java.awt.Color(255, 255, 255));
         pswAccount.setHint("Mật Khẩu");
-        pswAccount.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/lock.png"))); // NOI18N
 
         labelTitle.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         labelTitle.setForeground(new java.awt.Color(23, 44, 76));
@@ -66,7 +65,6 @@ public class LoginFrame extends javax.swing.JFrame {
 
         txtAccount.setForeground(new java.awt.Color(255, 255, 255));
         txtAccount.setHint("Tài Khoản");
-        txtAccount.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/email.png"))); // NOI18N
 
         labelEmailError.setForeground(new java.awt.Color(255, 0, 0));
         labelEmailError.setPreferredSize(new java.awt.Dimension(0, 15));

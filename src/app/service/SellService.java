@@ -81,4 +81,12 @@ public class SellService {
         return orderRepository.updateCustomerForOrder(idCustomer, phoneNumber, orderCode) > 0;
     }
 
+    public int getQuantityInCartOfExistProductDetail(String productDetailCode, String orderCode) {
+        return sellRepository.checkProductDetailInOrderDetail(productDetailCode, orderCode);
+    }
+
+    public boolean updateQuantityInCart(String orderCode, String productDetailCode, int quantity) {
+        return orderDetailRepository.updateQuantityInCart(orderCode, productDetailCode, quantity) > 0;
+    }
+
 }

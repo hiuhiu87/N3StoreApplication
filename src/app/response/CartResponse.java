@@ -14,6 +14,14 @@ public class CartResponse {
 
     private String nameProduct;
 
+    private String nameSize;
+
+    private String nameMaterial;
+
+    private String nameColor;
+
+    private String nameSole;
+
     private Double price;
 
     private Integer quantity;
@@ -23,9 +31,13 @@ public class CartResponse {
     public CartResponse() {
     }
 
-    public CartResponse(String productDetailCode, String nameProduct, Double price, Integer quantity, Double totaMoney) {
+    public CartResponse(String productDetailCode, String nameProduct, String naméize, String nameMaterial, String nameColor, String nameSole, Double price, Integer quantity, Double totaMoney) {
         this.productDetailCode = productDetailCode;
         this.nameProduct = nameProduct;
+        this.nameSize = naméize;
+        this.nameMaterial = nameMaterial;
+        this.nameColor = nameColor;
+        this.nameSole = nameSole;
         this.price = price;
         this.quantity = quantity;
         this.totaMoney = totaMoney;
@@ -45,6 +57,38 @@ public class CartResponse {
 
     public void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
+    }
+
+    public String getNameSize() {
+        return nameSize;
+    }
+
+    public void setNameSize(String nameSize) {
+        this.nameSize = nameSize;
+    }
+
+    public String getNameMaterial() {
+        return nameMaterial;
+    }
+
+    public void setNameMaterial(String nameMaterial) {
+        this.nameMaterial = nameMaterial;
+    }
+
+    public String getNameColor() {
+        return nameColor;
+    }
+
+    public void setNameColor(String nameColor) {
+        this.nameColor = nameColor;
+    }
+
+    public String getNameSole() {
+        return nameSole;
+    }
+
+    public void setNameSole(String nameSole) {
+        this.nameSole = nameSole;
     }
 
     public Double getPrice() {

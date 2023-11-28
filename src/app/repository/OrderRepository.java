@@ -478,4 +478,37 @@ public class OrderRepository {
         }
     }
 
+    public int updateTotalMoneyOrder(Double totalMoney, Integer orderId) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.ORDERS
+                         SET TOTAL_MONEY = ?
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, totalMoney);
+            stm.setObject(2, orderId);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int payOrder(String paymentMethod, Double customerMoney, Integer orderId) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.ORDERS
+                         SET PAYMENT_METHOD = ?, STATUS = 2, CUSTOMERMONEY= ?
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, paymentMethod);
+            stm.setObject(2, customerMoney);
+            stm.setObject(3, orderId);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
 }
