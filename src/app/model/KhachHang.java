@@ -20,6 +20,7 @@ public class KhachHang {
     private String address;
     private Date birthDate;
     private boolean deleted;
+    private String code;
 
     public KhachHang() {
     }
@@ -67,6 +68,26 @@ public class KhachHang {
         this.birthDate = birthDate;
     }
 
+    public KhachHang(int id, String fullName, String email, boolean gender, String phoneNumber, String address, Date birthDate, boolean deleted, String code) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.birthDate = birthDate;
+        this.deleted = deleted;
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
     public boolean isGender() {
         return gender;
     }

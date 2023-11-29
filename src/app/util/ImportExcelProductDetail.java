@@ -39,7 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author HP
  */
-public class ImportExcelCTSP {
+public class ImportExcelProductDetail {
 
     private final ProductDetailRepository productDetailRepository = new ProductDetailRepository();
     ;
@@ -73,7 +73,6 @@ public class ImportExcelCTSP {
             addDataInMapDG(mapDG);
             while (iterator.hasNext()) {
                 Row currentRow = iterator.next();
-
                 String sanPhamStr = String.valueOf(getCellValue(currentRow.getCell(1))).trim();
                 String mauSacStr = String.valueOf(getCellValue(currentRow.getCell(2))).trim();
                 String tenkichThuoc = String.valueOf(getCellValue(currentRow.getCell(3))).trim();
@@ -81,8 +80,8 @@ public class ImportExcelCTSP {
                 String deGiayStr = String.valueOf(getCellValue(currentRow.getCell(5))).trim();
                 String moTa = String.valueOf(getCellValue(currentRow.getCell(6))).trim();
                 String soLuongTon = String.valueOf(getCellValue(currentRow.getCell(7))).trim();
-                String giaNhap = String.valueOf(getCellValue(currentRow.getCell(8))).trim();
-                String giaBan = String.valueOf(getCellValue(currentRow.getCell(9))).trim();
+                String giaNhap = String.valueOf(getCellValue(currentRow.getCell(9))).trim();
+                String giaBan = String.valueOf(getCellValue(currentRow.getCell(8))).trim();
                 if (mauSacStr.isEmpty() && sanPhamStr.isEmpty() && tenkichThuoc.isEmpty()
                         && chatLieuStr.isEmpty() && moTa.isEmpty() && soLuongTon.isEmpty() && giaNhap.isEmpty() && giaBan.isEmpty() && deGiayStr.isEmpty()) {
                     continue;

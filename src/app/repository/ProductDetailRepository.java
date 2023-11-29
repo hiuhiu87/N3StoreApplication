@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -89,7 +89,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         }
     }
 
-    
     public List<ProductDetailResponse> getAllViewsPagnation(int offset, int limit) {
         List<ProductDetailResponse> productDetailResponses = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
@@ -146,7 +145,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             return null;
         }
     }
-    
+
     public List<ProductDetailResponse> getAllViewsPagnationWithNameProduct(int offset, int limit, String nameProduct) {
         List<ProductDetailResponse> productDetailResponses = new ArrayList<>();
         try (Connection con = DBConnector.getConnection()) {
@@ -206,7 +205,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             return null;
         }
     }
-    
+
     @Override
     public int add(ProductDetail t) {
         try (Connection con = DBConnector.getConnection()) {
@@ -277,7 +276,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
 //            return 0;
 //        }
 //    }
-    
     public int addAll(List<ProductDetail> productList) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -326,7 +324,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         }
     }
 
-
     @Override
     public int update(Integer id, ProductDetail t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -364,12 +361,10 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Trả về null nếu không tìm thấy sản phẩm
         return null;
     }
-    
-    public List<ProductDetailResponse> findListByNameProduct(String nameProduct){
+
+    public List<ProductDetailResponse> findListByNameProduct(String nameProduct) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          SELECT
@@ -404,7 +399,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             List<ProductDetailResponse> productDetaisl = new ArrayList<>();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-               ProductDetailResponse detailResponse = new ProductDetailResponse();
+                ProductDetailResponse detailResponse = new ProductDetailResponse();
                 detailResponse.setCode(rs.getString(1));
                 detailResponse.setProduct(rs.getString(2));
                 detailResponse.setSize(rs.getString(3));
@@ -423,7 +418,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         }
         return null;
     }
-    
+
     public int countProductRecord() {
         String sql = """
                    SELECT COUNT(*) FROM PRODUCT_DETAIL
@@ -442,7 +437,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             return 0;
         }
     }
-    
+
     public int countProductRecordWithNameProduct(Integer productId) {
         String sql = """
                    SELECT COUNT(*) FROM PRODUCT_DETAIL
@@ -614,7 +609,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         }
         return 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
     }
-    
+
     public static void main(String[] args) {
         String code = new ProductDetailRepository().generateNextModelCode();
         int num = new ProductDetailRepository().generateNextModelCodeNumber();
@@ -654,7 +649,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             }
         }
     }
-    
+
     public int updateStatus(String code) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -678,6 +673,43 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int getQuantityProductDetailByCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT QUANTITY 
+                         FROM N3STORESNEAKER.dbo.PRODUCT_DETAIL pd 
+                         WHERE pd.CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, code);
+            int quantity = 0;
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                quantity = rs.getInt(1);
+            }
+            return quantity;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int updateQuantity(String code, int quantity) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                         SET QUANTITY = ?
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, quantity);
+            stm.setObject(2, code);
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
             return 0;
         }
     }

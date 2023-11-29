@@ -4,6 +4,12 @@
  */
 package app.view;
 
+import app.view.propertiesproductview.SoleDialog;
+import app.view.propertiesproductview.SizeDialog;
+import app.view.propertiesproductview.MaterialDialog;
+import app.view.propertiesproductview.CompanyDialog;
+import app.view.propertiesproductview.ColorDialog;
+import app.view.propertiesproductview.CategoryDialog;
 import app.model.Category;
 import app.model.Color;
 import app.model.Company;
@@ -25,7 +31,7 @@ import app.service.ProductService;
 import app.service.SizeService;
 import app.service.SoleService;
 import app.util.DownloadProductDetailTemplate;
-import app.util.ImportExcelCTSP;
+import app.util.ImportExcelProductDetail;
 import app.util.XFileExcel;
 import app.util.XGenerateQRCode;
 import app.view.swing.Combobox;
@@ -284,7 +290,7 @@ public class ProductPanel extends javax.swing.JPanel {
             }
         }
     }
-    
+
     private void fillTableProductDetailAll(List<ProductDetailResponse> list) {
         if (list != null) {
             int stt = 0;
@@ -332,7 +338,7 @@ public class ProductPanel extends javax.swing.JPanel {
         tableModelProductDetail.addColumn("Số Lượng Tồn");
         tableModelProductDetail.addColumn("Trạng Thái");
     }
-    
+
     private void addColumnTableProductDetailAll() {
         tableModelProductDetailAll.addColumn("STT");
         tableModelProductDetailAll.addColumn("Mã CTSP");
@@ -826,50 +832,27 @@ public class ProductPanel extends javax.swing.JPanel {
                                     .addComponent(txtQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addGap(77, 77, 77)
                 .addComponent(panelAtribute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFunctionLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addGap(12, 12, 12)
                         .addComponent(labelPriceOutError, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelFunctionLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUpdateDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAddDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(911, 911, 911)
+                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(901, 901, 901)
                 .addComponent(labelQuantityError, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelFunctionLayout.setVerticalGroup(
             panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
-                        .addComponent(labelQuantityError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
-                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAddDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnUpdateDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelPriceOutError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49))))
             .addGroup(panelFunctionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAtribute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(panelFunctionLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -893,6 +876,27 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
+                        .addComponent(labelQuantityError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFunctionLayout.createSequentialGroup()
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateDetailProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelPriceOutError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
 
         tblDisplayPrdDetail.setModel(new javax.swing.table.DefaultTableModel(
@@ -923,7 +927,7 @@ public class ProductPanel extends javax.swing.JPanel {
                             .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, 1158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2)))
                     .addGroup(panelDetailProductLayout.createSequentialGroup()
-                        .addGap(512, 512, 512)
+                        .addGap(516, 516, 516)
                         .addComponent(paginationProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
@@ -931,12 +935,12 @@ public class ProductPanel extends javax.swing.JPanel {
             panelDetailProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDetailProductLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addComponent(panelFunction, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paginationProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout productDetailDialogLayout = new javax.swing.GroupLayout(productDetailDialog.getContentPane());
@@ -952,7 +956,7 @@ public class ProductPanel extends javax.swing.JPanel {
         );
         productDetailDialogLayout.setVerticalGroup(
             productDetailDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 809, Short.MAX_VALUE)
+            .addGap(0, 750, Short.MAX_VALUE)
             .addGroup(productDetailDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(productDetailDialogLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1344,7 +1348,7 @@ public class ProductPanel extends javax.swing.JPanel {
             if (file == null) {
                 return;
             }
-            ImportExcelCTSP excelCTSP = new ImportExcelCTSP();
+            ImportExcelProductDetail excelCTSP = new ImportExcelProductDetail();
             excelCTSP.ImportFile(file.getAbsolutePath());
             loadDataProductDetails(1);
             loadDataProducts(1);
@@ -1533,6 +1537,7 @@ public class ProductPanel extends javax.swing.JPanel {
     private void tblProductDisplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductDisplayMouseClicked
         int row = tblProductDisplay.getSelectedRow();
         if (row >= 0) {
+            String status = (String) tblProductDisplay.getValueAt(row, 6);
             nameProduct = (String) tblProductDisplay.getValueAt(row, 2);
             btnShowDetail.setVisible(true);
         }
@@ -1561,7 +1566,7 @@ public class ProductPanel extends javax.swing.JPanel {
             if (file == null) {
                 return;
             }
-            ImportExcelCTSP excelCTSP = new ImportExcelCTSP();
+            ImportExcelProductDetail excelCTSP = new ImportExcelProductDetail();
             excelCTSP.ImportFile(file.getAbsolutePath());
             loadDataProductDetails(1);
             loadDataProducts(1);
@@ -1571,7 +1576,7 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnImport1ActionPerformed
 
     private void btnDownload1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownload1ActionPerformed
-          boolean res = DownloadProductDetailTemplate.ImportExcel();
+        boolean res = DownloadProductDetailTemplate.ImportExcel();
         if (res) {
             JOptionPane.showMessageDialog(this, "Tải Mẫu Excel Thành Công");
         } else {

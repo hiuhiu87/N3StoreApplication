@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package app.view;
+package app.view.propertiesproductview;
 
-import app.model.Company;
 import app.model.Material;
-import app.service.MaterialService;
+import app.model.Size;
+import app.service.SizeService;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +15,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class MaterialDialog extends javax.swing.JDialog {
+public class SizeDialog extends javax.swing.JDialog {
 
-    private final MaterialService materialService = new MaterialService();
-    private DefaultTableModel tableModelMaterial;
+    private final SizeService sizeService = new SizeService();
+    private DefaultTableModel tableModelSize;
 
     /**
      * Creates new form ColorDialog
@@ -26,32 +26,32 @@ public class MaterialDialog extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public MaterialDialog(java.awt.Frame parent, boolean modal) {
+    public SizeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tableModelMaterial = new DefaultTableModel();
-        tblDisplay.setModel(tableModelMaterial);
+        tableModelSize = new DefaultTableModel();
+        tblDisplay.setModel(tableModelSize);
         addColumTable();
-        fillTable(materialService.getAllMaterials());
+        fillTable(sizeService.getAllSizes());
     }
 
     private void addColumTable() {
-        tableModelMaterial.addColumn("STT");
-        tableModelMaterial.addColumn("Tên");
-        tableModelMaterial.addColumn("Trạng Thái");
+        tableModelSize.addColumn("STT");
+        tableModelSize.addColumn("Tên");
+        tableModelSize.addColumn("Trạng Thái");
     }
 
-    private void fillTable(List<Material> list) {
+    private void fillTable(List<Size> list) {
         int stt = 0;
-        tableModelMaterial.setRowCount(0);
-        for (Material material : list) {
+        tableModelSize.setRowCount(0);
+        for (Size size : list) {
             stt++;
             Object[] row = {
                 stt,
-                material.getName(),
-                material.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
+                size.getName(),
+                size.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
             };
-            tableModelMaterial.addRow(row);
+            tableModelSize.addRow(row);
         }
     }
 
@@ -64,18 +64,18 @@ public class MaterialDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtNameCMaterial = new app.view.swing.TextField();
+        txtNameSize = new app.view.swing.TextField();
         panelFunction = new javax.swing.JPanel();
         btnAdd = new app.view.swing.ButtonOutLine();
         btnUpdate = new app.view.swing.ButtonOutLine();
         btnExit = new app.view.swing.ButtonOutLine();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplay = new javax.swing.JTable();
-        labelNameCpuError = new javax.swing.JLabel();
+        labelNameCompanyError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        txtNameCMaterial.setLabelText("Tên Chất Liệu");
+        txtNameSize.setLabelText("Tên Size");
 
         panelFunction.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức Năng"));
 
@@ -137,7 +137,7 @@ public class MaterialDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tblDisplay);
 
-        labelNameCpuError.setForeground(new java.awt.Color(255, 51, 102));
+        labelNameCompanyError.setForeground(new java.awt.Color(255, 51, 102));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,8 +153,8 @@ public class MaterialDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(labelNameCpuError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(labelNameCompanyError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtNameSize, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -165,9 +165,9 @@ public class MaterialDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNameSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelNameCpuError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelNameCompanyError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -181,32 +181,32 @@ public class MaterialDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtNameCMaterial.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tên Chất Liệu Không Được Để Trống");
+        if (txtNameSize.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên Kích Cỡ Không Được Để Trống");
         } else {
-            String nameCompany = txtNameCMaterial.getText();
-            Material material = new Material();
-            material.setName(nameCompany);
-            String result = materialService.addMaterail(material);
+            String nameCompany = txtNameSize.getText();
+            Size size = new Size();
+            size.setName(nameCompany);
+            String result = sizeService.addSize(size);
             JOptionPane.showMessageDialog(this, result);
-            fillTable(materialService.getAllMaterials());
+            fillTable(sizeService.getAllSizes());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        int row = tblDisplay.getSelectedRow();
+       int row = tblDisplay.getSelectedRow();
         if (row >= 0) {
             int column = 1;
             String nameCategory = (String) tblDisplay.getValueAt(row, column);
-            boolean res = materialService.changeStatus(nameCategory);
+            boolean res = sizeService.changeStatus(nameCategory);
             if (res) {
                 JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
-                fillTable(materialService.getAllMaterials());
+                fillTable(sizeService.getAllSizes());
             } else {
                 JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Chất Liệu");
+            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Thương Hiệu");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -231,20 +231,20 @@ public class MaterialDialog extends javax.swing.JDialog {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(SizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                MaterialDialog dialog = new MaterialDialog(new javax.swing.JFrame(), true);
+//                SizeDialog dialog = new SizeDialog(new javax.swing.JFrame(), true);
 //                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 //                    @Override
 //                    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -261,10 +261,10 @@ public class MaterialDialog extends javax.swing.JDialog {
     private app.view.swing.ButtonOutLine btnExit;
     private app.view.swing.ButtonOutLine btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelNameCpuError;
+    private javax.swing.JLabel labelNameCompanyError;
     private javax.swing.JPanel panelFunction;
     private javax.swing.JTable tblDisplay;
-    private app.view.swing.TextField txtNameCMaterial;
+    private app.view.swing.TextField txtNameSize;
     // End of variables declaration//GEN-END:variables
 
 }

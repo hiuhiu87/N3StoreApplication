@@ -40,12 +40,12 @@ public class SellRepository {
             while (rs.next()) {
                 KhachHang khachHang = new KhachHang(
                         rs.getInt(1),
-                         rs.getString(2),
-                         rs.getString(3),
-                         rs.getBoolean(4),
-                         rs.getBoolean(5),
-                         rs.getString(6),
-                         rs.getString(7)
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getBoolean(4),
+                        rs.getBoolean(5),
+                        rs.getString(6),
+                        rs.getString(7)
                 );
                 listKhachHang.add(khachHang);
             }
@@ -85,8 +85,8 @@ public class SellRepository {
             return 0;
         }
     }
-    
-    public int updateKhachHang (KhachHang kh , int id){
+
+    public int updateKhachHang(KhachHang kh, int id) {
         String sql = """
                      UPDATE [dbo].[CUSTOMER]
                         SET [FULLNAME] = ?
@@ -113,4 +113,28 @@ public class SellRepository {
             return 0;
         }
     }
+
+    public int checkProductDetailInOrderDetail(String productDetailCode, String orderCode) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT od.QUANTITY 
+                         FROM N3STORESNEAKER.dbo.ORDER_DETAIL od 
+                         JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd on od.ID_PRODUCT_DETAIl = od.ID_PRODUCT_DETAIl
+                         JOIN N3STORESNEAKER.dbo.ORDERS o on od.ID_ORDER = o.ID 
+                         WHERE pd.CODE = ? AND o.CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, productDetailCode);
+            stm.setObject(2, orderCode);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }

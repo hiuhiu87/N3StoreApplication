@@ -5,7 +5,7 @@
 package app.view;
 
 import app.model.KhachHang;
-import app.model.Oders;
+import app.model.Order;
 import app.model.Voucher;
 import app.service.KhachHang_Service;
 import app.view.swing.EventPagination;

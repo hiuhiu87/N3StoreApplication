@@ -141,22 +141,20 @@ public class NhanVienService {
         }
     }
 
-    public int Delete(int  id) {
-       try {
+    public int Delete(int id) {
+        try {
             String q = "UPDATE EMPLOYEE SET DELETED = CASE WHEN DELETED = 0 THEN 1 WHEN DELETED = 1 THEN 0 END WHERE ID = ?;";
             PreparedStatement ps = con.prepareStatement(q);
             ps.setInt(1, id);
-            if(ps.executeUpdate() > 0){
+            if (ps.executeUpdate() > 0) {
                 System.out.println("Xóa thành công");
                 return 1;
             }
         } catch (Exception e) {
-            System.out.println(""+e.toString());
+            System.out.println("" + e.toString());
         }
         return -1;
     }
-
-    
 
     public int updateSV(NhanVien nv, int id) {
         sql = "UPDATE EMPLOYEE SET FULLNAME = ?,EMAIL = ?,BIRTHDATE = ?,GENDER = ?,ROLE = ?,PHONE_NUMBER = ?,DIACHI = ? WHERE ID =?";
@@ -177,4 +175,34 @@ public class NhanVienService {
             return 0;
         }
     }
+
+    public NhanVien findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            sql = """
+                         SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, ROLE, PHONE_NUMBER, DIACHI, DELETED
+                         FROM N3STORESNEAKER.dbo.EMPLOYEE
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            rs = stm.executeQuery();
+            NhanVien nhanVien = new NhanVien();
+            while (rs.next()) {
+                nhanVien.setID(rs.getInt(1));
+                nhanVien.setTen(rs.getString(2));
+                nhanVien.setEmail(rs.getString(3));
+                nhanVien.setNgaySinh(rs.getDate(4));
+                nhanVien.setGender(rs.getBoolean(5));
+                nhanVien.setRoLe(rs.getBoolean(6));
+                nhanVien.setSdt(rs.getString(7));
+                nhanVien.setDiaChi(rs.getString(8));
+                nhanVien.setDeleted(rs.getBoolean(9));
+            }
+            return nhanVien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

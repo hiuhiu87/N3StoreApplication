@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package app.view;
+package app.view.propertiesproductview;
 
-import app.model.Color;
-import app.service.ColorService;
+import app.model.Company;
+import app.model.Material;
+import app.service.MaterialService;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -14,10 +15,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class ColorDialog extends javax.swing.JDialog {
+public class MaterialDialog extends javax.swing.JDialog {
 
-    private final ColorService colorService = new ColorService();
-    private DefaultTableModel tableModelColor;
+    private final MaterialService materialService = new MaterialService();
+    private DefaultTableModel tableModelMaterial;
 
     /**
      * Creates new form ColorDialog
@@ -25,32 +26,32 @@ public class ColorDialog extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public ColorDialog(java.awt.Frame parent, boolean modal) {
+    public MaterialDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tableModelColor = new DefaultTableModel();
-        tblDisplay.setModel(tableModelColor);
+        tableModelMaterial = new DefaultTableModel();
+        tblDisplay.setModel(tableModelMaterial);
         addColumTable();
-        fillTable(colorService.getAllColors());
+        fillTable(materialService.getAllMaterials());
     }
 
     private void addColumTable() {
-        tableModelColor.addColumn("STT");
-        tableModelColor.addColumn("Tên");
-        tableModelColor.addColumn("Trạng Thái");
+        tableModelMaterial.addColumn("STT");
+        tableModelMaterial.addColumn("Tên");
+        tableModelMaterial.addColumn("Trạng Thái");
     }
 
-    private void fillTable(List<Color> list) {
+    private void fillTable(List<Material> list) {
         int stt = 0;
-        tableModelColor.setRowCount(0);
-        for (Color color : list) {
+        tableModelMaterial.setRowCount(0);
+        for (Material material : list) {
             stt++;
             Object[] row = {
                 stt,
-                color.getName(),
-                color.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
+                material.getName(),
+                material.getDeleted() ? "Ngừng Hoạt Động" : "Hoạt Động"
             };
-            tableModelColor.addRow(row);
+            tableModelMaterial.addRow(row);
         }
     }
 
@@ -63,32 +64,21 @@ public class ColorDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        txtNameColor = new app.view.swing.TextField();
+        txtNameCMaterial = new app.view.swing.TextField();
         panelFunction = new javax.swing.JPanel();
         btnAdd = new app.view.swing.ButtonOutLine();
         btnUpdate = new app.view.swing.ButtonOutLine();
         btnExit = new app.view.swing.ButtonOutLine();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplay = new javax.swing.JTable();
+        labelNameCpuError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        txtNameCMaterial.setLabelText("Tên Chất Liệu");
 
-        txtNameColor.setLabelText("Tên Màu Sắc");
-        txtNameColor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameColorActionPerformed(evt);
-            }
-        });
-
-        panelFunction.setBackground(new java.awt.Color(255, 255, 255));
         panelFunction.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức Năng"));
 
-        btnAdd.setBackground(new java.awt.Color(0, 0, 0));
-        btnAdd.setForeground(new java.awt.Color(0, 0, 0));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,8 +86,6 @@ public class ColorDialog extends javax.swing.JDialog {
             }
         });
 
-        btnUpdate.setBackground(new java.awt.Color(0, 0, 0));
-        btnUpdate.setForeground(new java.awt.Color(0, 0, 0));
         btnUpdate.setText("Đổi Trạng Thái");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,8 +93,6 @@ public class ColorDialog extends javax.swing.JDialog {
             }
         });
 
-        btnExit.setBackground(new java.awt.Color(0, 0, 0));
-        btnExit.setForeground(new java.awt.Color(0, 0, 0));
         btnExit.setText("Thoát");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,65 +137,59 @@ public class ColorDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tblDisplay);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(txtNameColor, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 28, Short.MAX_VALUE)
-                        .addComponent(txtNameColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelFunction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
+        labelNameCpuError.setForeground(new java.awt.Color(255, 51, 102));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(labelNameCpuError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(txtNameCMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelNameCpuError, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(panelFunction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNameColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameColorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameColorActionPerformed
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtNameColor.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tên Màu Không Được Để Trống");
+        if (txtNameCMaterial.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên Chất Liệu Không Được Để Trống");
         } else {
-            String nameColor = txtNameColor.getText();
-            Color color = new Color();
-            color.setName(nameColor);
-            String result = colorService.addColor(color);
+            String nameCompany = txtNameCMaterial.getText();
+            Material material = new Material();
+            material.setName(nameCompany);
+            String result = materialService.addMaterail(material);
             JOptionPane.showMessageDialog(this, result);
-            fillTable(colorService.getAllColors());
+            fillTable(materialService.getAllMaterials());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -218,15 +198,15 @@ public class ColorDialog extends javax.swing.JDialog {
         if (row >= 0) {
             int column = 1;
             String nameCategory = (String) tblDisplay.getValueAt(row, column);
-            boolean res = colorService.changeStatus(nameCategory);
+            boolean res = materialService.changeStatus(nameCategory);
             if (res) {
                 JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
-                fillTable(colorService.getAllColors());
+                fillTable(materialService.getAllMaterials());
             } else {
                 JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Màu Sắc");
+            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Chất Liệu");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -251,20 +231,20 @@ public class ColorDialog extends javax.swing.JDialog {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ColorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ColorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ColorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ColorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(MaterialDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                ColorDialog dialog = new ColorDialog(new javax.swing.JFrame(), true);
+//                MaterialDialog dialog = new MaterialDialog(new javax.swing.JFrame(), true);
 //                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 //                    @Override
 //                    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -280,10 +260,11 @@ public class ColorDialog extends javax.swing.JDialog {
     private app.view.swing.ButtonOutLine btnAdd;
     private app.view.swing.ButtonOutLine btnExit;
     private app.view.swing.ButtonOutLine btnUpdate;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelNameCpuError;
     private javax.swing.JPanel panelFunction;
     private javax.swing.JTable tblDisplay;
-    private app.view.swing.TextField txtNameColor;
+    private app.view.swing.TextField txtNameCMaterial;
     // End of variables declaration//GEN-END:variables
+
 }
