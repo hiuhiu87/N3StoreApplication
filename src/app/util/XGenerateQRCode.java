@@ -29,7 +29,7 @@ public class XGenerateQRCode {
 
     public static boolean doGenerate(String code, String nameProduct) {
         try {
-            String path = "D:\\Downloads\\" + nameProduct + "QR" + ".png";
+            String path = "D:\\Downloads\\QR_Folder" + nameProduct + "QR" + ".png";
             String charset = "UTF-8";
             Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<>();
             hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
