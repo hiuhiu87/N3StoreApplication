@@ -4,6 +4,7 @@
  */
 package app.view;
 
+import app.view.swing.KhuyenMaiPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -25,10 +26,12 @@ public class MainApplicationView extends javax.swing.JFrame {
     private CustomerPanel customerPanel;
     private OrderPanel orderPanel;
     private DiscountPanel discountPanel;
+    private KhuyenMaiPanel khuyenMaiPanel;
 
     public MainApplicationView() {
         initComponents();
         this.setResizable(false);
+        khuyenMaiPanel = new KhuyenMaiPanel();
         panelSell = new SellPanel(this);
         panelStaff = new StaffPanel();
         panelProduct = new ProductPanel(this);
@@ -70,20 +73,20 @@ public class MainApplicationView extends javax.swing.JFrame {
         discountPanelBtn = new javax.swing.JPanel();
         discountLb = new javax.swing.JLabel();
         discountStatusLb = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        exitLb = new javax.swing.JLabel();
-        exitStatusLb = new javax.swing.JPanel();
         userPanelBtn = new javax.swing.JPanel();
         userLb = new javax.swing.JLabel();
         userStatusLb = new javax.swing.JPanel();
         statisticPanelBtn = new javax.swing.JPanel();
-        statisticLb = new javax.swing.JLabel();
         statisticStatusLb = new javax.swing.JPanel();
+        statisticLb = new javax.swing.JLabel();
         labelShowOffice = new javax.swing.JLabel();
         labelShowName = new javax.swing.JLabel();
-        txtAccount = new app.view.swing.TextField();
-        btnChangePass = new app.view.swing.Button();
-        pswAccount = new app.view.swing.MyPass();
+        khuyenMaiBtn = new javax.swing.JPanel();
+        KhuyenMaiStatusLb = new javax.swing.JPanel();
+        KhuyenMaiLb = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        exitStatusLb = new javax.swing.JPanel();
+        exitLb = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -308,49 +311,6 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addComponent(discountLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
-        jPanel12.setBackground(new java.awt.Color(23, 44, 76));
-        jPanel12.setPreferredSize(new java.awt.Dimension(163, 36));
-
-        exitLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
-        exitLb.setForeground(new java.awt.Color(255, 255, 255));
-        exitLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/logout.png"))); // NOI18N
-        exitLb.setText("THOÁT");
-        exitLb.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                exitLbMouseClicked(evt);
-            }
-        });
-
-        exitStatusLb.setBackground(new java.awt.Color(255, 255, 255));
-        exitStatusLb.setOpaque(false);
-        exitStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
-
-        javax.swing.GroupLayout exitStatusLbLayout = new javax.swing.GroupLayout(exitStatusLb);
-        exitStatusLb.setLayout(exitStatusLbLayout);
-        exitStatusLbLayout.setHorizontalGroup(
-            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 7, Short.MAX_VALUE)
-        );
-        exitStatusLbLayout.setVerticalGroup(
-            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addComponent(exitStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(exitStatusLb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-            .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-        );
-
         userPanelBtn.setBackground(new java.awt.Color(23, 44, 76));
         userPanelBtn.setPreferredSize(new java.awt.Dimension(163, 36));
 
@@ -386,7 +346,7 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userPanelBtnLayout.createSequentialGroup()
                 .addComponent(userStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userLb, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+                .addComponent(userLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         userPanelBtnLayout.setVerticalGroup(
             userPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,16 +356,6 @@ public class MainApplicationView extends javax.swing.JFrame {
 
         statisticPanelBtn.setBackground(new java.awt.Color(23, 44, 76));
         statisticPanelBtn.setPreferredSize(new java.awt.Dimension(163, 36));
-
-        statisticLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
-        statisticLb.setForeground(new java.awt.Color(255, 255, 255));
-        statisticLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/description.png"))); // NOI18N
-        statisticLb.setText("THỐNG KÊ");
-        statisticLb.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                statisticLbMouseClicked(evt);
-            }
-        });
 
         statisticStatusLb.setBackground(new java.awt.Color(255, 255, 255));
         statisticStatusLb.setOpaque(false);
@@ -419,8 +369,18 @@ public class MainApplicationView extends javax.swing.JFrame {
         );
         statisticStatusLbLayout.setVerticalGroup(
             statisticStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 36, Short.MAX_VALUE)
         );
+
+        statisticLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        statisticLb.setForeground(new java.awt.Color(255, 255, 255));
+        statisticLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/description.png"))); // NOI18N
+        statisticLb.setText("THỐNG KÊ");
+        statisticLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                statisticLbMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout statisticPanelBtnLayout = new javax.swing.GroupLayout(statisticPanelBtn);
         statisticPanelBtn.setLayout(statisticPanelBtnLayout);
@@ -429,11 +389,12 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statisticPanelBtnLayout.createSequentialGroup()
                 .addComponent(statisticStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         statisticPanelBtnLayout.setVerticalGroup(
             statisticPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statisticStatusLb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(statisticStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
             .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
@@ -445,47 +406,115 @@ public class MainApplicationView extends javax.swing.JFrame {
         labelShowName.setForeground(new java.awt.Color(255, 255, 255));
         labelShowName.setText("Tên");
 
-        txtAccount.setEditable(false);
-        txtAccount.setBackground(new java.awt.Color(23, 35, 51));
-        txtAccount.setForeground(new java.awt.Color(255, 255, 255));
-        txtAccount.setLabelText("Tài Khoản");
+        khuyenMaiBtn.setBackground(new java.awt.Color(23, 44, 76));
 
-        btnChangePass.setBackground(new java.awt.Color(51, 102, 255));
-        btnChangePass.setText("Đổi Mật Khẩu");
-        btnChangePass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChangePassActionPerformed(evt);
+        KhuyenMaiStatusLb.setBackground(new java.awt.Color(255, 255, 255));
+        KhuyenMaiStatusLb.setOpaque(false);
+        KhuyenMaiStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
+
+        javax.swing.GroupLayout KhuyenMaiStatusLbLayout = new javax.swing.GroupLayout(KhuyenMaiStatusLb);
+        KhuyenMaiStatusLb.setLayout(KhuyenMaiStatusLbLayout);
+        KhuyenMaiStatusLbLayout.setHorizontalGroup(
+            KhuyenMaiStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+        KhuyenMaiStatusLbLayout.setVerticalGroup(
+            KhuyenMaiStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        KhuyenMaiLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        KhuyenMaiLb.setForeground(new java.awt.Color(255, 255, 255));
+        KhuyenMaiLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/discount.png"))); // NOI18N
+        KhuyenMaiLb.setText("Khuyễn Mãi");
+        KhuyenMaiLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                KhuyenMaiLbMouseClicked(evt);
             }
         });
 
-        pswAccount.setBackground(new java.awt.Color(23, 35, 51));
-        pswAccount.setForeground(new java.awt.Color(255, 255, 255));
-        pswAccount.setLabelText("Mật Khẩu");
+        javax.swing.GroupLayout khuyenMaiBtnLayout = new javax.swing.GroupLayout(khuyenMaiBtn);
+        khuyenMaiBtn.setLayout(khuyenMaiBtnLayout);
+        khuyenMaiBtnLayout.setHorizontalGroup(
+            khuyenMaiBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(khuyenMaiBtnLayout.createSequentialGroup()
+                .addComponent(KhuyenMaiStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(KhuyenMaiLb, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        khuyenMaiBtnLayout.setVerticalGroup(
+            khuyenMaiBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(KhuyenMaiStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(KhuyenMaiLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+        );
+
+        jPanel12.setBackground(new java.awt.Color(23, 44, 76));
+        jPanel12.setPreferredSize(new java.awt.Dimension(163, 36));
+
+        exitStatusLb.setBackground(new java.awt.Color(255, 255, 255));
+        exitStatusLb.setOpaque(false);
+        exitStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
+
+        javax.swing.GroupLayout exitStatusLbLayout = new javax.swing.GroupLayout(exitStatusLb);
+        exitStatusLb.setLayout(exitStatusLbLayout);
+        exitStatusLbLayout.setHorizontalGroup(
+            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 7, Short.MAX_VALUE)
+        );
+        exitStatusLbLayout.setVerticalGroup(
+            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
+        );
+
+        exitLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        exitLb.setForeground(new java.awt.Color(255, 255, 255));
+        exitLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/logout.png"))); // NOI18N
+        exitLb.setText("THOÁT");
+        exitLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitLbMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(exitStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exitLb, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(exitStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout panelControlLayout = new javax.swing.GroupLayout(panelControl);
         panelControl.setLayout(panelControlLayout);
         panelControlLayout.setHorizontalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sellPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(productPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(staffPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(orderPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(discountPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(sellPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(productPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(staffPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(orderPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(discountPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
             .addGroup(panelControlLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelShowName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pswAccount, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labelShowName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelControlLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(khuyenMaiBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelControlLayout.setVerticalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,13 +523,7 @@ public class MainApplicationView extends javax.swing.JFrame {
                 .addComponent(labelShowOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelShowName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pswAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(65, 65, 65)
                 .addComponent(sellPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(productPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -515,8 +538,10 @@ public class MainApplicationView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(statisticPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(khuyenMaiBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainPanel.setAutoscrolls(true);
@@ -538,8 +563,8 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -616,37 +641,24 @@ public class MainApplicationView extends javax.swing.JFrame {
         showPanel(customerPanel);
     }//GEN-LAST:event_userLbMouseClicked
 
-    private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
-        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
-    }//GEN-LAST:event_statisticLbMouseClicked
+    private void KhuyenMaiLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KhuyenMaiLbMouseClicked
+        this.onClicked(khuyenMaiBtn, KhuyenMaiStatusLb);
+        this.unClicked(orderPanelBtn, orderStatusLb);
+        this.unClicked(sellPanelBtn, sellStatusLb);
+        this.unClicked(statisticPanelBtn, statisticStatusLb);
+        this.unClicked(staffPanelBtn, staffStatusLb);
+        this.unClicked(discountPanelBtn, discountStatusLb);
+        this.unClicked(productPanelBtn, productStatusLb);
+        showPanel(khuyenMaiPanel);
+    }//GEN-LAST:event_KhuyenMaiLbMouseClicked
 
     private void exitLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLbMouseClicked
         System.exit(0);
     }//GEN-LAST:event_exitLbMouseClicked
 
-    private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
-        String pass = "";
-        if (pswAccount.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mật Khẩu Không Được Để Trống");
-        } else {
-            if (pswAccount.getText().length() <= 5) {
-                JOptionPane.showMessageDialog(this, "Mật Khẩu Phải Trên 6 Ký Tự");
-            } else {
-                pass = String.valueOf(pswAccount.getPassword());
-            }
-        }
-
-        int agreeChange = JOptionPane.showConfirmDialog(this, "Bạn Có Chắc Chắn Muốn Đổi Mật Khẩu Không ?", "Xác Nhận", JOptionPane.YES_NO_OPTION);
-//        if (agreeChange == JOptionPane.YES_OPTION) {
-////            String staffCode = user.getCode();
-//            boolean changeSuccess = service.changePassword(staffCode, pass);
-//            if (changeSuccess) {
-//                JOptionPane.showMessageDialog(this, "Đổi Password thành công !");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Đổi Password không thành công !");
-//            }
-//        }
-    }//GEN-LAST:event_btnChangePassActionPerformed
+    private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_statisticLbMouseClicked
 
     private void onClicked(JPanel panelBackGroud, JPanel panelStatus) {
         panelBackGroud.setBackground(new Color(41, 64, 115));
@@ -702,13 +714,15 @@ public class MainApplicationView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private app.view.swing.Button btnChangePass;
+    private javax.swing.JLabel KhuyenMaiLb;
+    private javax.swing.JPanel KhuyenMaiStatusLb;
     private javax.swing.JLabel discountLb;
     private javax.swing.JPanel discountPanelBtn;
     private javax.swing.JPanel discountStatusLb;
     private javax.swing.JLabel exitLb;
     private javax.swing.JPanel exitStatusLb;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel khuyenMaiBtn;
     private javax.swing.JLabel labelShowName;
     private javax.swing.JLabel labelShowOffice;
     private javax.swing.JPanel mainPanel;
@@ -719,7 +733,6 @@ public class MainApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel productLb;
     private javax.swing.JPanel productPanelBtn;
     private javax.swing.JPanel productStatusLb;
-    private app.view.swing.MyPass pswAccount;
     private javax.swing.JLabel sellLb;
     private javax.swing.JPanel sellPanelBtn;
     private javax.swing.JPanel sellStatusLb;
@@ -729,7 +742,6 @@ public class MainApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel statisticLb;
     private javax.swing.JPanel statisticPanelBtn;
     private javax.swing.JPanel statisticStatusLb;
-    private app.view.swing.TextField txtAccount;
     private javax.swing.JLabel userLb;
     private javax.swing.JPanel userPanelBtn;
     private javax.swing.JPanel userStatusLb;

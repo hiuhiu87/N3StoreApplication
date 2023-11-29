@@ -547,6 +547,7 @@ public class ProductPanel extends javax.swing.JPanel {
         btnExport1 = new app.view.swing.Button();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblDisplayProductDetailAll = new javax.swing.JTable();
+        btnExportQr = new app.view.swing.Button();
         panelDisplayList = new app.view.swing.TabbedPaneCustom();
         panelProduct = new javax.swing.JPanel();
         labelNameProduct = new javax.swing.JLabel();
@@ -967,6 +968,8 @@ public class ProductPanel extends javax.swing.JPanel {
         tableProductDetailDialog.setModal(true);
         tableProductDetailDialog.setResizable(false);
 
+        panelDetal.setBackground(new java.awt.Color(255, 255, 255));
+
         btnImport1.setBackground(new java.awt.Color(23, 35, 51));
         btnImport1.setForeground(new java.awt.Color(255, 255, 255));
         btnImport1.setText("Import");
@@ -1010,29 +1013,42 @@ public class ProductPanel extends javax.swing.JPanel {
         ));
         jScrollPane4.setViewportView(tblDisplayProductDetailAll);
 
+        btnExportQr.setBackground(new java.awt.Color(23, 35, 51));
+        btnExportQr.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportQr.setText("Tải Danh Sách QR CTSP");
+        btnExportQr.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        btnExportQr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportQrActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelDetalLayout = new javax.swing.GroupLayout(panelDetal);
         panelDetal.setLayout(panelDetalLayout);
         panelDetalLayout.setHorizontalGroup(
             panelDetalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDetalLayout.createSequentialGroup()
-                .addGap(263, 263, 263)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 958, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDetalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnDownload1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnImport1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnExport1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(314, Short.MAX_VALUE))
-            .addComponent(jScrollPane4)
+                .addGap(18, 18, 18)
+                .addComponent(btnExportQr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(162, 162, 162))
         );
         panelDetalLayout.setVerticalGroup(
             panelDetalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDetalLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addGap(40, 40, 40)
                 .addGroup(panelDetalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDownload1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImport1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExport1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(btnExport1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportQr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
         );
 
@@ -1598,6 +1614,12 @@ public class ProductPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnExport1ActionPerformed
 
+    private void btnExportQrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportQrActionPerformed
+        for (ProductDetailResponse pd : productDetailService.getAllListProducts()) {
+            XGenerateQRCode.doGenerate(pd.getCode(), pd.getProduct());
+        }
+    }//GEN-LAST:event_btnExportQrActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.MyButton btnAdd;
@@ -1612,6 +1634,7 @@ public class ProductPanel extends javax.swing.JPanel {
     private app.view.swing.Button btnDownload1;
     private app.view.swing.Button btnExport;
     private app.view.swing.Button btnExport1;
+    private app.view.swing.Button btnExportQr;
     private app.view.swing.Button btnImport;
     private app.view.swing.Button btnImport1;
     private app.view.swing.MyButton btnList;
