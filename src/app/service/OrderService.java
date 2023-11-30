@@ -56,4 +56,8 @@ public class OrderService {
         return oderRepository.payOrder(paymentMethod, customerMoney, orderId) > 0;
     }
 
+    public OrderResponse getDetailOrderResponse(String code) {
+        return oderRepository.getOrderResponseByCode(code);
+    }
+
 }

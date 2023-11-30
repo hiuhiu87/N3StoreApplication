@@ -175,6 +175,44 @@ public class OrderRepository {
         }
     }
 
+    public OrderResponse getOrderResponseByCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                               SELECT
+                               	O.CODE AS code,
+                               	C.FULLNAME AS nameCustomer,
+                               	E.FULLNAME AS nameEmployee,
+                               	O.PHONE_NUMBER AS phoneNumber,
+                               	O.TOTAL_MONEY AS totalMoney,
+                               	O.DATECREATE AS dateCreateDate,
+                               	O.STATUS AS status
+                               FROM
+                               	N3STORESNEAKER.dbo.ORDERS O
+                               JOIN N3STORESNEAKER.dbo.CUSTOMER C ON
+                               	O.ID_CUSTOMER = C.ID
+                               JOIN N3STORESNEAKER.dbo.EMPLOYEE E ON
+                               	O.ID_EMPLOYEE = E.ID
+                         WHERE O.CODE = ?
+                 """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, code);
+            OrderResponse orderResponse = new OrderResponse();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                orderResponse.setCode(rs.getString(1));
+                orderResponse.setNameCustomer(rs.getString(2));
+                orderResponse.setNameEmployee(rs.getString(3));
+                orderResponse.setPhoneNumber(rs.getString(4));
+                orderResponse.setTotalMoney(orderDetailRepository.getTotalMoneyOrder(rs.getString(1)));
+                orderResponse.setCreateDate(rs.getString(6));
+                orderResponse.setStatus(rs.getInt(7));
+            }
+            return orderResponse;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public int countOder() {
         String sql = """
                    SELECT COUNT(*) FROM ORDERS
