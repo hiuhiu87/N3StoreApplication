@@ -26,13 +26,13 @@ public class KhachHang {
     }
 
     public KhachHang(
-             int id,
-             String fullName,
-             String email,
-             boolean gender,
-             boolean deleted,
-             String address,
-             String phoneNumber
+            int id,
+            String fullName,
+            String email,
+            boolean gender,
+            boolean deleted,
+            String address,
+            String phoneNumber
     ) {
         this.id = id;
         this.fullName = fullName;
@@ -42,14 +42,14 @@ public class KhachHang {
         this.address = address;
         this.deleted = deleted;
     }
-    
-     public KhachHang(
-             String fullName,
-             String email,
-             boolean gender,
-             boolean deleted,
-             String address,
-             String phoneNumber
+
+    public KhachHang(
+            String fullName,
+            String email,
+            boolean gender,
+            boolean deleted,
+            String address,
+            String phoneNumber
     ) {
         this.fullName = fullName;
         this.email = email;
@@ -87,7 +87,7 @@ public class KhachHang {
     public void setCode(String code) {
         this.code = code;
     }
-    
+
     public boolean isGender() {
         return gender;
     }
@@ -153,13 +153,13 @@ public class KhachHang {
     }
 
     public Object[] toDaTaRow() {//lay du lieu vao dong cua bang
-        return new Object[]{this.id, this.fullName, this.email, this.phoneNumber, this.address, this.birthDate};
+        return new Object[]{this.code, this.fullName, this.email, this.phoneNumber, this.address, this.birthDate};
     }
 
     public Object[] toDaTaRowLong() {//lay du lieu vao dong cua bang
-        
+
         return new Object[]{
-            this.id,
+            this.code,
             this.fullName,
             this.email,
             this.gender ? "Nam" : "Nữ",

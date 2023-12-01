@@ -7,6 +7,7 @@ package app.service;
 import app.dbconnect.DBConnector;
 import app.model.KhachHang;
 import app.model.Voucher;
+import app.response.ProductBoughtCustomerResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,14 +48,35 @@ public class KhachHang_Service {
     public ArrayList<KhachHang> getListPhanTrang(int offset, int limit) {
         ArrayList<KhachHang> list = new ArrayList<>();
         try {
-            String q = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER ORDER BY ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String q = """
+                       SELECT
+                       	ID,
+                       	FULLNAME,
+                       	EMAIL,
+                       	PHONE_NUMBER,
+                       	Address,
+                       	BIRTHDATE,
+                       	CODE
+                       FROM
+                       	CUSTOMER
+                       WHERE CODE != 'KH0'
+                       ORDER BY
+                       	ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
             PreparedStatement ps = con.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);
             ps.execute();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
+                KhachHang s = new KhachHang();
+                s.setId(rs.getInt(1));
+                s.setFullName(rs.getString(2));
+                s.setEmail(rs.getString(3));
+                s.setPhoneNumber(rs.getString(4));
+                s.setAddress(rs.getString(5));
+                s.setBirthDate(rs.getDate(6));
+                s.setCode(rs.getString(7));
                 list.add(s);
 
             }
@@ -233,9 +255,9 @@ public class KhachHang_Service {
             }
         }
     }
-    
-    public KhachHang findKhachHangLe(){
-         try (Connection con = DBConnector.getConnection()) {
+
+    public KhachHang findKhachHangLe() {
+        try (Connection con = DBConnector.getConnection()) {
             sql = """
                          SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, DELETED, Address, PHONE_NUMBER, CODE
                          FROM N3STORESNEAKER.dbo.CUSTOMER
@@ -258,6 +280,58 @@ public class KhachHang_Service {
             return khachHang;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProductBoughtCustomerResponse> getAllProductBoughtByCustomer(String customerCode) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT
+                         	o.CODE,
+                         	pd.CODE,
+                         	p.NAME,
+                         	s.NAME,
+                         	m.NAME ,
+                         	c2.NAME ,
+                         	s2.NAME
+                         FROM
+                         	N3STORESNEAKER.dbo.ORDERS o
+                         JOIN N3STORESNEAKER.dbo.ORDER_DETAIL od on
+                         	o.ID = od.ID_ORDER
+                         JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd on
+                         	od.ID_PRODUCT_DETAIl = pd.ID
+                         JOIN N3STORESNEAKER.dbo.PRODUCT p on
+                         	pd.ID_PRODUCT = p.ID
+                         JOIN N3STORESNEAKER.dbo.[SIZE] s on
+                         	pd.ID_SIZE = s.ID
+                         JOIN N3STORESNEAKER.dbo.MATERIAL m on
+                         	pd.ID_MATERIAL = m.ID
+                         JOIN N3STORESNEAKER.dbo.COLOR c2 on
+                         	pd.ID_COLOR = c2.ID
+                         JOIN N3STORESNEAKER.dbo.SOLE s2 on
+                         	pd.ID_SOLE = s2.ID
+                         JOIN N3STORESNEAKER.dbo.CUSTOMER c on
+                         	o.ID_CUSTOMER = c.ID
+                         WHERE c.CODE = ?
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, customerCode);
+            List<ProductBoughtCustomerResponse> list = new ArrayList<>();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                ProductBoughtCustomerResponse boughtCustomerResponse = new ProductBoughtCustomerResponse();
+                boughtCustomerResponse.setOrderCode(rs.getString(1));
+                boughtCustomerResponse.setProductDetailCode(rs.getString(2));
+                boughtCustomerResponse.setNameProduct(rs.getString(3));
+                boughtCustomerResponse.setNameSize(rs.getString(4));
+                boughtCustomerResponse.setNameMaterial(rs.getString(5));
+                boughtCustomerResponse.setNameColor(rs.getString(6));
+                boughtCustomerResponse.setNameSole(rs.getString(7));
+                list.add(boughtCustomerResponse);
+            }
+            return list;
+        } catch (Exception e) {
             return null;
         }
     }
