@@ -21,11 +21,6 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="580" max="-2" attributes="0"/>
-              <Component id="labelPanelCustomer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -38,14 +33,19 @@
               </Group>
               <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
           </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="labelPanelCustomer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="463" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="labelPanelCustomer" min="-2" pref="26" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="labelPanelCustomer" min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="panelCustomerBought" min="-2" max="-2" attributes="0"/>
                   <Component id="panelCustomerInfor" min="-2" max="-2" attributes="0"/>
@@ -74,18 +74,23 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="1" groupAlignment="1" attributes="0">
-                          <Component id="txtFullname" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
-                          <Component id="labelNameError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
-                          <Component id="txtngaysinh" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="1" groupAlignment="1" attributes="0">
+                                  <Component id="txtFullname" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
+                                  <Component id="labelNameError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="1" groupAlignment="1" attributes="0">
+                                  <Component id="txtCode" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
+                                  <Component id="labelNameError1" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="labelDateError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <Group type="103" alignment="1" groupAlignment="1" attributes="0">
-                          <Component id="txtCode" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
-                          <Component id="labelNameError1" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="labelDateError" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                      <Component id="txtngaysinh" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -108,16 +113,16 @@
                           <Component id="labelAddressError" min="-2" pref="232" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="35" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
@@ -133,31 +138,30 @@
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Component id="txtFullname" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtFullname" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="labelNameError" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="txtngaysinh" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtngaysinh" min="-2" pref="42" max="-2" attributes="0"/>
+                              <Component id="txtAddress" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="labelDateError" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="labelEmailError" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="labelEmailError" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Component id="txtAddress" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="labelAddressError" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -299,8 +303,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="492" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="485" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -353,20 +357,21 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="322" max="-2" attributes="0"/>
-                  <Component id="ph" min="-2" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="ph" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="495" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" pref="1156" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane2" pref="1156" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="txtSearchCustomer" min="-2" pref="359" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="txtSearchCustomer" min="-2" pref="588" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="509" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -375,10 +380,10 @@
               <Group type="102" alignment="1" attributes="0">
                   <Component id="txtSearchCustomer" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="129" max="-2" attributes="0"/>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="195" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="ph" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -396,11 +401,11 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="4">
                     <Column editable="true" title="M&#xe3;" type="java.lang.Object"/>
-                    <Column editable="true" title="H&#x1ecd; v&#xe0; t&#xea;n" type="java.lang.Object"/>
-                    <Column editable="true" title="email" type="java.lang.Object"/>
-                    <Column editable="true" title="sdt" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x111;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
-                    <Column editable="true" title="ng&#xe0;y sinh" type="java.lang.Object"/>
+                    <Column editable="true" title="H&#x1ecd; v&#xe0; T&#xea;n" type="java.lang.Object"/>
+                    <Column editable="true" title="Email" type="java.lang.Object"/>
+                    <Column editable="true" title="S&#x110;T" type="java.lang.Object"/>
+                    <Column editable="true" title="&#x110;&#x1ecb;a Ch&#x1ec9;" type="java.lang.Object"/>
+                    <Column editable="true" title="Ng&#xe0;y Sinh" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -437,6 +442,7 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="rowHeight" type="int" value="35"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
@@ -463,7 +469,10 @@
     <Component class="javax.swing.JLabel" name="labelPanelCustomer">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="18" style="3"/>
+          <Font name="Segoe UI" size="24" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n L&#xfd; Kh&#xe1;ch H&#xe0;ng"/>
       </Properties>

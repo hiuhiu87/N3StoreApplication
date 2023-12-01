@@ -35,14 +35,21 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,6 +61,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -147,7 +162,11 @@ public class SellPanel extends javax.swing.JPanel {
     private void initWebcam() {
         try {
             Dimension size = WebcamResolution.QVGA.getSize();
-            webcam = Webcam.getWebcams().get(1);
+            try {
+                webcam = Webcam.getWebcams().get(1);
+            } catch (WebcamException e) {
+                webcam = Webcam.getWebcams().get(0);
+            }
             webcam.setViewSize(size);
 
             panel = new WebcamPanel(webcam);
@@ -185,16 +204,36 @@ public class SellPanel extends javax.swing.JPanel {
                 Double cash = null;
                 Double total = Double.valueOf(txtTotalMoney.getText());
                 Double back = null;
-                try {
-                    cash = Double.valueOf(txtCash.getText());
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Tiền phải là số");
-                }
-                if (cash > total) {
-                    back = cash - total;
-                    txtPayBack.setText(String.valueOf(back));
+                Double bank = null;
+
+                if (cbbTypePayment.getSelectedIndex() == 2) {
+                    try {
+                        cash = Double.valueOf(txtCash.getText());
+                        if (cash > total) {
+                            JOptionPane.showMessageDialog(null, "Tiền mặt đang vượt quá tổng tiền !");
+                            return;
+                        }
+                        bank = total - cash;
+                        txtBanking.setText(String.valueOf(bank));
+                        txtPayBack.setText("");
+                        txtPayBack.setEditable(false);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Tiền là số");
+                        return;
+                    }
                 } else {
-                    txtPayBack.setText("");
+                    try {
+                        cash = Double.valueOf(txtCash.getText());
+                        if (cash > total) {
+                            back = cash - total;
+                            txtPayBack.setText(String.valueOf(back));
+                        } else {
+                            txtPayBack.setText("");
+                        }
+                    } catch (NumberFormatException e) {
+                        txtPayBack.setText("");
+                        JOptionPane.showMessageDialog(null, "Tiền phải là số");
+                    }
                 }
             }
         });
@@ -293,8 +332,6 @@ public class SellPanel extends javax.swing.JPanel {
             System.out.println("Tắt Webcam");
         }
     }
-
-    
 
     private void fillTableProduct(List<ProductResponse> list) {
         if (list != null) {
@@ -1128,7 +1165,7 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(panelPayLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCodeOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCreateDate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1171,8 +1208,8 @@ public class SellPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelPay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1180,8 +1217,8 @@ public class SellPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(panelProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -1318,9 +1355,9 @@ public class SellPanel extends javax.swing.JPanel {
             this.orderChose = order;
             showInforOrder(orderChose);
             if (order.getStatus() == 2) {
-                btnPay.setVisible(false);
+                btnPay.setEnabled(false);
             } else {
-                btnPay.setVisible(true);
+                btnPay.setEnabled(true);
             }
         }
     }//GEN-LAST:event_tblDisplayOrderMouseClicked
@@ -1365,29 +1402,106 @@ public class SellPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_rdAllActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        String payMethod = (String) cbbTypePayment.getSelectedItem();
-        Double cash = null;
-        Double bank = null;
-        Double customerMoney = null;
-        if (txtBanking.isEditable() == false) {
-            customerMoney = Double.valueOf(txtCash.getText());
-        } else if (txtCash.isEditable() == false) {
-            customerMoney = Double.valueOf(txtBanking.getText());
-        } else {
-            customerMoney = Double.valueOf(txtCash.getText()) + Double.valueOf(txtBanking.getText());
+        if (this.orderChose == null) {
+            JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Đơn Hàng Không Thể Thanh Toán");
+            return;
         }
 
-        if (customerMoney < this.orderChose.getTotalMoney()) {
-            JOptionPane.showMessageDialog(this, "Số Tiền Khách Đưa Phải Lớn Hơn Hoặc Bằng Tiền ");
+        if (txtTotalMoney.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Đơn Hàng Trống Không Thể Thanh Toán");
+            return;
         }
 
-        boolean res = orderService.payOrder(payMethod, customerMoney, orderChose.getId());
-        if (res) {
-            JOptionPane.showMessageDialog(this, "Thanh Toán Thành Công");
-            fillTableOrder(orderService.getAllOrderView());
-            tblModelOrderDetail.setRowCount(0);
-            this.orderChose = null;
-            clearFormInforSell();
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thanh toán hóa đơn này không ? ");
+        if (confirm == JOptionPane.YES_OPTION) {
+            String payMethod = (String) cbbTypePayment.getSelectedItem();
+            Double cash = null;
+            Double bank = null;
+            Double customerMoney = null;
+            if (txtBanking.isEditable() == false) {
+                customerMoney = Double.valueOf(txtCash.getText());
+            } else if (txtCash.isEditable() == false) {
+                customerMoney = Double.valueOf(txtBanking.getText());
+            } else {
+                customerMoney = Double.valueOf(txtCash.getText()) + Double.valueOf(txtBanking.getText());
+            }
+
+            if (customerMoney < this.orderChose.getTotalMoney()) {
+                JOptionPane.showMessageDialog(this, "Số Tiền Khách Đưa Phải Lớn Hơn Hoặc Bằng Tiền ");
+            }
+
+            boolean res = orderService.payOrder(payMethod, customerMoney, orderChose.getId());
+            if (res) {
+                JOptionPane.showMessageDialog(this, "Thanh Toán Thành Công");
+                int conPrint = JOptionPane.showConfirmDialog(null, "Bạn có muốn in hóa đơn không");
+                if (conPrint == JOptionPane.YES_OPTION) {
+                    if (tblDisplayCart.getRowCount() <= 0) {
+                        return;
+                    }
+
+                    int row = tblDisplayOrder.getSelectedRow();
+                    if (row >= 0) {
+                        String codeOrder = (String) tblDisplayOrder.getValueAt(row, 1);
+                        Order order = orderService.findByCode(codeOrder);
+                        List<CartResponse> orderDetailRepsonse = sellService.getAllListCart(order.getCode());
+                        OrderResponse orderResponsePrint = new OrderResponse();
+                        List<OrderResponse> orderResponses = orderService.getAllOrderView();
+                        for (OrderResponse op : orderResponses) {
+                            if (op.getCode().equals(order.getCode())) {
+                                orderResponsePrint.setCode(codeOrder);
+                                orderResponsePrint.setCreateDate(op.getCreateDate());
+                                orderResponsePrint.setNameCustomer(op.getNameCustomer());
+                                orderResponsePrint.setNameEmployee(op.getNameEmployee());
+                            }
+                        }
+                        try {
+                            System.out.println(orderResponsePrint.getNameCustomer());
+                            System.out.println(orderResponsePrint.getCode());
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("stt", "1");
+                            map.put("Custommer", orderResponsePrint.getNameCustomer());
+                            map.put("employee", orderResponsePrint.getNameEmployee());
+                            map.put("Code", orderResponsePrint.getCode());
+                            map.put("dateCreate", orderResponsePrint.getCreateDate() + "");
+                            for (CartResponse cp : orderDetailRepsonse) {
+                                map.put("productName", cp.getNameProduct());
+                            }
+                            for (CartResponse cp : orderDetailRepsonse) {
+                                map.put("quantity", cp.getQuantity() + "");
+                            }
+                            for (CartResponse cp : orderDetailRepsonse) {
+                                map.put("price", cp.getPrice() + "");
+                            }
+                            map.put("totalMoney", order.getTotalMoney() + "");
+//                map.put("moneyReduce", oders.getMoneyReduce() + "");
+//                map.put("totalMoneydiscount", "450,000");
+                            map.put("customerMoney", order.getCustomerMoney() + "");
+                            map.put("payment", order.getPaymentMethod());
+                            JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
+                            JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
+                            JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                            String timestamp = dateFormat.format(new Date());
+
+                            String pdfFileName = "src/app/export/hoadon_" + timestamp + ".pdf";
+                            JasperExportManager.exportReportToPdfFile(print, pdfFileName);
+                            try {
+                                Desktop.getDesktop().open(new File(pdfFileName));
+                            } catch (IOException ex) {
+                                Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            JasperViewer.viewReport(print, false);
+                        } catch (JRException ex) {
+                            Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                }
+                fillTableOrder(orderService.getAllOrderView());
+                tblModelOrderDetail.setRowCount(0);
+                this.orderChose = null;
+                clearFormInforSell();
+            }
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
@@ -1424,6 +1538,7 @@ public class SellPanel extends javax.swing.JPanel {
                 txtCash.setEditable(true);
                 labelCashError.setVisible(true);
                 labelBankingError.setVisible(true);
+                txtBanking.setText("");
             }
 
             default ->
@@ -1455,7 +1570,8 @@ public class SellPanel extends javax.swing.JPanel {
         tblModelOrderDetail.setRowCount(0);
         this.orderChose = null;
         clearFormInforSell();
-        btnPay.setVisible(true);
+        btnPay.setEnabled(true);
+        setKhachHangBanLe();
         fillTableProduct(productService.getAllProductResponse());
         fillTableProductDetail(productDetailService.getAllListProducts());
     }//GEN-LAST:event_btnRefreshActionPerformed

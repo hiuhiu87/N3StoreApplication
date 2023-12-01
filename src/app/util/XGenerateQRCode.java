@@ -41,8 +41,4 @@ public class XGenerateQRCode {
 
     }
     
-    public static void main(String[] args) {
-        XGenerateQRCode.doGenerate("CTSP1", "Cai Gì day");
-    }
-    
 }
