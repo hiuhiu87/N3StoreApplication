@@ -27,6 +27,7 @@ public class MainApplicationView extends javax.swing.JFrame {
     private OrderPanel orderPanel;
     private DiscountPanel discountPanel;
     private KhuyenMaiPanel khuyenMaiPanel;
+    private StatisticalPanel3 statisticalPanel;
 
     public MainApplicationView() {
         initComponents();
@@ -38,6 +39,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         customerPanel = new CustomerPanel();
         orderPanel = new OrderPanel();
         discountPanel = new DiscountPanel();
+        statisticalPanel = new StatisticalPanel3();
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
     }
@@ -657,7 +659,14 @@ public class MainApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_exitLbMouseClicked
 
     private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
-        // TODO add your handling code here:
+        this.onClicked(statisticPanelBtn, statisticStatusLb);
+        this.unClicked(orderPanelBtn, orderStatusLb);
+        this.unClicked(sellPanelBtn, sellStatusLb);
+        this.unClicked(statisticPanelBtn, statisticStatusLb);
+        this.unClicked(staffPanelBtn, staffStatusLb);
+        this.unClicked(discountPanelBtn, discountStatusLb);
+        this.unClicked(productPanelBtn, productStatusLb);
+        showPanel(statisticalPanel);
     }//GEN-LAST:event_statisticLbMouseClicked
 
     private void onClicked(JPanel panelBackGroud, JPanel panelStatus) {

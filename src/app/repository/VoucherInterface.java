@@ -17,7 +17,7 @@ public interface VoucherInterface {
 
     int add(Voucher v);
 
-    int remove(Voucher v);
+    int remove(String name);
 
     int update(Voucher v, int id);
 }

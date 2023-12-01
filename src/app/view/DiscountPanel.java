@@ -44,6 +44,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             }
         });
         loadDataTablePhanTrang(1);
+        updateNgayHH();
     }
 
     public void loadTable() {
@@ -65,7 +66,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Hoạt động" : "Đã hết hạn"});
         }
 
-    }    
+    }
 
     public void loadDataTablePhanTrang(int page) {
         int limit = 5;
@@ -90,82 +91,122 @@ public class DiscountPanel extends javax.swing.JPanel {
     public Voucher getform() {
         String name = txtTen.getText().trim();
         if (name.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tên không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "Tên không được bỏ trống!");
             return null;
         }
         if (name.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(this, "Tên phải là chữ!");
+            JOptionPane.showMessageDialog(this,
+                    "Tên phải là chữ!");
             return null;
         }
         String code = txtMaSo.getText().trim();
 
         String quantity = txtSoLuong.getText().trim();
         if (quantity.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "số lượng không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "số lượng không được bỏ trống!");
             return null;
         }
         if (!quantity.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(this, "Số lượng phải là số!");
+            JOptionPane.showMessageDialog(this,
+                    "Số lượng phải là số!");
             return null;
         }
         Date start_Date = jDateNgayBatDau.getDate();
         if (start_Date == null) {
-            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "Ngày bắt đầu không được bỏ trống!");
             return null;
         }
         Date end_Date = jDateNgayKetThuc.getDate();
         if (end_Date == null) {
-            JOptionPane.showMessageDialog(this, "Ngày kết thúc không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "Ngày kết thúc không được bỏ trống!");
             return null;
         }
-        if(end_Date.getTime() < start_Date.getTime()){
-            JOptionPane.showMessageDialog(this, "Ngày kết thúc phải sau ngày bắt đầu!");
+        if (end_Date.getTime() < start_Date.getTime()) {
+            JOptionPane.showMessageDialog(this,
+                    "Ngày kết thúc phải sau ngày bắt đầu!");
             return null;
         }
+        //        --------------------
+        Date currentDate = new Date();
+        try {
+            if (end_Date.before(currentDate)) {
+                JOptionPane.showMessageDialog(this,
+                        "Ngày kết thúc không hợp lệ!");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//      --------------------
         String min_values_condition = txtDKGiaTriMin.getText().trim();
         if (min_values_condition.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "điều kiện tối thiểu không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "điều kiện tối thiểu không được bỏ trống!");
             return null;
         }
         if (!min_values_condition.matches("[[0-9][.][0-9]]+")) {
-            JOptionPane.showMessageDialog(this, "Điều kiện tối thiểu phải là số");
+            JOptionPane.showMessageDialog(this,
+                    "Điều kiện tối thiểu phải là số");
             return null;
         }
         String type = cbbKieu.getSelectedItem().toString();
-        
+
         String values = txtGiaTri.getText().trim();
         if (values.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Giá trị không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "Giá trị không được bỏ trống!");
             return null;
         }
-        if (!values.matches("[[0-9][.][0-9]]+")) {
-            JOptionPane.showMessageDialog(this, "Giá trị phải là số");
-            return null;
-        }
-        //-----------------
-        if(type.equals("Percentage")){
-            if(values.length() > 2){
-                JOptionPane.showMessageDialog(this, "Giá trị không được vượt quá 100%");
+
+//      -----------------
+        if (type.equals("Percentage")) {
+            if (Integer.parseInt(values) > 100) {
+                JOptionPane.showMessageDialog(this,
+                        "Giá trị không được vượt quá 100%");
                 return null;
             }
         }
+        if (!values.matches("[[0-9][.][0-9]]+")) {
+            JOptionPane.showMessageDialog(this,
+                    "Giá trị phải là số");
+            return null;
+        }
         String max_values = txtGiaTriMax.getText().trim();
         if (max_values.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Giá trị tối đa không được bỏ trống!");
+            JOptionPane.showMessageDialog(this,
+                    "Giá trị tối đa không được bỏ trống!");
             return null;
         }
         if (!values.matches("[[0-9][.][0-9]]+")) {
-            JOptionPane.showMessageDialog(this, "Giá trị tối đa phải là số");
+            JOptionPane.showMessageDialog(this,
+                    "Giá trị tối đa phải là số");
             return null;
         }
-        int deleted = v.getDeleted();
-        if (rdHoatDong.isSelected()) {
-            deleted = 1;
-        } else {
-            deleted = 0;
-        }
-        Voucher vr = new Voucher(name, code, Integer.valueOf(quantity), start_Date, end_Date, Float.valueOf(min_values_condition), type, Float.valueOf(values), Float.valueOf(max_values), Integer.valueOf(deleted));
+        Voucher vr = new Voucher(name, code,
+                Integer.valueOf(quantity),
+                start_Date, end_Date,
+                Float.valueOf(min_values_condition),
+                type, Float.valueOf(values),
+                Float.valueOf(max_values));
         return vr;
+    }
+
+    public void updateNgayHH() {
+        List<Date> listDate = new ArrayList<>();
+        Date ngayHT = new Date();
+        for (Voucher v : vcs.checkNgay()) {
+            if (ngayHT.after(v.getEnd_Date())) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String format = dateFormat.format(v.getEnd_Date());
+                vcs.updateDeleted(false, v.getId());
+                loadDataTablePhanTrang(1);
+            }
+
+        }
     }
 
     /**
@@ -184,12 +225,10 @@ public class DiscountPanel extends javax.swing.JPanel {
         btnSearch = new app.view.swing.ButtonGradient();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        rdHoatDong = new javax.swing.JRadioButton();
         txtMaSo = new app.view.swing.TextField();
         txtSoLuong = new app.view.swing.TextField();
         txtDKGiaTriMin = new app.view.swing.TextField();
         txtGiaTri = new app.view.swing.TextField();
-        rdHetHan = new javax.swing.JRadioButton();
         txtGiaTriMax = new app.view.swing.TextField();
         btnAdd2 = new app.view.swing.ButtonGradient();
         btnUpdate = new app.view.swing.ButtonGradient();
@@ -258,9 +297,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        buttonGroup1.add(rdHoatDong);
-        rdHoatDong.setText("Hoạt động");
-
         txtMaSo.setEditable(false);
         txtMaSo.setBackground(new java.awt.Color(255, 255, 255));
         txtMaSo.setLabelText("Mã Số");
@@ -270,9 +306,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtDKGiaTriMin.setLabelText("Điều Kiện Giá Trị Tối Thiểu");
 
         txtGiaTri.setLabelText("Giá Trị");
-
-        buttonGroup1.add(rdHetHan);
-        rdHetHan.setText("Đã hết hạn");
 
         txtGiaTriMax.setLabelText("Giá Trị Tối Đa");
 
@@ -323,16 +356,11 @@ public class DiscountPanel extends javax.swing.JPanel {
                             .addComponent(jDateNgayBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtTen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(33, 33, 33)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rdHoatDong)
-                                .addGap(36, 36, 36)
-                                .addComponent(rdHetHan))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtGiaTri, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                                .addComponent(txtGiaTriMax, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                                .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                                .addComponent(cbbKieu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtGiaTri, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtGiaTriMax, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(btnAdd2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,30 +376,26 @@ public class DiscountPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMaSo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtTen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtMaSo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDKGiaTriMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jDateNgayBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                        .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateNgayBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(rdHoatDong)
-                                .addComponent(rdHetHan))
-                            .addComponent(jDateNgayKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29))
+                        .addComponent(jDateNgayKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtGiaTriMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addComponent(cbbKieu, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtGiaTriMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -385,7 +409,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/view/poster-giay.jpg"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/poster-giay.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -433,10 +457,7 @@ public class DiscountPanel extends javax.swing.JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,37 +479,38 @@ public class DiscountPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(487, 487, 487)
-                .addComponent(pn, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(510, 510, 510))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(346, 346, 346)
+                        .addComponent(pn, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(575, 575, 575))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(462, 462, 462))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel2)
-                                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(21, 21, 21))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)))
+                                            .addGap(0, 0, Short.MAX_VALUE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel3)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, Short.MAX_VALUE)
                                             .addComponent(btnClear))
                                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(48, 48, 48))))
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(221, 221, 221))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,43 +541,66 @@ public class DiscountPanel extends javax.swing.JPanel {
 
     private void btnAdd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd2ActionPerformed
 
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn thêm?", "add", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this,
+                "Bạn chắc chắn muốn thêm?", "add",
+                JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             Voucher v = getform();
             v.setCode(vcs.generateNextModelCode());
             if (vcs.add(v) > 0) {
-                JOptionPane.showMessageDialog(this, "Thêm thành công");
+                JOptionPane.showMessageDialog(this,
+                        "Thêm thành công");
                 loadDataTablePhanTrang(currentpage);
+                updateNgayHH();
             }
-            
+
         }
-        
+
     }//GEN-LAST:event_btnAdd2ActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn cập nhật?", "update", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this,
+                "Bạn chắc chắn muốn cập nhật?", "update",
+                JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
             String name = txtTimKiem.getText();
-            int id = Integer.valueOf(tbHienthiVoucher.getValueAt(row, 0).toString());
+            int id = Integer.valueOf(tbHienthiVoucher.getValueAt(row, 0)
+                    .toString());
             Voucher v = this.getform();
-            vcs.update(v, id);
-            JOptionPane.showMessageDialog(this, "Cập nhật thành công");
-            loadDataTablePhanTrang(currentpage);
+            if (vcs.update(v, id) > 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Cập nhật thành công");
+                loadDataTablePhanTrang(currentpage);
+                updateNgayHH();
 
+            }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    public boolean changeStatus(String name) {
+        return vcs.remove(name) > 0;
+    }
+
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        int a = JOptionPane.showConfirmDialog(this, "Bạn chắc chắn muốn cập nhật trạng thái?", "remove", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this,
+                 "Bạn chắc chắn muốn cập nhật trạng thái?",
+                 "update trạng thái", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
-            String name = txtTimKiem.getText();
-            Voucher v = vcs.getList(name).get(row);
-            vcs.remove(v);
-            JOptionPane.showMessageDialog(this, "cập nhật thành công");
-//            loadDataTablePhanTrang(currentpage);
-            loadTable();
+            if (row >= 0) {
+                int column = 2;
+                String nameCategory = (String) tbHienthiVoucher.getValueAt(row, column);
+                boolean res = changeStatus(nameCategory);
+                if (res) {
+                    JOptionPane.showMessageDialog(this, "Đổi Trạng Thái Thành Công");
+                    loadDataTablePhanTrang(1);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi !");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Bạn Chưa Chọn Sản Phẩm");
+            }
 
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
@@ -563,7 +608,8 @@ public class DiscountPanel extends javax.swing.JPanel {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String tk = txtTimKiem.getText().trim();
         if (tk.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin muốn tìm kiếm!");
+            JOptionPane.showMessageDialog(this,
+                    "Vui lòng nhập thông tin muốn tìm kiếm!");
             return;
         }
         vcs.getList(tk);
@@ -573,12 +619,14 @@ public class DiscountPanel extends javax.swing.JPanel {
     private void tbHienthiVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHienthiVoucherMouseClicked
         int row = tbHienthiVoucher.getSelectedRow();
         txtTen.setText(tbHienthiVoucher.getValueAt(row, 2).toString());
-        txtMaSo.setText((String)tbHienthiVoucher.getValueAt(row, 1));
+        txtMaSo.setText((String) tbHienthiVoucher.getValueAt(row, 1));
         txtSoLuong.setText(tbHienthiVoucher.getValueAt(row, 3).toString());
         try {
-            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tbHienthiVoucher.getValueAt(row, 4).toString());
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(tbHienthiVoucher.getValueAt(row, 4).toString());
             jDateNgayBatDau.setDate(date1);
-            Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(tbHienthiVoucher.getValueAt(row, 5).toString());
+            Date date2 = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(tbHienthiVoucher.getValueAt(row, 5).toString());
             jDateNgayKetThuc.setDate(date2);
         } catch (Exception e) {
             e.printStackTrace();
@@ -589,11 +637,6 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtGiaTri.setText(tbHienthiVoucher.getValueAt(row, 8).toString());
         txtGiaTriMax.setText(tbHienthiVoucher.getValueAt(row, 9).toString());
         String deleted = tbHienthiVoucher.getValueAt(row, 10).toString();
-        if (deleted.equals("Hoạt động")) {
-            rdHoatDong.setSelected(true);
-        } else {
-            rdHetHan.setSelected(true);
-        }
     }//GEN-LAST:event_tbHienthiVoucherMouseClicked
 
     private void txtTimKiemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimKiemCaretUpdate
@@ -611,7 +654,8 @@ public class DiscountPanel extends javax.swing.JPanel {
         txtGiaTri.setText("");
         txtGiaTriMax.setText("");
         txtDKGiaTriMin.setText("");
-
+        jDateNgayBatDau.setDate(null);
+        jDateNgayKetThuc.setDate(null);
     }//GEN-LAST:event_btnClearActionPerformed
 
 
@@ -636,8 +680,6 @@ public class DiscountPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private app.view.swing.Pagination pn;
-    private javax.swing.JRadioButton rdHetHan;
-    private javax.swing.JRadioButton rdHoatDong;
     private javax.swing.JTable tbHienthiVoucher;
     private app.view.swing.TextField txtDKGiaTriMin;
     private app.view.swing.TextField txtGiaTri;

@@ -117,6 +117,7 @@ public class StaffPanel extends javax.swing.JPanel {
                 "Mã", "Họ Tên", "Email", "Ngày Sinh", "Giới tính", "Vai trò", "So dt", "Deleted"
             }
         ));
+        tblDisplay.setRowHeight(33);
         tblDisplay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblDisplayMouseClicked(evt);

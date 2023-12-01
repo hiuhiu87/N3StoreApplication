@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -31,12 +32,21 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getList(String name) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER WHERE NAME LIKE '%" + name + "%'";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE"
+                    + ",DELETED "
+                    + "FROM VOUCHER "
+                    + "WHERE NAME LIKE '%" + name + "%'";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
+                Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
+                         rs.getString(3), rs.getInt(4),
+                         rs.getDate(5), rs.getDate(6),
+                         rs.getFloat(7), rs.getString(8),
+                         rs.getFloat(9), rs.getFloat(10),
+                         rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -48,12 +58,19 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListAll() {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER ";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED "
+                    + "FROM VOUCHER ";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.execute();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
+                Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
+                         rs.getString(3), rs.getInt(4),
+                         rs.getDate(5), rs.getDate(6),
+                         rs.getFloat(7), rs.getString(8),
+                         rs.getFloat(9), rs.getFloat(10),
+                         rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -65,14 +82,22 @@ public class VoucherService implements VoucherInterface {
     public ArrayList<Voucher> getListPhanTrang(int offset, int limit) {
         ArrayList<Voucher> list = new ArrayList<>();
         try {
-            String q = "SELECT * FROM VOUCHER ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED "
+                    + "FROM VOUCHER "
+                    + "ORDER BY ID DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);
             ps.execute();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Voucher v = new Voucher(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getFloat(7), rs.getString(8), rs.getFloat(9), rs.getFloat(10), rs.getInt(11));
+                Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
+                         rs.getString(3), rs.getInt(4),
+                         rs.getDate(5), rs.getDate(6),
+                         rs.getFloat(7), rs.getString(8),
+                         rs.getFloat(9), rs.getFloat(10),
+                         rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -101,7 +126,9 @@ public class VoucherService implements VoucherInterface {
     @Override
     public int add(Voucher v) {
         try {
-            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE,END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE"
+                    + ",END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, v.getTen());
             ps.setString(2, v.getCode());
@@ -116,7 +143,6 @@ public class VoucherService implements VoucherInterface {
             ps.setString(7, v.getType());
             ps.setFloat(8, v.getValues());
             ps.setFloat(9, v.getMax_values());
-            ps.setInt(10, v.getDeleted());
             if (ps.executeUpdate() > 0) {
                 System.out.println("Thêm thành công");
                 return 1;
@@ -127,26 +153,72 @@ public class VoucherService implements VoucherInterface {
         return -1;
     }
 
-    @Override
-    public int remove(Voucher v) {
+    public Voucher getListL(String name) {
         try {
-            String q = "UPDATE VOUCHER SET DELETED = CASE WHEN DELETED = 0 THEN 1 WHEN DELETED = 1 THEN 0 END WHERE ID = ?";
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE"
+                    + ",DELETED "
+                    + "FROM VOUCHER "
+                    + "WHERE NAME LIKE '%" + name + "%'";
             PreparedStatement ps = conn.prepareStatement(q);
-            ps.setInt(1, v.getId());
-            if (ps.executeUpdate() > 0) {
-                System.out.println("Xóa thành công");
-                return 1;
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            Voucher v = new Voucher();
+            while (rs.next()) {
+                v.setId(rs.getInt(1));
+                v.setTen(rs.getString(2)); 
+                v.setCode(rs.getString(3));
+                v.setQuantity(rs.getInt(4));
+                v.setStart_Date(rs.getDate(5));
+                v.setEnd_Date(rs.getDate(6));
+                v.setMin_values_condition(rs.getFloat(7));
+                v.setType(rs.getString(8));
+                v.setValues(rs.getFloat(9));
+                v.setMax_values(rs.getFloat(10));
+                v.setDeleted(rs.getInt(11));
             }
+            return v;
         } catch (Exception e) {
-            System.out.println("" + e.toString());
+            e.printStackTrace();
+            return null;
         }
-        return -1;
     }
 
     @Override
+    public int remove(String name) {
+        try {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.VOUCHER
+                         SET DELETED = ?
+                         WHERE NAME = ?;
+                         """;
+            PreparedStatement stm = conn.prepareStatement(sql);
+            Voucher voucher = getListL(name);
+            if (voucher != null) {
+                if (voucher.getDeleted() != 1) {
+                    voucher.setDeleted(1);
+                } else {
+                    voucher.setDeleted(0);
+                }
+
+                stm.setObject(1, voucher.getDeleted());
+                stm.setObject(2, voucher.getTen());
+            }
+            int res = stm.executeUpdate();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    
+    @Override
     public int update(Voucher v, int id) {
         try {
-            String q = "UPDATE VOUCHER SET NAME=?,CODE=?,QUANTITY=?,START_DATE=?,END_DATE=?,MIN_VALUE_CONDITION=?,TYPE=?,VALUE=?,MAX_VALUE=?,DELETED=? WHERE ID=?";
+            String q = "UPDATE VOUCHER SET NAME=?,CODE=?,QUANTITY=?,START_DATE=?"
+                    + ",END_DATE=?,MIN_VALUE_CONDITION=?,TYPE=?,VALUE=?"
+                    + ",MAX_VALUE=?,DELETED=? WHERE ID=?";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, v.getTen());
             ps.setString(2, v.getCode());
@@ -203,10 +275,10 @@ public class VoucherService implements VoucherInterface {
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-
         try {
             conn = DBConnector.getConnection();
-            String q = "SELECT MAX(CAST(SUBSTRING(CODE,8,LEN(CODE)-3)AS NVARCHAR(100))) FROM VOUCHER";
+            String q = "SELECT MAX(CAST(SUBSTRING(CODE,8,LEN(CODE)-3)AS NVARCHAR(100))) "
+                    + "FROM VOUCHER";
             stm = conn.prepareStatement(q);
             rs = stm.executeQuery();
             if (rs.next()) {
@@ -245,34 +317,38 @@ public class VoucherService implements VoucherInterface {
         return null;
     }
 
-    public Voucher findByCode(String code) {
-        try (Connection con = DBConnector.getConnection()) {
-            String sql = """
-                         SELECT ID, NAME, CODE, QUANTITY, START_DATE, END_DATE, MIN_VALUE_CONDITION, [TYPE], VALUE, MAX_VALUE, DELETED
-                         FROM N3STORESNEAKER.dbo.VOUCHER
-                         WHERE CODE = ?;
-                         """;
-            PreparedStatement stm = con.prepareStatement(sql);
-            stm.setObject(1, code);
-            Voucher voucher = new Voucher();
-            ResultSet rs = stm.executeQuery();
+    public List<Voucher> checkNgay() {
+        List<Voucher> list = new ArrayList<>();
+        try {
+            String q = "SELECT ID , END_DATE FROM VOUCHER";
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                voucher.setId(rs.getInt(1));
-                voucher.setTen(rs.getString(2));
-                voucher.setCode(rs.getString(3));
-                voucher.setQuantity(rs.getInt(4));
-                voucher.setStart_Date(rs.getDate(5));
-                voucher.setEnd_Date(rs.getDate(6));
-                voucher.setMin_values_condition(rs.getInt(7));
-                voucher.setType(rs.getString(8));
-                voucher.setValues(rs.getFloat(9));
-                voucher.setMax_values(rs.getFloat(10));
-                voucher.setDeleted(rs.getInt(11));
+                int ID = rs.getInt(1);
+                java.util.Date ngayHetHan = rs.getDate(2);
+                Voucher vc = new Voucher();
+                vc.setEnd_Date(ngayHetHan);
+                vc.setId(ID);
+                list.add(vc);
             }
-            return voucher;
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void updateDeleted(boolean deleted, int id) {
+        try {
+            String q = "UPDATE VOUCHER SET DELETED = ? WHERE ID = ?";
+
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.setBoolean(1, deleted);
+            ps.setObject(2, id);
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
