@@ -83,16 +83,12 @@ public class MainApplicationView extends javax.swing.JFrame {
         statisticLb = new javax.swing.JLabel();
         labelShowOffice = new javax.swing.JLabel();
         labelShowName = new javax.swing.JLabel();
-        khuyenMaiBtn = new javax.swing.JPanel();
-        KhuyenMaiStatusLb = new javax.swing.JPanel();
-        KhuyenMaiLb = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         exitStatusLb = new javax.swing.JPanel();
         exitLb = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1428, 800));
 
         panelControl.setBackground(new java.awt.Color(23, 35, 51));
         panelControl.setPreferredSize(new java.awt.Dimension(175, 744));
@@ -408,49 +404,6 @@ public class MainApplicationView extends javax.swing.JFrame {
         labelShowName.setForeground(new java.awt.Color(255, 255, 255));
         labelShowName.setText("Tên");
 
-        khuyenMaiBtn.setBackground(new java.awt.Color(23, 44, 76));
-
-        KhuyenMaiStatusLb.setBackground(new java.awt.Color(255, 255, 255));
-        KhuyenMaiStatusLb.setOpaque(false);
-        KhuyenMaiStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
-
-        javax.swing.GroupLayout KhuyenMaiStatusLbLayout = new javax.swing.GroupLayout(KhuyenMaiStatusLb);
-        KhuyenMaiStatusLb.setLayout(KhuyenMaiStatusLbLayout);
-        KhuyenMaiStatusLbLayout.setHorizontalGroup(
-            KhuyenMaiStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 8, Short.MAX_VALUE)
-        );
-        KhuyenMaiStatusLbLayout.setVerticalGroup(
-            KhuyenMaiStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        KhuyenMaiLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
-        KhuyenMaiLb.setForeground(new java.awt.Color(255, 255, 255));
-        KhuyenMaiLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/discount.png"))); // NOI18N
-        KhuyenMaiLb.setText("Khuyễn Mãi");
-        KhuyenMaiLb.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                KhuyenMaiLbMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout khuyenMaiBtnLayout = new javax.swing.GroupLayout(khuyenMaiBtn);
-        khuyenMaiBtn.setLayout(khuyenMaiBtnLayout);
-        khuyenMaiBtnLayout.setHorizontalGroup(
-            khuyenMaiBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(khuyenMaiBtnLayout.createSequentialGroup()
-                .addComponent(KhuyenMaiStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(KhuyenMaiLb, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        khuyenMaiBtnLayout.setVerticalGroup(
-            khuyenMaiBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(KhuyenMaiStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-            .addComponent(KhuyenMaiLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-        );
-
         jPanel12.setBackground(new java.awt.Color(23, 44, 76));
         jPanel12.setPreferredSize(new java.awt.Dimension(163, 36));
 
@@ -500,22 +453,20 @@ public class MainApplicationView extends javax.swing.JFrame {
         panelControl.setLayout(panelControlLayout);
         panelControlLayout.setHorizontalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sellPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(productPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(staffPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(orderPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(discountPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(sellPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(productPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(staffPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(orderPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(discountPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
             .addGroup(panelControlLayout.createSequentialGroup()
                 .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelShowName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelControlLayout.createSequentialGroup()
-                .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(khuyenMaiBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelControlLayout.setVerticalGroup(
@@ -539,9 +490,7 @@ public class MainApplicationView extends javax.swing.JFrame {
                 .addComponent(userPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(statisticPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(khuyenMaiBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(72, 72, 72)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -557,8 +506,8 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -643,17 +592,6 @@ public class MainApplicationView extends javax.swing.JFrame {
         showPanel(customerPanel);
     }//GEN-LAST:event_userLbMouseClicked
 
-    private void KhuyenMaiLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KhuyenMaiLbMouseClicked
-        this.onClicked(khuyenMaiBtn, KhuyenMaiStatusLb);
-        this.unClicked(orderPanelBtn, orderStatusLb);
-        this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(statisticPanelBtn, statisticStatusLb);
-        this.unClicked(staffPanelBtn, staffStatusLb);
-        this.unClicked(discountPanelBtn, discountStatusLb);
-        this.unClicked(productPanelBtn, productStatusLb);
-        showPanel(khuyenMaiPanel);
-    }//GEN-LAST:event_KhuyenMaiLbMouseClicked
-
     private void exitLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLbMouseClicked
         System.exit(0);
     }//GEN-LAST:event_exitLbMouseClicked
@@ -662,7 +600,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         this.onClicked(statisticPanelBtn, statisticStatusLb);
         this.unClicked(orderPanelBtn, orderStatusLb);
         this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(statisticPanelBtn, statisticStatusLb);
+        this.unClicked(userPanelBtn, userStatusLb);
         this.unClicked(staffPanelBtn, staffStatusLb);
         this.unClicked(discountPanelBtn, discountStatusLb);
         this.unClicked(productPanelBtn, productStatusLb);
@@ -723,15 +661,12 @@ public class MainApplicationView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel KhuyenMaiLb;
-    private javax.swing.JPanel KhuyenMaiStatusLb;
     private javax.swing.JLabel discountLb;
     private javax.swing.JPanel discountPanelBtn;
     private javax.swing.JPanel discountStatusLb;
     private javax.swing.JLabel exitLb;
     private javax.swing.JPanel exitStatusLb;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel khuyenMaiBtn;
     private javax.swing.JLabel labelShowName;
     private javax.swing.JLabel labelShowOffice;
     private javax.swing.JPanel mainPanel;

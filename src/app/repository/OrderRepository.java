@@ -7,19 +7,9 @@ package app.repository;
 import app.dbconnect.DBConnector;
 import app.model.Order;
 import app.response.OrderResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -543,6 +533,23 @@ public class OrderRepository {
             stm.setObject(1, paymentMethod);
             stm.setObject(2, customerMoney);
             stm.setObject(3, orderId);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int addVoucher(int idVoucher, Double moneyReduce, String orderCode) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.ORDERS
+                         SET MONEY_REDUCED = ?, ID_VOUCHER = ?
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, moneyReduce);
+            stm.setObject(2, idVoucher);
+            stm.setObject(3, orderCode);
             return stm.executeUpdate();
         } catch (Exception e) {
             return 0;

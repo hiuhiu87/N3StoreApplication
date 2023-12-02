@@ -12,7 +12,7 @@ public class CartResponse {
 
     private String productDetailCode;
 
-    private String nameProduct;
+    private String productName;
 
     private String nameSize;
 
@@ -26,21 +26,21 @@ public class CartResponse {
 
     private Integer quantity;
 
-    private Double totaMoney;
+    private Double totalMoney;
 
     public CartResponse() {
     }
 
-    public CartResponse(String productDetailCode, String nameProduct, String naméize, String nameMaterial, String nameColor, String nameSole, Double price, Integer quantity, Double totaMoney) {
+    public CartResponse(String productDetailCode, String productName, String nameSize, String nameMaterial, String nameColor, String nameSole, Double price, Integer quantity, Double totalMoney) {
         this.productDetailCode = productDetailCode;
-        this.nameProduct = nameProduct;
-        this.nameSize = naméize;
+        this.productName = productName;
+        this.nameSize = nameSize;
         this.nameMaterial = nameMaterial;
         this.nameColor = nameColor;
         this.nameSole = nameSole;
         this.price = price;
         this.quantity = quantity;
-        this.totaMoney = totaMoney;
+        this.totalMoney = totalMoney;
     }
 
     public String getProductDetailCode() {
@@ -51,12 +51,12 @@ public class CartResponse {
         this.productDetailCode = productDetailCode;
     }
 
-    public String getNameProduct() {
-        return nameProduct;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setNameProduct(String nameProduct) {
-        this.nameProduct = nameProduct;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getNameSize() {
@@ -107,12 +107,12 @@ public class CartResponse {
         this.quantity = quantity;
     }
 
-    public Double getTotaMoney() {
-        return totaMoney;
+    public Double getTotalMoney() {
+        return totalMoney;
     }
 
-    public void setTotaMoney(Double totaMoney) {
-        this.totaMoney = totaMoney;
+    public void setTotalMoney(Double totalMoney) {
+        this.totalMoney = totalMoney;
     }
 
 }

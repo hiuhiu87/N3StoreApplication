@@ -63,7 +63,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     void fillTable(List<Voucher> list) {
         dtm.setRowCount(0);
         for (Voucher v : list) {
-            dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Hoạt động" : "Đã hết hạn"});
+            dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Đã Hết Hạn" : "Hoạt Động"});
         }
 
     }
@@ -202,7 +202,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             if (ngayHT.after(v.getEnd_Date())) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String format = dateFormat.format(v.getEnd_Date());
-                vcs.updateDeleted(false, v.getId());
+                vcs.updateDeleted(true, v.getId());
                 loadDataTablePhanTrang(1);
             }
 

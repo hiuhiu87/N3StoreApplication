@@ -104,7 +104,7 @@ public class KhachHang_Service {
     }
 
     public int addSach(KhachHang s) {
-        sql = "INSERT INTO CUSTOMER(FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE) VALUES(?,?,?,?,?)";
+        sql = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
         try {
             con = DBConnector.getConnection();
             ps = con.prepareStatement(sql);
@@ -115,6 +115,7 @@ public class KhachHang_Service {
             ps.setObject(3, s.getPhoneNumber());
             ps.setObject(4, s.getAddress());
             ps.setObject(5, s.getBirthDate());
+            ps.setObject(6, s.getCode());
             return ps.executeUpdate();
             //insert delete, update:executeUpdate()
         } catch (Exception e) {
@@ -281,6 +282,27 @@ public class KhachHang_Service {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public int createKhachLe() {
+        sql = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
+        try {
+            con = DBConnector.getConnection();
+            ps = con.prepareStatement(sql);
+            KhachHang s = new KhachHang();
+            ps.setObject(1, "Khách Lẻ");
+            ps.setObject(2, "");
+
+            ps.setObject(3, "");
+            ps.setObject(4, "");
+            ps.setObject(5, "");
+            ps.setObject(6, "KH0");
+            return ps.executeUpdate();
+            //insert delete, update:executeUpdate()
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

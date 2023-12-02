@@ -167,14 +167,14 @@ public class OrderDetailRepository {
             while (rs.next()) {
                 CartResponse cartResponse = new CartResponse();
                 cartResponse.setProductDetailCode(rs.getString(1));
-                cartResponse.setNameProduct(rs.getString(2));
+                cartResponse.setProductName(rs.getString(2));
                 cartResponse.setNameSize(rs.getString(3));
                 cartResponse.setNameMaterial(rs.getString(4));
                 cartResponse.setNameColor(rs.getString(5));
                 cartResponse.setNameSole(rs.getString(6));
                 cartResponse.setPrice(rs.getDouble(7));
                 cartResponse.setQuantity(rs.getInt(8));
-                cartResponse.setTotaMoney(rs.getDouble(9));
+                cartResponse.setTotalMoney(rs.getDouble(9));
                 cartResponses.add(cartResponse);
             }
             return cartResponses;
@@ -299,11 +299,11 @@ public class OrderDetailRepository {
         }
     }
 
-    public int updateQuantityInCart(String orderCode, String productDetailCode, int quantity) {
+    public int updateQuantityInCart(String orderCode, String productDetailCode, int quantity, Double total) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          UPDATE od
-                         SET od.QUANTITY = ?
+                         SET od.QUANTITY = ?, od.TOTAL_MONEY = ?
                          FROM N3STORESNEAKER.dbo.ORDER_DETAIL od
                          JOIN N3STORESNEAKER.dbo.PRODUCT_DETAIL pd ON od.ID_PRODUCT_DETAIL = pd.ID
                          JOIN N3STORESNEAKER.dbo.ORDERS o ON od.ID_ORDER = o.ID
@@ -312,8 +312,9 @@ public class OrderDetailRepository {
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, quantity);
-            stm.setObject(2, productDetailCode);
-            stm.setObject(3, orderCode);
+            stm.setObject(2, total);
+            stm.setObject(3, productDetailCode);
+            stm.setObject(4, orderCode);
             return stm.executeUpdate();
         } catch (Exception e) {
             return 0;
