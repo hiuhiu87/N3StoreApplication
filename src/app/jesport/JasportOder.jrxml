@@ -154,7 +154,7 @@
 			<textField>
 				<reportElement x="157" y="21" width="57" height="21" uuid="1ce1d9cf-030c-4683-bfe6-e5f4ef88ff4f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{employee}]]></textFieldExpression>
 			</textField>
@@ -319,7 +319,7 @@
 				<textFieldExpression><![CDATA[$P{customerMoney}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="132" y="47" width="82" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
+				<reportElement x="156" y="47" width="58" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" pdfEncoding="Cp1252"/>
 				</textElement>

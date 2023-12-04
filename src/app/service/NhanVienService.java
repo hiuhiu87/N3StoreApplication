@@ -103,7 +103,7 @@ public class NhanVienService {
     }
 
     public int addStudent(NhanVien nv) {
-        sql = "INSERT INTO EMPLOYEE(FULLNAME,EMAIL,BIRTHDATE,GENDER,ROLE,PHONE_NUMBER,DIACHI) VALUES (?,?,?,?,?,?,?)";
+        sql = "INSERT INTO EMPLOYEE(FULLNAME,EMAIL,BIRTHDATE,GENDER,ROLE,PHONE_NUMBER,DIACHI,PASSWORD) VALUES (?,?,?,?,?,?,?,?)";
         try {
             con = DBConnector.getConnection();
             ps = con.prepareStatement(sql);
@@ -114,6 +114,7 @@ public class NhanVienService {
             ps.setObject(5, nv.isRoLe());
             ps.setObject(6, nv.getSdt());
             ps.setObject(7, nv.getDiaChi());
+            ps.setObject(8, nv.getPassword());
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,6 +202,36 @@ public class NhanVienService {
             return nhanVien;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public NhanVien loginNhanVien(String email, String password) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, [ROLE], PHONE_NUMBER, DELETED, DIACHI
+                         FROM N3STORESNEAKER.dbo.EMPLOYEE
+                         WHERE EMAIL = ? AND PASSWORD = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, email);
+            stm.setObject(2, password);
+            ResultSet rsCustom = stm.executeQuery();
+            if (rsCustom.next()) {
+                NhanVien nhanVien = new NhanVien();
+                nhanVien.setID(rsCustom.getInt(1));
+                nhanVien.setTen(rsCustom.getString(2));
+                nhanVien.setEmail(rsCustom.getString(3));
+                nhanVien.setNgaySinh(rsCustom.getDate(4));
+                nhanVien.setGender(rsCustom.getBoolean(5));
+                nhanVien.setRoLe(rsCustom.getBoolean(6));
+                nhanVien.setSdt(rsCustom.getString(7));
+                nhanVien.setDeleted(rsCustom.getBoolean(8));
+                nhanVien.setDiaChi(rsCustom.getString(9));
+                return nhanVien;
+            }
+            return null;
+        } catch (Exception e) {
             return null;
         }
     }

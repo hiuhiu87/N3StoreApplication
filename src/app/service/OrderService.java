@@ -18,6 +18,10 @@ public class OrderService {
     OrderRepository orderRepository = new OrderRepository();
     VoucherService voucherService = new VoucherService();
 
+    public boolean cancelOrder(String orderCode) {
+        return orderRepository.updateStatusOrderToCancel(orderCode) > 0;
+    }
+
     public List<Order> getAllOders() {
         return orderRepository.getAllOders();
     }

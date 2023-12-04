@@ -22,6 +22,21 @@ public class OrderRepository {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+    public int updateStatusOrderToCancel(String orderCode) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.ORDERS
+                         SET STATUS = 3
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setObject(1, orderCode);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public List<Order> getAllOders() {
         List<Order> listOders = new ArrayList<>();
         String sql = """

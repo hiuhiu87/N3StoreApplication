@@ -4,12 +4,13 @@
  */
 package app.view;
 
+import app.model.NhanVien;
 import app.view.swing.KhuyenMaiPanel;
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -27,21 +28,37 @@ public class MainApplicationView extends javax.swing.JFrame {
     private OrderPanel orderPanel;
     private DiscountPanel discountPanel;
     private KhuyenMaiPanel khuyenMaiPanel;
-    private StatisticalPanel3 statisticalPanel;
+    private StatisticalPanel statisticalPanel;
 
-    public MainApplicationView() {
+    public MainApplicationView(NhanVien nhanVien) {
         initComponents();
+        if (nhanVien.isRoLe() == true) {
+            this.labelShowOffice.setText("Chức Vụ: Quản Lý");
+        } else {
+            this.labelShowOffice.setText("Chức Vụ: Nhân Viên");
+        }
+        this.labelShowName.setText("Tên: " + nhanVien.getTen());
         this.setResizable(false);
         khuyenMaiPanel = new KhuyenMaiPanel();
-        panelSell = new SellPanel(this);
+        panelSell = new SellPanel(this, nhanVien);
         panelStaff = new StaffPanel();
         panelProduct = new ProductPanel(this);
         customerPanel = new CustomerPanel();
         orderPanel = new OrderPanel();
         discountPanel = new DiscountPanel();
-        statisticalPanel = new StatisticalPanel3();
+        statisticalPanel = new StatisticalPanel();
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
+    }
+
+    private static ImageIcon loadImageIcon(String path) {
+        URL imgURL = MainApplicationView.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
 //    private void showInfor(User user) {
@@ -89,6 +106,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("N3 Sneaker");
 
         panelControl.setBackground(new java.awt.Color(23, 35, 51));
         panelControl.setPreferredSize(new java.awt.Dimension(175, 744));
@@ -396,11 +414,11 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
-        labelShowOffice.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        labelShowOffice.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         labelShowOffice.setForeground(new java.awt.Color(255, 255, 255));
         labelShowOffice.setText("Chức Vụ");
 
-        labelShowName.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        labelShowName.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         labelShowName.setForeground(new java.awt.Color(255, 255, 255));
         labelShowName.setText("Tên");
 
@@ -461,13 +479,10 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
             .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
             .addGroup(panelControlLayout.createSequentialGroup()
-                .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelShowName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(panelControlLayout.createSequentialGroup()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelShowName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelControlLayout.setVerticalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -627,38 +642,38 @@ public class MainApplicationView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                new MainApplicationView().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//
+//                new MainApplicationView().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel discountLb;

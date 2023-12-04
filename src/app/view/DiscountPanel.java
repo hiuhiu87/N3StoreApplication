@@ -23,7 +23,13 @@ import org.apache.poi.util.StringUtil;
  */
 public class DiscountPanel extends javax.swing.JPanel {
 
-    private DefaultTableModel dtm = new DefaultTableModel();
+    private DefaultTableModel dtm = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    ;
     private VoucherService vcs = new VoucherService();
     private Voucher v = new Voucher();
     private List<Voucher> listPhanTrangVoucher = new ArrayList<>();
@@ -584,8 +590,8 @@ public class DiscountPanel extends javax.swing.JPanel {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         int a = JOptionPane.showConfirmDialog(this,
-                 "Bạn chắc chắn muốn cập nhật trạng thái?",
-                 "update trạng thái", JOptionPane.YES_NO_OPTION);
+                "Bạn chắc chắn muốn cập nhật trạng thái?",
+                "update trạng thái", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
             if (row >= 0) {

@@ -6,6 +6,8 @@ package app.view;
 
 import app.service.NhanVienService;
 import app.model.NhanVien;
+import app.util.PasswordGenerator;
+import app.util.XEmail;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import app.view.swing.EventPagination;
 import app.view.swing.PaginationItemRenderStyle1;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.mail.MessagingException;
 
 /**
  *
@@ -27,7 +30,14 @@ import java.util.regex.Pattern;
 public class StaffPanel extends javax.swing.JPanel {
 
     NhanVienService nvService = new NhanVienService();
-    DefaultTableModel tblmol = new DefaultTableModel();
+    String password = "";
+    DefaultTableModel tblmol = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    ;
     int index = -1;
     NhanVien nv = new NhanVien();
     List<NhanVien> listPhanTrangNhanVien = new ArrayList<>();
@@ -46,7 +56,7 @@ public class StaffPanel extends javax.swing.JPanel {
             }
         });
         loadDataTablePhanTrang(1);
-        
+
     }
 
     /**
@@ -495,6 +505,11 @@ public class StaffPanel extends javax.swing.JPanel {
                 NhanVien sv = this.readForm();
                 if (a == JOptionPane.YES_OPTION) {
                     if (nvService.addStudent(sv) > 0) {
+                        try {
+                            XEmail.sendEmailInfor("Tạo Tài Khoản Nhân Viên", sv.getEmail(), password);
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(StaffPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         JOptionPane.showMessageDialog(this, "Thêm thành công");
                         loadDataTablePhanTrang(1);
                     } else {
@@ -568,13 +583,13 @@ public class StaffPanel extends javax.swing.JPanel {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //        String ngaySinhString = dateFormat.format(nv.getNgaySinh());
         NhanVien nv = nvService.getAll().get(index);
-        if(nv == null){
+        if (nv == null) {
             System.out.println("null");
         }
 
         txtCodeStaff.setText(nv.getID().toString());
         txtFullName.setText(nv.getTen());
-        txtAddress.setText(nv.getDiaChi()+"");
+        txtAddress.setText(nv.getDiaChi() + "");
         txtEmail.setText(nv.getEmail());
         txtPhoneNumber.setText(nv.getSdt());
         txtDate.setDate(nv.getNgaySinh());
@@ -613,16 +628,14 @@ public class StaffPanel extends javax.swing.JPanel {
             } else {
                 Role = false;
             }
-            id = Integer.parseInt(txtCodeStaff.getText());
             Ten = txtFullName.getText();
             Email = txtEmail.getText();
             NgaySinh = txtDate.getDate();
             DiaChi = txtAddress.getText();
             Sdt = txtPhoneNumber.getText();
             Date dateOfBirth = null;
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            dateOfBirth = dateFormat.parse(NgaySinh+"");
-            return new NhanVien(id, Ten, NgaySinh, Email, Gender, Role, Sdt, DiaChi);
+            password = PasswordGenerator.generatePassword();
+            return new NhanVien(Ten, NgaySinh, Email, Gender, Role, Sdt, DiaChi, password);
 
         } catch (Exception ex) {
             Logger.getLogger(StaffPanel.class.getName()).log(Level.SEVERE, null, ex);

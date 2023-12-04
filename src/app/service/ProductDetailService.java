@@ -134,5 +134,9 @@ public class ProductDetailService {
     public boolean updateQuantityInStore(String code, int quantity) {
         return detailRepository.updateQuantity(code, quantity) > 0;
     }
+    
+    public ProductDetail findByAtribute(String nameProduct, String nameSize, String nameMaterial, String nameSole, String nameColor){
+        return detailRepository.findByAtribute(nameProduct, nameSize, nameMaterial, nameSole, nameColor);
+    }
 
 }

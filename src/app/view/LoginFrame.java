@@ -4,6 +4,9 @@
  */
 package app.view;
 
+import app.model.NhanVien;
+import app.service.NhanVienService;
+import javax.swing.JOptionPane;
 import org.apache.log4j.BasicConfigurator;
 
 /**
@@ -12,8 +15,39 @@ import org.apache.log4j.BasicConfigurator;
  */
 public class LoginFrame extends javax.swing.JFrame {
 
+    private final NhanVienService nhanVienService = new NhanVienService();
+
     public LoginFrame() {
         initComponents();
+    }
+
+    private void login() {
+        String email = "";
+        String password = "";
+
+        if (txtAccount.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tài Khoản Không Được Để Trống !");
+            return;
+        }
+
+        if (pswAccount.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mật Khẩu Không Được Để Trống !");
+            return;
+        }
+
+        email = txtAccount.getText();
+        password = pswAccount.getText();
+
+        NhanVien nhanVienDangNhap = nhanVienService.loginNhanVien(email, password);
+        if (nhanVienDangNhap != null) {
+            MainApplicationView applicationView = new MainApplicationView(nhanVienDangNhap);
+            applicationView.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Tài Khoản Hoặc Mật Khẩu Không Đúng !");
+            return;
+        }
+
     }
 
     /**
@@ -173,7 +207,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-
+        login();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -181,11 +215,15 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void cbShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbShowPassActionPerformed
-
+        if (cbShowPass.isSelected()) {
+            pswAccount.setEchoChar((char) 0); //password = JPasswordField
+        } else {
+            pswAccount.setEchoChar('*');
+        }
     }//GEN-LAST:event_cbShowPassActionPerformed
 
     private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
-
+        login();
     }//GEN-LAST:event_btnLoginKeyPressed
 
     /**

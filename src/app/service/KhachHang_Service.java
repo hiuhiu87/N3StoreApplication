@@ -60,8 +60,8 @@ public class KhachHang_Service {
                        FROM
                        	CUSTOMER
                        WHERE CODE != 'KH0'
-                       ORDER BY
-                       	ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       ORDER BY ID DESC 
+                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
             PreparedStatement ps = con.prepareStatement(q);
             ps.setObject(1, offset);
@@ -154,6 +154,34 @@ public class KhachHang_Service {
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, id);
+            rs = stm.executeQuery();
+            KhachHang khachHang = new KhachHang();
+            while (rs.next()) {
+                khachHang.setId(rs.getInt(1));
+                khachHang.setFullName(rs.getString(2));
+                khachHang.setEmail(rs.getString(3));
+                khachHang.setBirthDate(rs.getDate(4));
+                khachHang.setGender(rs.getBoolean(5));
+                khachHang.setDeleted(rs.getBoolean(6));
+                khachHang.setAddress(rs.getString(7));
+                khachHang.setPhoneNumber(rs.getString(8));
+            }
+            return khachHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public KhachHang findByCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            sql = """
+                         SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, DELETED, Address, PHONE_NUMBER
+                         FROM N3STORESNEAKER.dbo.CUSTOMER
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, code);
             rs = stm.executeQuery();
             KhachHang khachHang = new KhachHang();
             while (rs.next()) {

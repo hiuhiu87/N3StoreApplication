@@ -25,13 +25,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Admin
  */
 public class CustomerPanel extends javax.swing.JPanel {
-    
+
     private final KhachHang_Service service = new KhachHang_Service();
     int row = -1;
-    private DefaultTableModel model = new DefaultTableModel();
-    private final DefaultTableModel productBought = new DefaultTableModel();
+    private DefaultTableModel model = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    ;
+    private final DefaultTableModel productBought = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    ;
     private List<KhachHang> listPhanTrangkh = new ArrayList<>();
-    
+
     public CustomerPanel() {
         initComponents();
         tblDisplayProductBought.setModel(productBought);
@@ -46,7 +58,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         loadDataTablePhanTrang(1);
         addColumnsProductBought();
     }
-    
+
     private void addColumnsProductBought() {
         productBought.addColumn("Mã HĐ");
         productBought.addColumn("Mã CTSP");
@@ -56,7 +68,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         productBought.addColumn("Màu Sắc");
         productBought.addColumn("Loại Đế");
     }
-    
+
     private void fillTableProductBought(List<ProductBoughtCustomerResponse> list) {
         productBought.setRowCount(0);
         for (ProductBoughtCustomerResponse productBoughtCustomerResponse : list) {
@@ -72,7 +84,7 @@ public class CustomerPanel extends javax.swing.JPanel {
             productBought.addRow(row);
         }
     }
-    
+
     public void loadDataTablePhanTrang(int page) {
         int limit = 5;
         int offset = (page - 1) * limit;
@@ -84,25 +96,25 @@ public class CustomerPanel extends javax.swing.JPanel {
             System.out.println(count);
             int sumPage = (int) Math.ceil((double) count / limit);
             System.out.println(sumPage);
-            
+
             listPhanTrangkh = service.getListPhanTrang(offset, limit);
             filltable(listPhanTrangkh);
             ph.setPagegination(page, sumPage);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     void filltable(List<KhachHang> lst) {
         DefaultTableModel model = (DefaultTableModel) tblListCustomer.getModel();
         model.setRowCount(0);
         for (KhachHang khachHang : lst) {
             model.addRow(khachHang.toDaTaRow());
         }
-        
+
     }
-    
+
     void showdata(int index) {
         KhachHang kh = listPhanTrangkh.get(index);
         txtCode.setText(String.valueOf(kh.getCode()));
@@ -112,7 +124,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         txtAddress.setText(kh.getAddress());
         txtngaysinh.setDate(kh.getBirthDate());
     }
-    
+
     KhachHang reafrom() {
         KhachHang cd = new KhachHang();
         cd.setCode(service.generateNextModelCode());
@@ -123,7 +135,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         cd.setBirthDate(txtngaysinh.getDate());
         return cd;
     }
-    
+
     boolean check() {
         if (txtFullname.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap ten");
@@ -135,19 +147,19 @@ public class CustomerPanel extends javax.swing.JPanel {
             txtEmail.requestFocus();
             return false;
         }
-        
+
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."
                 + "[a-zA-Z0-9_+&*-]+)*@"
                 + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
                 + "A-Z]{2,7}$";
-        
+
         Pattern pat = Pattern.compile(emailRegex);
         if (!pat.matcher(txtEmail.getText().trim()).matches()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng email");
             txtEmail.requestFocus();
             return false;
         }
-        
+
         if (txtAddress.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "vui long nhap dia chi");
             txtAddress.requestFocus();
@@ -158,22 +170,22 @@ public class CustomerPanel extends javax.swing.JPanel {
             txtPhoneNumber.requestFocus();
             return false;
         }
-        
+
         String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
-        
+
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(txtPhoneNumber.getText());
-        
+
         if (!matcher.matches()) {
             JOptionPane.showMessageDialog(this, "Số điện thoại phải đúng định dạng");
             txtPhoneNumber.requestFocus();
             return false;
         }
-        
+
         return true;
-        
+
     }
-    
+
     boolean checkTrung() {
         List<KhachHang> lstXM = listPhanTrangkh;
         for (int i = 0; i < lstXM.size(); i++) {
@@ -184,7 +196,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         }
         return true;
     }
-    
+
     boolean checkTrung1() {
         List<KhachHang> lstXM = listPhanTrangkh;
         for (int i = 0; i < lstXM.size(); i++) {
@@ -195,7 +207,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         }
         return true;
     }
-    
+
     void reset() {
         txtAddress.setText("");
         txtCode.setText("");
@@ -204,7 +216,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         txtFullname.setText("");
         txtPhoneNumber.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -495,7 +507,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
+
         if (check() && checkTrung() && checkTrung1()) {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn thêm nữa không?");
             if (a == 0) {
@@ -513,7 +525,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+
         row = tblListCustomer.getSelectedRow();
         KhachHang cd = reafrom();
         int ma = Integer.parseInt(tblListCustomer.getValueAt(row, 0).toString());
@@ -551,7 +563,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         System.out.println(textSearch);
         List<KhachHang> list = service.getAll();
         List<KhachHang> listSearch = new ArrayList<>();
-        
+
         for (KhachHang khachhang : list) {
             String idString = String.valueOf(khachhang.getId());
             String fullName = khachhang.getFullName().toLowerCase();
@@ -559,11 +571,11 @@ public class CustomerPanel extends javax.swing.JPanel {
                 listSearch.add(khachhang);
             }
         }
-        
+
         if (listSearch.isEmpty()) {
             filltable(service.getAll());
             loadDataTablePhanTrang(1);
-            
+
         } else {
             if (txtSearchCustomer.getText().equals("")) {
                 clearTable(model);
@@ -575,7 +587,7 @@ public class CustomerPanel extends javax.swing.JPanel {
                     model.addRow(khachhang.toDaTaRow());
                 }
                 filltable(listSearch);
-                
+
             }
         }
     }//GEN-LAST:event_txtSearchCustomerKeyReleased

@@ -21,6 +21,7 @@ public class NhanVien {
     String Sdt;
     String DiaChi;
     boolean Deleted;
+    String password;
 
     public boolean isDeleted() {
         return Deleted;
@@ -45,8 +46,7 @@ public class NhanVien {
         this.Deleted = Deleted;
     }
 
-    public NhanVien(Integer ID, String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi) {
-        this.ID = ID;
+    public NhanVien(String Ten, Date NgaySinh, String Email, boolean Gender, boolean RoLe, String Sdt, String DiaChi, String password) {
         this.Ten = Ten;
         this.NgaySinh = NgaySinh;
         this.Email = Email;
@@ -54,7 +54,7 @@ public class NhanVien {
         this.RoLe = RoLe;
         this.Sdt = Sdt;
         this.DiaChi = DiaChi;
-
+        this.password = password;
     }
 
     public Integer getID() {
@@ -121,6 +121,14 @@ public class NhanVien {
         this.DiaChi = DiaChi;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     public Object[] toDataRow() {
         return new Object[]{this.ID, this.Ten, this.getEmail(), this.getNgaySinh(), this.Gender, this.RoLe, this.Sdt, this.DiaChi};
     }

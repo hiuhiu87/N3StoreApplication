@@ -13,6 +13,7 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  *
  * @author NGUYỄN ĐỨC LƯƠNG
  */
-public class StatisticalPanel3 extends javax.swing.JPanel {
+public class StatisticalPanel extends javax.swing.JPanel {
 
     private DefaultTableModel dtm = new DefaultTableModel();
     private Statistical ss = new Statistical();
@@ -48,7 +49,7 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
     /**
      * Creates new form StatisticalPanel3
      */
-    public StatisticalPanel3() {
+    public StatisticalPanel() {
         initComponents();
         dtm = (DefaultTableModel) tbHienThi.getModel();
         loadTable();
@@ -60,7 +61,7 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
         dtm.setRowCount(0);
         ArrayList<Statistical> list = sts.getList();
         for (Statistical s : list) {
-            dtm.addRow(new Object[]{s.getThang(), s.getTen(), s.getSoLuong(), s.getTongTien()});
+            dtm.addRow(new Object[]{s.getThang(), s.getTen(), s.getSoLuong(), new BigDecimal(s.getTongTien())});
         }
     }
 
@@ -187,8 +188,8 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
                 .addContainerGap(73, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbThang, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96))
+                .addComponent(lbThang, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,19 +216,21 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(65, 65, 65)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel3)
                 .addContainerGap(76, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel3)
-                .addGap(32, 32, 32)
+                .addGap(30, 30, 30)
                 .addComponent(lbNam)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         buttonGroup1.add(rd1);
@@ -278,7 +281,7 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addGap(74, 74, 74))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,7 +328,7 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
             }
         });
 
-        btnTK1.setText("Loadtable");
+        btnTK1.setText("Refresh");
         btnTK1.setColor2(new java.awt.Color(23, 35, 51));
         btnTK1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,7 +360,10 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
                                 .addComponent(jDateNgayEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(38, 38, 38)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnTK1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(btnExcel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,8 +377,7 @@ public class StatisticalPanel3 extends javax.swing.JPanel {
                                 .addComponent(rd2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(rd1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGap(35, 35, 35)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnTK1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanelLayout.setVerticalGroup(

@@ -610,13 +610,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         return 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
     }
 
-    public static void main(String[] args) {
-        String code = new ProductDetailRepository().generateNextModelCode();
-        int num = new ProductDetailRepository().generateNextModelCodeNumber();
-        System.out.println(code);
-        System.out.println(num);
-    }
-
     private boolean codeExistsInDatabase(String code) throws SQLException {
         Connection conn = null;
         PreparedStatement stm = null;

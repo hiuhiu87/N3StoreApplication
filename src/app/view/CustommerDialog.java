@@ -154,6 +154,8 @@ public class CustommerDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        tabbedPaneCustom1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Tìm kiếm:");
 
@@ -171,9 +173,17 @@ public class CustommerDialog extends javax.swing.JDialog {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Full name", "Email", "Gender", "Phone", "Address", "Status"
+                "Code", "Full name", "Email", "Gender", "Phone", "Address", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblKhachHang.setRowHeight(35);
         tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -386,8 +396,8 @@ public class CustommerDialog extends javax.swing.JDialog {
     private void btnChonKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonKHActionPerformed
         int row = tblKhachHang.getSelectedRow();
         if (row >= 0) {
-            int id = (int) tblKhachHang.getValueAt(row, 0);
-            KhachHang khachHangChose = khachHangService.findById(id);
+            String code = (String) tblKhachHang.getValueAt(row, 0);
+            KhachHang khachHangChose = khachHangService.findByCode(code);
             this.khachHang = khachHangChose;
             this.dispose();
         }
