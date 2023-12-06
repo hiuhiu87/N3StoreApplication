@@ -118,5 +118,27 @@ public class ColorRepository implements CrudRepository<Color> {
             return null;
         }
     }
+    
+    public Color findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.COLOR
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            ResultSet rs = stm.executeQuery();
+            Color color = new Color();
+            while (rs.next()) {
+                color.setId(rs.getInt(1));
+                color.setName(rs.getString(2));
+                color.setDeleted(rs.getBoolean(3));
+            }
+            return color;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

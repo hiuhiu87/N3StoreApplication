@@ -46,7 +46,7 @@ public class SizeRepository implements CrudRepository<Size> {
             return null;
         }
     }
-    
+
     public int updateStatus(String name) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -108,6 +108,28 @@ public class SizeRepository implements CrudRepository<Size> {
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, name);
+            ResultSet rs = stm.executeQuery();
+            Size size = new Size();
+            while (rs.next()) {
+                size.setId(rs.getInt(1));
+                size.setName(rs.getString(2));
+                size.setDeleted(rs.getBoolean(3));
+            }
+            return size;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Size findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.Size
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
             ResultSet rs = stm.executeQuery();
             Size size = new Size();
             while (rs.next()) {

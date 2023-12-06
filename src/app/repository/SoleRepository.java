@@ -121,4 +121,26 @@ public class SoleRepository implements CrudRepository<Sole> {
         }
     }
 
+    public Sole findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.SOLE
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            ResultSet rs = stm.executeQuery();
+            Sole sole = new Sole();
+            while (rs.next()) {
+                sole.setId(rs.getInt(1));
+                sole.setName(rs.getString(2));
+                sole.setDeleted(rs.getBoolean(3));
+            }
+            return sole;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

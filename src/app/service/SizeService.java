@@ -32,9 +32,17 @@ public class SizeService {
             return "Đã Xảy Ra Lỗi";
         }
     }
-    
+
     public boolean changeStatus(String name) {
         return sizeRepository.updateStatus(name) > 0;
+    }
+
+    public Size findByName(String name) {
+        return sizeRepository.findByName(name);
+    }
+
+    public Size findById(int id) {
+        return sizeRepository.findById(id);
     }
 
 }

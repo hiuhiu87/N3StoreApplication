@@ -342,7 +342,19 @@ public class OrderDetailRepository {
             return 0;
         }
     }
-    
-    
+
+    public int deleteProductFromCart(int orderId) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = """
+                         DELETE FROM ORDER_DETAIL
+                         WHERE ID_ORDER = ?
+                         """;
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setObject(1, orderId);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 
 }

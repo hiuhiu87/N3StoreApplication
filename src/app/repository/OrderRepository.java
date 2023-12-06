@@ -104,7 +104,7 @@ public class OrderRepository {
                                JOIN N3STORESNEAKER.dbo.EMPLOYEE E ON
                                	O.ID_EMPLOYEE = E.ID
                                ORDER BY
-                               	O.ID
+                               	O.ID DESC
                                 OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                  """;
 

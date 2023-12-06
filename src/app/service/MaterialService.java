@@ -33,9 +33,17 @@ public class MaterialService {
             return "Đã Xảy Ra Lỗi";
         }
     }
-    
+
     public boolean changeStatus(String name) {
         return materialRepository.updateStatus(name) > 0;
     }
-    
+
+    public Material findByName(String name) {
+        return materialRepository.findByName(name);
+    }
+
+    public Material findById(int id) {
+        return materialRepository.findById(id);
+    }
+
 }

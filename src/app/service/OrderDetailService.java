@@ -33,4 +33,8 @@ public class OrderDetailService {
         return oderDetailRepository.getQuantityOrderDetail(orderCode, productDetailCode);
     }
 
+    public boolean deleteFromCartCancelOrder(int orderId) {
+        return oderDetailRepository.deleteProductFromCart(orderId) > 0;
+    }
+
 }
