@@ -4,12 +4,15 @@
  */
 package app.view;
 
-
-import java.awt.BorderLayout;
+import app.model.NhanVien;
+import app.service.NhanVienService;
+import app.view.swing.KhuyenMaiPanel;
 import java.awt.Color;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -25,17 +28,42 @@ public class MainApplicationView extends javax.swing.JFrame {
     private ProductPanel panelProduct;
     private CustomerPanel customerPanel;
     private OrderPanel orderPanel;
+    private DiscountPanel discountPanel;
+    private KhuyenMaiPanel khuyenMaiPanel;
+    private StatisticalPanel statisticalPanel;
+    private final NhanVienService nhanVienService = new NhanVienService();
+    private NhanVien nhanVien;
 
-    public MainApplicationView() {
+    public MainApplicationView(NhanVien nhanVien) {
         initComponents();
-            panelSell = new SellPanel();
-            panelStaff = new StaffPanel();
-            panelProduct = new ProductPanel();
-            customerPanel = new CustomerPanel();
-            orderPanel = new OrderPanel();
-
+        this.nhanVien = nhanVien;
+        if (nhanVien.isRoLe() == true) {
+            this.labelShowOffice.setText("Chức Vụ: Quản Lý");
+        } else {
+            this.labelShowOffice.setText("Chức Vụ: Nhân Viên");
+        }
+        this.labelShowName.setText("Tên: " + nhanVien.getTen());
+        this.setResizable(false);
+        khuyenMaiPanel = new KhuyenMaiPanel();
+        panelSell = new SellPanel(this, nhanVien);
+        panelStaff = new StaffPanel();
+        panelProduct = new ProductPanel(this);
+        customerPanel = new CustomerPanel();
+        orderPanel = new OrderPanel();
+        discountPanel = new DiscountPanel();
+        statisticalPanel = new StatisticalPanel();
         this.onClicked(sellPanelBtn, sellStatusLb);
         showPanel(panelSell);
+    }
+
+    private static ImageIcon loadImageIcon(String path) {
+        URL imgURL = MainApplicationView.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
 //    private void showInfor(User user) {
@@ -44,7 +72,6 @@ public class MainApplicationView extends javax.swing.JFrame {
 //        txtAccount.setText(user.getEmail());
 //        pswAccount.setText(user.getPassword());
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,6 +81,17 @@ public class MainApplicationView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        changePasswordDialog = new javax.swing.JDialog();
+        changePassContainer = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtOldPass = new app.view.swing.MyPasswordField();
+        jLabel2 = new javax.swing.JLabel();
+        txtNewPass = new app.view.swing.MyPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        txtNewPassConfirm = new app.view.swing.MyPasswordField();
+        jLabel4 = new javax.swing.JLabel();
+        btnCancel = new app.view.swing.MyButton();
+        btnConfirm = new app.view.swing.MyButton();
         panelControl = new javax.swing.JPanel();
         sellPanelBtn = new javax.swing.JPanel();
         sellLb = new javax.swing.JLabel();
@@ -70,24 +108,126 @@ public class MainApplicationView extends javax.swing.JFrame {
         discountPanelBtn = new javax.swing.JPanel();
         discountLb = new javax.swing.JLabel();
         discountStatusLb = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        exitLb = new javax.swing.JLabel();
-        exitStatusLb = new javax.swing.JPanel();
         userPanelBtn = new javax.swing.JPanel();
         userLb = new javax.swing.JLabel();
         userStatusLb = new javax.swing.JPanel();
         statisticPanelBtn = new javax.swing.JPanel();
-        statisticLb = new javax.swing.JLabel();
         statisticStatusLb = new javax.swing.JPanel();
+        statisticLb = new javax.swing.JLabel();
         labelShowOffice = new javax.swing.JLabel();
         labelShowName = new javax.swing.JLabel();
-        txtAccount = new app.view.swing.TextField();
-        btnChangePass = new app.view.swing.Button();
-        pswAccount = new app.view.swing.MyPass();
+        exitPanel = new javax.swing.JPanel();
+        exitStatusLb = new javax.swing.JPanel();
+        exitLb = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        exitStatusLb1 = new javax.swing.JPanel();
+        changePassLb = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
 
+        changePassContainer.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Đổi Mật Khẩu");
+
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Mật Khẩu Cũ");
+
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Mật Khẩu Mới");
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Xác Nhận Mật Khẩu Mới");
+
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setText("Hủy");
+        btnCancel.setBorderColor(new java.awt.Color(23, 35, 51));
+        btnCancel.setColor(new java.awt.Color(23, 35, 51));
+        btnCancel.setColorClick(new java.awt.Color(23, 16, 71));
+        btnCancel.setColorOver(new java.awt.Color(23, 11, 84));
+        btnCancel.setRadius(10);
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        btnConfirm.setText("Xác Nhận");
+        btnConfirm.setBorderColor(new java.awt.Color(23, 35, 51));
+        btnConfirm.setColor(new java.awt.Color(23, 35, 51));
+        btnConfirm.setColorClick(new java.awt.Color(23, 16, 71));
+        btnConfirm.setColorOver(new java.awt.Color(23, 11, 84));
+        btnConfirm.setRadius(10);
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout changePassContainerLayout = new javax.swing.GroupLayout(changePassContainer);
+        changePassContainer.setLayout(changePassContainerLayout);
+        changePassContainerLayout.setHorizontalGroup(
+            changePassContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changePassContainerLayout.createSequentialGroup()
+                .addContainerGap(72, Short.MAX_VALUE)
+                .addGroup(changePassContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNewPassConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(changePassContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changePassContainerLayout.createSequentialGroup()
+                            .addComponent(txtOldPass, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(60, 60, 60))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changePassContainerLayout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(159, 159, 159)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(changePassContainerLayout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        changePassContainerLayout.setVerticalGroup(
+            changePassContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changePassContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtOldPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNewPassConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(changePassContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
+        );
+
+        javax.swing.GroupLayout changePasswordDialogLayout = new javax.swing.GroupLayout(changePasswordDialog.getContentPane());
+        changePasswordDialog.getContentPane().setLayout(changePasswordDialogLayout);
+        changePasswordDialogLayout.setHorizontalGroup(
+            changePasswordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(changePassContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        changePasswordDialogLayout.setVerticalGroup(
+            changePasswordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(changePassContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1428, 800));
+        setTitle("N3 Sneaker");
 
         panelControl.setBackground(new java.awt.Color(23, 35, 51));
         panelControl.setPreferredSize(new java.awt.Dimension(175, 744));
@@ -271,7 +411,7 @@ public class MainApplicationView extends javax.swing.JFrame {
         discountLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
         discountLb.setForeground(new java.awt.Color(255, 255, 255));
         discountLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/discount.png"))); // NOI18N
-        discountLb.setText("KHUYẾN MÃI");
+        discountLb.setText("VOUCHER");
         discountLb.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 discountLbMouseClicked(evt);
@@ -306,49 +446,6 @@ public class MainApplicationView extends javax.swing.JFrame {
             discountPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(discountStatusLb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
             .addComponent(discountLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-        );
-
-        jPanel12.setBackground(new java.awt.Color(23, 44, 76));
-        jPanel12.setPreferredSize(new java.awt.Dimension(163, 36));
-
-        exitLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
-        exitLb.setForeground(new java.awt.Color(255, 255, 255));
-        exitLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/logout.png"))); // NOI18N
-        exitLb.setText("THOÁT");
-        exitLb.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                exitLbMouseClicked(evt);
-            }
-        });
-
-        exitStatusLb.setBackground(new java.awt.Color(255, 255, 255));
-        exitStatusLb.setOpaque(false);
-        exitStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
-
-        javax.swing.GroupLayout exitStatusLbLayout = new javax.swing.GroupLayout(exitStatusLb);
-        exitStatusLb.setLayout(exitStatusLbLayout);
-        exitStatusLbLayout.setHorizontalGroup(
-            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 7, Short.MAX_VALUE)
-        );
-        exitStatusLbLayout.setVerticalGroup(
-            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addComponent(exitStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(exitStatusLb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-            .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
         userPanelBtn.setBackground(new java.awt.Color(23, 44, 76));
@@ -386,7 +483,7 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userPanelBtnLayout.createSequentialGroup()
                 .addComponent(userStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userLb, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+                .addComponent(userLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         userPanelBtnLayout.setVerticalGroup(
             userPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,16 +493,6 @@ public class MainApplicationView extends javax.swing.JFrame {
 
         statisticPanelBtn.setBackground(new java.awt.Color(23, 44, 76));
         statisticPanelBtn.setPreferredSize(new java.awt.Dimension(163, 36));
-
-        statisticLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
-        statisticLb.setForeground(new java.awt.Color(255, 255, 255));
-        statisticLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/description.png"))); // NOI18N
-        statisticLb.setText("THỐNG KÊ");
-        statisticLb.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                statisticLbMouseClicked(evt);
-            }
-        });
 
         statisticStatusLb.setBackground(new java.awt.Color(255, 255, 255));
         statisticStatusLb.setOpaque(false);
@@ -419,8 +506,18 @@ public class MainApplicationView extends javax.swing.JFrame {
         );
         statisticStatusLbLayout.setVerticalGroup(
             statisticStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 36, Short.MAX_VALUE)
         );
+
+        statisticLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        statisticLb.setForeground(new java.awt.Color(255, 255, 255));
+        statisticLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/description.png"))); // NOI18N
+        statisticLb.setText("THỐNG KÊ");
+        statisticLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                statisticLbMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout statisticPanelBtnLayout = new javax.swing.GroupLayout(statisticPanelBtn);
         statisticPanelBtn.setLayout(statisticPanelBtnLayout);
@@ -429,38 +526,112 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statisticPanelBtnLayout.createSequentialGroup()
                 .addComponent(statisticStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         statisticPanelBtnLayout.setVerticalGroup(
             statisticPanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statisticStatusLb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(statisticStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
             .addComponent(statisticLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
-        labelShowOffice.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        labelShowOffice.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         labelShowOffice.setForeground(new java.awt.Color(255, 255, 255));
         labelShowOffice.setText("Chức Vụ");
 
-        labelShowName.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        labelShowName.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         labelShowName.setForeground(new java.awt.Color(255, 255, 255));
         labelShowName.setText("Tên");
 
-        txtAccount.setEditable(false);
-        txtAccount.setBackground(new java.awt.Color(23, 35, 51));
-        txtAccount.setForeground(new java.awt.Color(255, 255, 255));
-        txtAccount.setLabelText("Tài Khoản");
+        exitPanel.setBackground(new java.awt.Color(23, 44, 76));
+        exitPanel.setPreferredSize(new java.awt.Dimension(163, 36));
 
-        btnChangePass.setBackground(new java.awt.Color(51, 102, 255));
-        btnChangePass.setText("Đổi Mật Khẩu");
-        btnChangePass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChangePassActionPerformed(evt);
+        exitStatusLb.setBackground(new java.awt.Color(255, 255, 255));
+        exitStatusLb.setOpaque(false);
+        exitStatusLb.setPreferredSize(new java.awt.Dimension(7, 0));
+
+        javax.swing.GroupLayout exitStatusLbLayout = new javax.swing.GroupLayout(exitStatusLb);
+        exitStatusLb.setLayout(exitStatusLbLayout);
+        exitStatusLbLayout.setHorizontalGroup(
+            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 7, Short.MAX_VALUE)
+        );
+        exitStatusLbLayout.setVerticalGroup(
+            exitStatusLbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        exitLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        exitLb.setForeground(new java.awt.Color(255, 255, 255));
+        exitLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/logout.png"))); // NOI18N
+        exitLb.setText("THOÁT");
+        exitLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitLbMouseClicked(evt);
             }
         });
 
-        pswAccount.setBackground(new java.awt.Color(23, 35, 51));
-        pswAccount.setForeground(new java.awt.Color(255, 255, 255));
-        pswAccount.setLabelText("Mật Khẩu");
+        javax.swing.GroupLayout exitPanelLayout = new javax.swing.GroupLayout(exitPanel);
+        exitPanel.setLayout(exitPanelLayout);
+        exitPanelLayout.setHorizontalGroup(
+            exitPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exitPanelLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(exitStatusLb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exitLb, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        exitPanelLayout.setVerticalGroup(
+            exitPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(exitStatusLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(exitLb, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+        );
+
+        jPanel13.setBackground(new java.awt.Color(23, 44, 76));
+        jPanel13.setPreferredSize(new java.awt.Dimension(163, 36));
+
+        exitStatusLb1.setBackground(new java.awt.Color(255, 255, 255));
+        exitStatusLb1.setOpaque(false);
+        exitStatusLb1.setPreferredSize(new java.awt.Dimension(7, 0));
+
+        javax.swing.GroupLayout exitStatusLb1Layout = new javax.swing.GroupLayout(exitStatusLb1);
+        exitStatusLb1.setLayout(exitStatusLb1Layout);
+        exitStatusLb1Layout.setHorizontalGroup(
+            exitStatusLb1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 7, Short.MAX_VALUE)
+        );
+        exitStatusLb1Layout.setVerticalGroup(
+            exitStatusLb1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
+        );
+
+        changePassLb.setFont(new java.awt.Font("Source Sans Pro Black", 0, 14)); // NOI18N
+        changePassLb.setForeground(new java.awt.Color(255, 255, 255));
+        changePassLb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/content/exchange.png"))); // NOI18N
+        changePassLb.setText("Đổi Mật Khẩu");
+        changePassLb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changePassLbMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(exitStatusLb1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(changePassLb, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(exitStatusLb1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(changePassLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout panelControlLayout = new javax.swing.GroupLayout(panelControl);
         panelControl.setLayout(panelControlLayout);
@@ -473,34 +644,25 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addComponent(discountPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
             .addComponent(userPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
             .addComponent(statisticPanelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-            .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+            .addGroup(panelControlLayout.createSequentialGroup()
+                .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exitPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelControlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelShowName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panelControlLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(pswAccount, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(labelShowName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelShowOffice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         panelControlLayout.setVerticalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelControlLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(17, 17, 17)
                 .addComponent(labelShowOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelShowName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pswAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(65, 65, 65)
                 .addComponent(sellPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(productPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -514,9 +676,11 @@ public class MainApplicationView extends javax.swing.JFrame {
                 .addComponent(userPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(statisticPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(24, 24, 24)
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(exitPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainPanel.setAutoscrolls(true);
@@ -530,17 +694,16 @@ public class MainApplicationView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelControl, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -570,18 +733,18 @@ public class MainApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_productLbMouseClicked
 
     private void staffLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staffLbMouseClicked
-        if (panelStaff == null) {
-            JOptionPane.showMessageDialog(this, "Bạn Không Có Quyền Truy Cập Vào Mục Này");
-            return;
+        if (nhanVien.isRoLe() == true) {
+            this.onClicked(staffPanelBtn, staffStatusLb);
+            this.unClicked(orderPanelBtn, orderStatusLb);
+            this.unClicked(sellPanelBtn, sellStatusLb);
+            this.unClicked(statisticPanelBtn, statisticStatusLb);
+            this.unClicked(productPanelBtn, productStatusLb);
+            this.unClicked(userPanelBtn, userStatusLb);
+            this.unClicked(discountPanelBtn, discountStatusLb);
+            showPanel(panelStaff);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chỉ Quản Lý Mới Được Dùng Tính Năng Này");
         }
-        this.onClicked(staffPanelBtn, staffStatusLb);
-        this.unClicked(orderPanelBtn, orderStatusLb);
-        this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(statisticPanelBtn, statisticStatusLb);
-        this.unClicked(productPanelBtn, productStatusLb);
-        this.unClicked(userPanelBtn, userStatusLb);
-        this.unClicked(discountPanelBtn, discountStatusLb);
-        showPanel(panelStaff);
     }//GEN-LAST:event_staffLbMouseClicked
 
     private void orderLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderLbMouseClicked
@@ -596,58 +759,99 @@ public class MainApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_orderLbMouseClicked
 
     private void discountLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountLbMouseClicked
-//        this.onClicked(discountPanelBtn, discountStatusLb);
-//        this.unClicked(orderPanelBtn, orderStatusLb);
-//        this.unClicked(sellPanelBtn, sellStatusLb);
-//        this.unClicked(statisticPanelBtn, statisticStatusLb);
-//        this.unClicked(staffPanelBtn, staffStatusLb);
-//        this.unClicked(userPanelBtn, userStatusLb);
-//        this.unClicked(productPanelBtn, productStatusLb);
-        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
+        if (nhanVien.isRoLe() == true) {
+            this.onClicked(discountPanelBtn, discountStatusLb);
+            this.unClicked(orderPanelBtn, orderStatusLb);
+            this.unClicked(sellPanelBtn, sellStatusLb);
+            this.unClicked(statisticPanelBtn, statisticStatusLb);
+            this.unClicked(staffPanelBtn, staffStatusLb);
+            this.unClicked(userPanelBtn, userStatusLb);
+            this.unClicked(productPanelBtn, productStatusLb);
+            showPanel(discountPanel);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chỉ Quản Lý Mới Được Dùng Tính Năng Này");
+
+        }
     }//GEN-LAST:event_discountLbMouseClicked
 
     private void userLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userLbMouseClicked
-        this.onClicked(userPanelBtn, userStatusLb);
-        this.unClicked(orderPanelBtn, orderStatusLb);
-        this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(statisticPanelBtn, statisticStatusLb);
-        this.unClicked(staffPanelBtn, staffStatusLb);
-        this.unClicked(discountPanelBtn, discountStatusLb);
-        this.unClicked(productPanelBtn, productStatusLb);
-        showPanel(customerPanel);
+        if (nhanVien.isRoLe() == true) {
+            this.onClicked(userPanelBtn, userStatusLb);
+            this.unClicked(orderPanelBtn, orderStatusLb);
+            this.unClicked(sellPanelBtn, sellStatusLb);
+            this.unClicked(statisticPanelBtn, statisticStatusLb);
+            this.unClicked(staffPanelBtn, staffStatusLb);
+            this.unClicked(discountPanelBtn, discountStatusLb);
+            this.unClicked(productPanelBtn, productStatusLb);
+            showPanel(customerPanel);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chỉ Quản Lý Mới Được Dùng Tính Năng Này");
+        }
     }//GEN-LAST:event_userLbMouseClicked
-
-    private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
-        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
-    }//GEN-LAST:event_statisticLbMouseClicked
 
     private void exitLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLbMouseClicked
         System.exit(0);
     }//GEN-LAST:event_exitLbMouseClicked
 
-    private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
-        String pass = "";
-        if (pswAccount.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mật Khẩu Không Được Để Trống");
+    private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
+        if (nhanVien.isRoLe() == true) {
+            this.onClicked(statisticPanelBtn, statisticStatusLb);
+            this.unClicked(orderPanelBtn, orderStatusLb);
+            this.unClicked(sellPanelBtn, sellStatusLb);
+            this.unClicked(userPanelBtn, userStatusLb);
+            this.unClicked(staffPanelBtn, staffStatusLb);
+            this.unClicked(discountPanelBtn, discountStatusLb);
+            this.unClicked(productPanelBtn, productStatusLb);
+            showPanel(statisticalPanel);
         } else {
-            if (pswAccount.getText().length() <= 5) {
-                JOptionPane.showMessageDialog(this, "Mật Khẩu Phải Trên 6 Ký Tự");
-            } else {
-                pass = String.valueOf(pswAccount.getPassword());
-            }
+            JOptionPane.showMessageDialog(this, "Chỉ Quản Lý Mới Được Dùng Tính Năng Này");
+        }
+    }//GEN-LAST:event_statisticLbMouseClicked
+
+    private void changePassLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changePassLbMouseClicked
+        changePasswordDialog = new JDialog(this);
+        changePasswordDialog.getContentPane().add(changePassContainer);
+        changePasswordDialog.pack();
+        changePasswordDialog.setLocationRelativeTo(null);
+        changePasswordDialog.setVisible(true);
+    }//GEN-LAST:event_changePassLbMouseClicked
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        changePasswordDialog.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        String old = new String(txtOldPass.getPassword());
+        String newPass = new String(txtNewPass.getPassword());
+        String newPassConfirm = new String(txtNewPassConfirm.getPassword());
+
+        if (old.trim().isEmpty()
+                || newPass.trim().isEmpty()
+                || newPassConfirm.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Các Trường Không Được Để Trống !");
+            return;
         }
 
-        int agreeChange = JOptionPane.showConfirmDialog(this, "Bạn Có Chắc Chắn Muốn Đổi Mật Khẩu Không ?", "Xác Nhận", JOptionPane.YES_NO_OPTION);
-//        if (agreeChange == JOptionPane.YES_OPTION) {
-////            String staffCode = user.getCode();
-//            boolean changeSuccess = service.changePassword(staffCode, pass);
-//            if (changeSuccess) {
-//                JOptionPane.showMessageDialog(this, "Đổi Password thành công !");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Đổi Password không thành công !");
-//            }
-//        }
-    }//GEN-LAST:event_btnChangePassActionPerformed
+        if (!newPass.equals(newPassConfirm)) {
+            JOptionPane.showMessageDialog(this, "Mật Khẩu Mới Không Khớp !");
+            return;
+        }
+
+        if (!nhanVienService.checkOldPass(nhanVien.getID(), old)) {
+            JOptionPane.showMessageDialog(this, "Mật Khẩu Cũ Không Đúng !");
+        } else {
+            int check = nhanVienService.changePassword(nhanVien.getID(), newPass);
+            if (check > 0) {
+                JOptionPane.showMessageDialog(this, "Thay Đổi Mật Khẩu Thành Công");
+                txtOldPass.setText("");
+                txtNewPass.setText("");
+                txtNewPassConfirm.setText("");
+                changePasswordDialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Đã Xảy Ra Lỗi Vui Lòng Thử Lại !");
+            }
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void onClicked(JPanel panelBackGroud, JPanel panelStatus) {
         panelBackGroud.setBackground(new Color(41, 64, 115));
@@ -669,47 +873,57 @@ public class MainApplicationView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-      
-                new MainApplicationView().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(MainApplicationView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//
+//                new MainApplicationView().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private app.view.swing.Button btnChangePass;
+    private app.view.swing.MyButton btnCancel;
+    private app.view.swing.MyButton btnConfirm;
+    private javax.swing.JPanel changePassContainer;
+    private javax.swing.JLabel changePassLb;
+    private javax.swing.JDialog changePasswordDialog;
     private javax.swing.JLabel discountLb;
     private javax.swing.JPanel discountPanelBtn;
     private javax.swing.JPanel discountStatusLb;
     private javax.swing.JLabel exitLb;
+    private javax.swing.JPanel exitPanel;
     private javax.swing.JPanel exitStatusLb;
-    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel exitStatusLb1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JLabel labelShowName;
     private javax.swing.JLabel labelShowOffice;
     private javax.swing.JPanel mainPanel;
@@ -720,7 +934,6 @@ public class MainApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel productLb;
     private javax.swing.JPanel productPanelBtn;
     private javax.swing.JPanel productStatusLb;
-    private app.view.swing.MyPass pswAccount;
     private javax.swing.JLabel sellLb;
     private javax.swing.JPanel sellPanelBtn;
     private javax.swing.JPanel sellStatusLb;
@@ -730,7 +943,9 @@ public class MainApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel statisticLb;
     private javax.swing.JPanel statisticPanelBtn;
     private javax.swing.JPanel statisticStatusLb;
-    private app.view.swing.TextField txtAccount;
+    private app.view.swing.MyPasswordField txtNewPass;
+    private app.view.swing.MyPasswordField txtNewPassConfirm;
+    private app.view.swing.MyPasswordField txtOldPass;
     private javax.swing.JLabel userLb;
     private javax.swing.JPanel userPanelBtn;
     private javax.swing.JPanel userStatusLb;

@@ -23,7 +23,7 @@ public class XEmail {
     public static void sendEmailInfor(String subject, String to, String message) throws AddressException, MessagingException, MessagingException {
 
         String fromManager = "minhhieu12322132@gmail.com";
-        String password = "ywshfnmzrnnbhjbg";
+        String password = "ripsamopttsffhsu";
 
         // Get properties object
         Properties props = new Properties();
