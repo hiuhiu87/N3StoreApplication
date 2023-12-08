@@ -38,9 +38,6 @@ public class OrderService {
         return orderRepository.countOder();
     }
 
-//    public List<Oders> getAllListPrintOders(){
-//        return orderRepository.getAllListPrintOder();
-//    }
     public int updateDeleted(boolean deleted, int id) {
         return orderRepository.updateDeleted(deleted, id);
     }

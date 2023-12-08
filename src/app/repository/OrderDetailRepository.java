@@ -113,14 +113,17 @@ public class OrderDetailRepository {
         }
     }
 
-    public int countOderDetail() {
+    public int countOderDetail(String orderCode) {
         String sql = """
-                     SELECT COUNT(*) FROM ORDER_DETAIL
+                     SELECT COUNT(*) FROM ORDER_DETAIL od
+                     JOIN ORDERS o ON od.ID_ORDER = o.ID
+                     WHERE o.CODE = ?
                      """;
         int count = 0;
         try {
             con = DBConnector.getConnection();
             ps = con.prepareStatement(sql);
+            ps.setObject(1, orderCode);
             rs = ps.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -355,6 +358,6 @@ public class OrderDetailRepository {
         } catch (Exception e) {
             return 0;
         }
-    }
+    }    
 
 }

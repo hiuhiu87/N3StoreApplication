@@ -99,6 +99,10 @@ public class ProductDetailService {
         return detailRepository.getAllViews();
     }
 
+    public List<ProductDetailResponse> findByAtri(String nameSize, String nameColor, String nameMaterial, String nameSole) {
+        return detailRepository.findListByAtribute(nameSize, nameColor, nameMaterial, nameSole);
+    }
+
     public List<ProductDetailResponse> selectListDetailByNameProduct(String nameProduct) {
         return detailRepository.findListByNameProduct(nameProduct);
     }

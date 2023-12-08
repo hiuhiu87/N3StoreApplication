@@ -25,8 +25,8 @@ public class OrderDetailService {
         return oderDetailRepository.getAllOdersDetailsPhanTrang(offset, limit, orderId);
     }
 
-    public int countOderDetail() {
-        return oderDetailRepository.countOderDetail();
+    public int countOderDetail(String orderCode) {
+        return oderDetailRepository.countOderDetail(orderCode);
     }
 
     public int getQuantityOrderDetail(String orderCode, String productDetailCode) {

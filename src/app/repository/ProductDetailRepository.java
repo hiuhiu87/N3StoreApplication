@@ -761,4 +761,67 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         }
     }
 
+    public List<ProductDetailResponse> findListByAtribute(String nameSize, String nameColor, String nameMaterial, String nameSole) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                     SELECT
+                         pd.CODE,
+                         p.NAME,
+                         s.NAME,
+                         m.NAME,
+                         c.NAME,
+                         s1.NAME,
+                         SELL_PRICE,
+                         ORIGIN_PRICE,
+                         QUANTITY,
+                         pd.DELETED
+                     FROM
+                         N3STORESNEAKER.dbo.PRODUCT_DETAIL pd
+                     LEFT JOIN PRODUCT p ON
+                         pd.ID_PRODUCT = p.ID
+                     LEFT JOIN SIZE s on
+                         pd.ID_SIZE = s.ID
+                     LEFT JOIN MATERIAL m on
+                         pd.ID_MATERIAL = m.ID
+                     LEFT JOIN COLOR c on
+                         pd.ID_COLOR = c.ID
+                     LEFT JOIN SOLE s1 on
+                         pd.ID_SOLE = s1.ID
+                     WHERE
+                         (s.NAME = ? OR ? = '') AND
+                         (c.NAME = ? OR ? = '') AND
+                         (m.NAME = ? OR ? = '') AND
+                         (s1.NAME = ? OR ? = '');
+                     """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, nameSize);
+            stm.setObject(2, nameSize);
+            stm.setObject(3, nameColor);
+            stm.setObject(4, nameColor);
+            stm.setObject(5, nameMaterial);
+            stm.setObject(6, nameMaterial);
+            stm.setObject(7, nameSole);
+            stm.setObject(8, nameSole);
+            ResultSet rs = stm.executeQuery();
+            List<ProductDetailResponse> list = new ArrayList<>();
+            while (rs.next()) {
+                ProductDetailResponse detailResponse = new ProductDetailResponse();
+                detailResponse.setCode(rs.getString(1));
+                detailResponse.setProduct(rs.getString(2));
+                detailResponse.setSize(rs.getString(3));
+                detailResponse.setMaterial(rs.getString(4));
+                detailResponse.setColor(rs.getString(5));
+                detailResponse.setSole(rs.getString(6));
+                detailResponse.setSellPrice(rs.getString(7));
+                detailResponse.setOriginPrice(rs.getString(8));
+                detailResponse.setQuantity(rs.getString(9));
+                detailResponse.setDeleted(rs.getBoolean(10));
+                list.add(detailResponse);
+            }
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

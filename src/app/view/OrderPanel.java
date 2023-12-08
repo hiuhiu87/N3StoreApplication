@@ -14,6 +14,7 @@ import app.service.OrderDetailService;
 import app.service.OrderService;
 import app.service.SellService;
 import app.service.VoucherService;
+import app.util.FormatMoney;
 import app.view.swing.EventPagination;
 import app.view.swing.PaginationItemRenderStyle1;
 import java.awt.Desktop;
@@ -50,7 +51,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Admin
  */
 public class OrderPanel extends javax.swing.JPanel {
-
+    
     private final DefaultTableModel tableModelOrder = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -62,7 +63,7 @@ public class OrderPanel extends javax.swing.JPanel {
         public boolean isCellEditable(int row, int column) {
             return false;
         }
-
+        
     };
     private final DefaultComboBoxModel<String> cbxPayment = new DefaultComboBoxModel<>();
     private final OrderService oderService = new OrderService();
@@ -70,7 +71,7 @@ public class OrderPanel extends javax.swing.JPanel {
     private final VoucherService voucherService = new VoucherService();
     private final OrderDetailService oderDetailService = new OrderDetailService();
     private String orderCodeChoose = "";
-
+    
     public OrderPanel() {
         initComponents();
         tblDisplayOrder.setModel(tableModelOrder);
@@ -85,7 +86,7 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         });
         paginationOder.setPaginationItemRender(new PaginationItemRenderStyle1());
-
+        
         paginationOder.addEventPagination(new EventPagination() {
             @Override
             public void pageChanged(int page) {
@@ -95,11 +96,13 @@ public class OrderPanel extends javax.swing.JPanel {
                 loadDataOrders(page);
             }
         });
-
+        
         loadDataOrders(1);
         onChange();
+        paginationOderDetail.setEnabled(false);
+        paginationOderDetail.setVisible(false);
     }
-
+    
     private void fillTableOrder(List<OrderResponse> listOder) {
         tableModelOrder.setRowCount(0);
         int stt = 0;
@@ -110,14 +113,14 @@ public class OrderPanel extends javax.swing.JPanel {
                 orderResponse.getNameCustomer(),
                 orderResponse.getNameEmployee(),
                 orderResponse.getPhoneNumber(),
-                String.valueOf(new BigDecimal(orderResponse.getTotalMoney())),
+                String.valueOf(FormatMoney.formatMoney(new BigDecimal(orderResponse.getTotalMoney()))),
                 orderResponse.getCreateDate(),
                 returnNameStatus(orderResponse.getStatus())
             };
             tableModelOrder.addRow(row);
         }
     }
-
+    
     private void onChange() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -131,8 +134,10 @@ public class OrderPanel extends javax.swing.JPanel {
                         List<OrderResponse> listRes = new ArrayList<>();
                         if (listSearch != null) {
                             for (OrderResponse orderResponse : listSearch) {
-                                if (orderResponse.getCode().toLowerCase().contains(namePrdSearch.toLowerCase())) {
-                                    listRes.add(orderResponse);
+                                if (orderResponse.getPhoneNumber() != null) {
+                                    if (orderResponse.getPhoneNumber().toLowerCase().contains(namePrdSearch.toLowerCase())) {
+                                        listRes.add(orderResponse);
+                                    }
                                 }
                             }
                             fillTableOrder(listRes);
@@ -142,12 +147,12 @@ public class OrderPanel extends javax.swing.JPanel {
                     Logger.getLogger(ProductPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
+            
             @Override
             public void removeUpdate(DocumentEvent e) {
                 loadDataOrders(1);
             }
-
+            
             @Override
             public void insertUpdate(DocumentEvent e) {
                 try {
@@ -159,8 +164,10 @@ public class OrderPanel extends javax.swing.JPanel {
                         List<OrderResponse> listRes = new ArrayList<>();
                         if (listSearch != null) {
                             for (OrderResponse orderResponse : listSearch) {
-                                if (orderResponse.getCode().toLowerCase().contains(namePrdSearch.toLowerCase())) {
-                                    listRes.add(orderResponse);
+                                if (orderResponse.getPhoneNumber() != null) {
+                                    if (orderResponse.getPhoneNumber().toLowerCase().contains(namePrdSearch.toLowerCase())) {
+                                        listRes.add(orderResponse);
+                                    }
                                 }
                             }
                             fillTableOrder(listRes);
@@ -172,7 +179,7 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         });
     }
-
+    
     private String returnNameStatus(int status) {
         switch (status) {
             case 1 -> {
@@ -189,7 +196,7 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         }
     }
-
+    
     public void loadDataOrders(int page) {
         int limit = 5;
         int offset = (page - 1) * limit;
@@ -205,23 +212,20 @@ public class OrderPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-
+    
     private void loadDataOdersDetail(int page) {
         int limit = 10;
         int offset = (page - 1) * limit;
         try {
-            int rowCount = oderDetailService.countOderDetail();
-            System.out.println(rowCount);
+            int rowCount = oderDetailService.countOderDetail(orderCodeChoose);
             int totalPages = (int) Math.ceil((double) rowCount / limit);
             fillTableOderDetail(oderDetailService.getPaginatedOders(offset, limit, orderCodeChoose));
             paginationOderDetail.setPagegination(page, totalPages);
-            System.out.println("Tổng số trang: " + totalPages);
-            System.out.println("Trang hiện tại: " + page);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     private void fillTableOderDetail(List<OrderDetailResponse> listOrderDetails) {
         tableModelOrderDetail.setRowCount(0);
         int stt = 0;
@@ -238,7 +242,7 @@ public class OrderPanel extends javax.swing.JPanel {
             tableModelOrderDetail.addRow(row);
         }
     }
-
+    
     private void addComlumnOrder() {
         tableModelOrder.addColumn("STT");
         tableModelOrder.addColumn("Mã Hóa Đơn");
@@ -249,7 +253,7 @@ public class OrderPanel extends javax.swing.JPanel {
         tableModelOrder.addColumn("Ngày Tạo");
         tableModelOrder.addColumn("Trạng Thái");
     }
-
+    
     private void addComlumnOrderDetail() {
         tableModelOrderDetail.addColumn("STT");
         tableModelOrderDetail.addColumn("Mã Hóa Đơn");
@@ -315,7 +319,7 @@ public class OrderPanel extends javax.swing.JPanel {
             tblDisplayOrder.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        txtSearch.setLabelText("Tìm Kiếm");
+        txtSearch.setLabelText("Tìm Kiếm Theo Số Điện Thoại");
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
@@ -372,11 +376,11 @@ public class OrderPanel extends javax.swing.JPanel {
                 .addComponent(cbbOrderStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(174, 174, 174)
+                .addGap(150, 150, 150)
                 .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addGap(66, 66, 66))
             .addGroup(panelOrderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -387,11 +391,11 @@ public class OrderPanel extends javax.swing.JPanel {
             .addGroup(panelOrderLayout.createSequentialGroup()
                 .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbOrderStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cbbOrderStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -428,13 +432,13 @@ public class OrderPanel extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrderDetailLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(489, 489, 489))
+                .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(490, 490, 490))
         );
         panelOrderDetailLayout.setVerticalGroup(
             panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOrderDetailLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -467,6 +471,8 @@ public class OrderPanel extends javax.swing.JPanel {
             String orderCode = (String) tblDisplayOrder.getValueAt(row, 1);
             this.orderCodeChoose = orderCode;
             loadDataOdersDetail(1);
+            paginationOderDetail.setEnabled(true);
+            paginationOderDetail.setVisible(true);
         }
     }//GEN-LAST:event_tblDisplayOrderMouseClicked
 
@@ -479,33 +485,7 @@ public class OrderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchKeyPressed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-//        String textSearch = txtSearch.getText().toLowerCase().trim();
-//        System.out.println(textSearch);
-//        List<Oders> list = oderService.getAllOders();
-//        List<Oders> listSearch = new ArrayList<>();
-//
-//        for (Order oders : list) {
-//            if (oders.getNameCustomer().toLowerCase().contains(textSearch)) {
-//                listSearch.add(oders);
-//            }
-//        }
-//
-//        if (listSearch.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Không tìm thấy");
-//            fillTableOrder(oderService.getAllOders());
-//        } else {
-//            if (txtSearch.getText().equals("")) {
-//                clearTable(tableModelOrder);
-//                for (Order oders : listSearch) {
-//                    tableModelOrder.addRow(oders.toDataOrder());
-//                }
-//            }
-//            clearTable(tableModelOrder);
-//            for (Order oders : listSearch) {
-//                tableModelOrder.addRow(oders.toDataOrder());
-//            }
-//
-//        }
+
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -516,7 +496,7 @@ public class OrderPanel extends javax.swing.JPanel {
         if (tblDetailOrder.getRowCount() <= 0) {
             return;
         }
-
+        
         int row = tblDisplayOrder.getSelectedRow();
         if (row >= 0) {
             String codeOrder = (String) tblDisplayOrder.getValueAt(row, 1);
@@ -525,7 +505,7 @@ public class OrderPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Hóa Đơn Này Chưa Được Thanh Toán !");
                 return;
             }
-
+            
             if (order.getStatus() == 3) {
                 JOptionPane.showMessageDialog(this, "Hóa Đơn Này Đã Hủy!");
                 return;
@@ -554,19 +534,19 @@ public class OrderPanel extends javax.swing.JPanel {
                 map.put("ProductDataSource", new JRBeanCollectionDataSource(orderDetailRepsonse));
                 map.put("totalMoney", new BigDecimal(order.getTotalMoney()) + "");
                 if (voucher == null) {
-                    map.put("totalMoneydiscount", new BigDecimal(order.getTotalMoney()) + "");
+                    map.put("totalMoneydiscount", FormatMoney.formatMoney(new BigDecimal(order.getTotalMoney())) + "");
                 } else {
-                    map.put("totalMoneydiscount", new BigDecimal(order.getTotalMoney() - order.getMoneyReduce()) + "");
+                    map.put("totalMoneydiscount", FormatMoney.formatMoney(new BigDecimal(order.getTotalMoney() - order.getMoneyReduce())) + "");
                     map.put("moneyReduce", new BigDecimal(voucher.getValues()) + "");
                 }
-                map.put("customerMoney", new BigDecimal(order.getCustomerMoney()) + "");
+                map.put("customerMoney", FormatMoney.formatMoney(new BigDecimal(order.getTotalMoney() - order.getMoneyReduce())) + "");
                 map.put("payment", order.getPaymentMethod());
                 JOptionPane.showMessageDialog(this, "In hoá đơn thành công");
                 JasperReport rpt = JasperCompileManager.compileReport("src/app/jesport/JasportOder.jrxml");
                 JasperPrint print = JasperFillManager.fillReport(rpt, map, new JREmptyDataSource());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
                 String timestamp = dateFormat.format(new Date());
-
+                
                 String pdfFileName = "src/app/export/hoadon_" + timestamp + ".pdf";
                 JasperExportManager.exportReportToPdfFile(print, pdfFileName);
                 try {
@@ -579,12 +559,15 @@ public class OrderPanel extends javax.swing.JPanel {
                 Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
 
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         loadDataOrders(1);
+        tableModelOrderDetail.setRowCount(0);
+        paginationOderDetail.setEnabled(false);
+        paginationOderDetail.setVisible(false);
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void cbbOrderStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbOrderStatusActionPerformed
@@ -603,7 +586,7 @@ public class OrderPanel extends javax.swing.JPanel {
                 loadDataOrders(1);
         }
     }//GEN-LAST:event_cbbOrderStatusActionPerformed
-
+    
     private void openExcelFile(String filePath) {
         try {
             Desktop.getDesktop().open(new File(filePath));
@@ -611,7 +594,7 @@ public class OrderPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-
+    
     private void clearTable(DefaultTableModel model) {
         while (model.getRowCount() > 0) {
             model.removeRow(0);

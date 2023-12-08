@@ -236,6 +236,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         txtCode = new app.view.swing.TextField();
         labelNameError1 = new javax.swing.JLabel();
         txtngaysinh = new com.toedter.calendar.JDateChooser();
+        btnClear = new app.view.swing.ButtonGradient();
         panelCustomerBought = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDisplayProductBought = new javax.swing.JTable();
@@ -298,6 +299,14 @@ public class CustomerPanel extends javax.swing.JPanel {
 
         txtngaysinh.setDateFormatString("yyyy-MM-dd");
 
+        btnClear.setText("Làm Mới");
+        btnClear.setColor2(new java.awt.Color(23, 35, 51));
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelCustomerInforLayout = new javax.swing.GroupLayout(panelCustomerInfor);
         panelCustomerInfor.setLayout(panelCustomerInforLayout);
         panelCustomerInforLayout.setHorizontalGroup(
@@ -325,21 +334,33 @@ public class CustomerPanel extends javax.swing.JPanel {
                     .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCustomerInforLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelCustomerInforLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         panelCustomerInforLayout.setVerticalGroup(
             panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCustomerInforLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCustomerInforLayout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelEmailError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCustomerInforLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
                         .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelCustomerInforLayout.createSequentialGroup()
                                 .addGap(50, 50, 50)
@@ -361,16 +382,7 @@ public class CustomerPanel extends javax.swing.JPanel {
                             .addComponent(txtngaysinh, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelDateError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelCustomerInforLayout.createSequentialGroup()
-                        .addGroup(panelCustomerInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelEmailError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelCustomerInforLayout.createSequentialGroup()
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(70, 70, 70)
-                        .addComponent(labelAddressError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(labelDateError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -512,7 +524,7 @@ public class CustomerPanel extends javax.swing.JPanel {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn thêm nữa không?");
             if (a == 0) {
                 KhachHang cd = reafrom();
-                if (service.addSach(cd) > 0) {
+                if (service.addKhachHang(cd) > 0) {
                     JOptionPane.showMessageDialog(this, "thêm thành công");
                     filltable(service.getAll());
                     loadDataTablePhanTrang(1);
@@ -528,8 +540,8 @@ public class CustomerPanel extends javax.swing.JPanel {
 
         row = tblListCustomer.getSelectedRow();
         KhachHang cd = reafrom();
-        int ma = Integer.parseInt(tblListCustomer.getValueAt(row, 0).toString());
-        if (check() && checkTrung() && checkTrung1()) {
+        String ma = tblListCustomer.getValueAt(row, 0).toString();
+        if (check()) {
             int a = JOptionPane.showConfirmDialog(this, "bạn có muốn update nữa không?");
             if (a == 0) {
                 if (service.updateSV(cd, ma) > 0) {
@@ -591,14 +603,29 @@ public class CustomerPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_txtSearchCustomerKeyReleased
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnClearActionPerformed
     private void clearTable(DefaultTableModel model) {
         while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
     }
 
+    private void clearForm() {
+        txtAddress.setText("");
+        txtCode.setText("");
+        txtEmail.setText("");
+        txtFullname.setText("");
+        txtPhoneNumber.setText("");
+        txtSearchCustomer.setText("");
+        txtngaysinh.setDate(null);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private app.view.swing.ButtonGradient btnAdd;
+    private app.view.swing.ButtonGradient btnClear;
     private app.view.swing.ButtonGradient btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

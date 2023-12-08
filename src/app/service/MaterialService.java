@@ -33,6 +33,10 @@ public class MaterialService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+     public List<String> getAllName(){
+        return materialRepository.getAllName();
+    }
 
     public boolean changeStatus(String name) {
         return materialRepository.updateStatus(name) > 0;

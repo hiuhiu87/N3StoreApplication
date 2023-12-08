@@ -47,6 +47,30 @@ public class SoleRepository implements CrudRepository<Sole> {
         }
     }
 
+    public List<String> getAllName() {
+        try (Connection con = DBConnector.getConnection()) {
+            List<String> list = new ArrayList<>();
+            String sql = """
+                         SELECT
+                            NAME
+                         FROM
+                            N3STORESNEAKER.dbo.SOLE
+                         WHERE DELETED = 0
+                         ORDER BY ID DESC;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString(1);
+                list.add(name);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public int add(Sole t) {
         try (Connection con = DBConnector.getConnection()) {

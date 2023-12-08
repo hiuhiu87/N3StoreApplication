@@ -32,6 +32,10 @@ public class SizeService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public List<String> getAllName(){
+        return sizeRepository.getAllName();
+    }
 
     public boolean changeStatus(String name) {
         return sizeRepository.updateStatus(name) > 0;

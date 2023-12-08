@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="238" pageHeight="842" columnWidth="216" leftMargin="11" rightMargin="11" topMargin="0" bottomMargin="0" uuid="70c3ab0b-d30a-4604-aeaf-b5a9abd3e164">
 	<property name="ireport.zoom" value="1.7715610000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="261"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -84,7 +84,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="257" splitType="Stretch">
+		<band height="322" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="216" height="20" uuid="52c66d69-a66d-47a9-91bd-389e5abfa574"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -121,14 +121,14 @@
 				<text><![CDATA[Tên Khách]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="225" width="54" height="15" uuid="eccd7b47-fc57-41b2-83a9-e934e1f5904d"/>
+				<reportElement x="2" y="290" width="54" height="15" uuid="eccd7b47-fc57-41b2-83a9-e934e1f5904d"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[Thành Tiền]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="242" width="81" height="15" uuid="aaf9476c-ae46-4a78-99a6-f15a11c93fbe"/>
+				<reportElement x="2" y="307" width="81" height="15" uuid="aaf9476c-ae46-4a78-99a6-f15a11c93fbe"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
@@ -163,7 +163,7 @@
 				<textFieldExpression><![CDATA[$P{employee}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table_1" x="0" y="65" width="214" height="160" uuid="ecf557ab-b188-4fae-ba27-917fd684c5b1"/>
+				<reportElement key="table_1" x="0" y="65" width="214" height="225" uuid="ecf557ab-b188-4fae-ba27-917fd684c5b1"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="ProductDataset" uuid="88b29358-123e-4f90-9a25-2094e0d7d9b3">
 						<dataSourceExpression><![CDATA[$P{ProductDataSource}]]></dataSourceExpression>
@@ -363,14 +363,14 @@
 				</jr:table>
 			</componentElement>
 			<textField isBlankWhenNull="true">
-				<reportElement x="156" y="225" width="58" height="15" uuid="d19bc395-e21e-4ae7-ae21-5483053ff035"/>
+				<reportElement x="158" y="290" width="58" height="15" uuid="d19bc395-e21e-4ae7-ae21-5483053ff035"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalMoney}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="156" y="242" width="58" height="15" uuid="b62456e3-0bdf-48bb-92e1-17382a96eebc"/>
+				<reportElement x="158" y="307" width="58" height="15" uuid="b62456e3-0bdf-48bb-92e1-17382a96eebc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -419,8 +419,8 @@
 				<textFieldExpression><![CDATA[$P{customerMoney}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="143" y="47" width="71" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<reportElement x="145" y="47" width="69" height="15" uuid="ad42412e-d668-40fe-bd40-8bdff396e774"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{payment}]]></textFieldExpression>

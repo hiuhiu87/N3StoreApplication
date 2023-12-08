@@ -28,7 +28,12 @@ public class ColorDialog extends javax.swing.JDialog {
     public ColorDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tableModelColor = new DefaultTableModel();
+        tableModelColor = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };;
         tblDisplay.setModel(tableModelColor);
         addColumTable();
         fillTable(colorService.getAllColors());

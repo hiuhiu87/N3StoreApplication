@@ -34,6 +34,11 @@ public class SoleService {
             return "Đã Xảy Ra Lỗi";
         }
     }
+    
+    public List<String> getAllName(){
+        return soleRepository.getAllName();
+    }
+
 
     public boolean changeStatus(String name) {
         return soleRepository.updateStatus(name) > 0;

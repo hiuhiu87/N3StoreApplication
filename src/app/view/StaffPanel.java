@@ -494,7 +494,7 @@ public class StaffPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-
+        txtAddress.setText("");
         txtCodeStaff.setText(" ");
         txtDate.setDate(null);
         txtEmail.setText(" ");
@@ -511,7 +511,7 @@ public class StaffPanel extends javax.swing.JPanel {
                 if (a == JOptionPane.YES_OPTION) {
                     if (nvService.addNhanVien(sv) > 0) {
                         try {
-                            XEmail.sendEmailInfor("Tạo Tài Khoản Nhân Viên", sv.getEmail(), password);
+                            XEmail.sendEmailInfor("Tạo Tài Khoản Nhân Viên","Mật Khẩu Tạm Thời: " +  sv.getEmail(), password);
                         } catch (MessagingException ex) {
                             Logger.getLogger(StaffPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }

@@ -15,12 +15,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author Admin
  */
 public class XGenerateQRCode {
+
+    private static String outputPath = ""; // Biến lưu đường dẫn đã chọn
 
     public static void generateQRcode(String data, String path, String charset, Map map, int h, int w) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, w, h);
@@ -29,16 +32,32 @@ public class XGenerateQRCode {
 
     public static boolean doGenerate(String code, String nameProduct) {
         try {
-            String path = "D:\\Downloads\\QR_Folder" + nameProduct + "QR" + ".png";
+            if (outputPath.isEmpty()) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Chọn thư mục lưu trữ QR Code");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                int userSelection = fileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File selectedDirectory = fileChooser.getSelectedFile();
+                    outputPath = selectedDirectory.getAbsolutePath(); // Lưu đường dẫn được chọn
+                } else {
+                    System.out.println("Hủy bỏ việc chọn thư mục lưu trữ.");
+                    return false;
+                }
+            }
+
+            String path = outputPath + File.separator + nameProduct + "_QR" + ".png";
             String charset = "UTF-8";
             Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<>();
             hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             generateQRcode(code, path, charset, hashMap, 200, 200);
             return true;
         } catch (WriterException | IOException e) {
+            e.printStackTrace();
             return false;
         }
-
     }
-    
+
 }

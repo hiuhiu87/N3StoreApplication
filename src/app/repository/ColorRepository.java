@@ -46,6 +46,30 @@ public class ColorRepository implements CrudRepository<Color> {
         }
     }
 
+    public List<String> getAllName() {
+        try (Connection con = DBConnector.getConnection()) {
+            List<String> list = new ArrayList<>();
+            String sql = """
+                         SELECT
+                            NAME
+                         FROM
+                            N3STORESNEAKER.dbo.COLOR
+                         WHERE DELETED = 0
+                         ORDER BY ID DESC;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString(1);
+                list.add(name);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public int updateStatus(String name) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
@@ -118,7 +142,7 @@ public class ColorRepository implements CrudRepository<Color> {
             return null;
         }
     }
-    
+
     public Color findById(int id) {
         try (Connection con = DBConnector.getConnection()) {
             String sql = """

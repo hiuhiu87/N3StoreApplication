@@ -21,6 +21,11 @@ public class Statistical {
 
     public Statistical() {
     }
+    
+    public Statistical(int soLuong,String ten) {
+        this.soLuong = soLuong;
+        this.ten = ten;
+    }
 
     public Statistical(int thang, String ten, int soLuong, int tongTien) {
         this.thang = thang;

@@ -45,4 +45,8 @@ public class ColorService {
         return colorRepository.findById(id);
     }
 
+    public List<String> getAllName() {
+        return colorRepository.getAllName();
+    }
+
 }
