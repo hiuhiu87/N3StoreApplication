@@ -23,7 +23,13 @@ import org.apache.poi.util.StringUtil;
  */
 public class DiscountPanel extends javax.swing.JPanel {
 
-    private DefaultTableModel dtm = new DefaultTableModel();
+    private DefaultTableModel dtm = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    ;
     private VoucherService vcs = new VoucherService();
     private Voucher v = new Voucher();
     private List<Voucher> listPhanTrangVoucher = new ArrayList<>();
@@ -63,7 +69,7 @@ public class DiscountPanel extends javax.swing.JPanel {
     void fillTable(List<Voucher> list) {
         dtm.setRowCount(0);
         for (Voucher v : list) {
-            dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Hoạt động" : "Đã hết hạn"});
+            dtm.addRow(new Object[]{v.getId(), v.getCode(), v.getTen(), v.getQuantity(), v.getStart_Date(), v.getEnd_Date(), v.getMin_values_condition(), v.getType(), v.getValues(), v.getMax_values(), v.getDeleted() == 1 ? "Đã Hết Hạn" : "Hoạt Động"});
         }
 
     }
@@ -202,7 +208,7 @@ public class DiscountPanel extends javax.swing.JPanel {
             if (ngayHT.after(v.getEnd_Date())) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String format = dateFormat.format(v.getEnd_Date());
-                vcs.updateDeleted(false, v.getId());
+                vcs.updateDeleted(true, v.getId());
                 loadDataTablePhanTrang(1);
             }
 
@@ -445,7 +451,7 @@ public class DiscountPanel extends javax.swing.JPanel {
                 "ID", "Mã Số", "Tên Voucher", "Số Lượng", "Ngày Bắt Đầu", "Ngày Kết Thúc", "Điều Kiện", "Kiểu", "Giá Trị", "Giá Trị Tối Đa", "Trạng thái"
             }
         ));
-        tbHienthiVoucher.setRowHeight(25);
+        tbHienthiVoucher.setRowHeight(34);
         tbHienthiVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbHienthiVoucherMouseClicked(evt);
@@ -481,36 +487,35 @@ public class DiscountPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(346, 346, 346)
-                        .addComponent(pn, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(575, 575, 575))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(462, 462, 462))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(462, 462, 462))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(0, 0, Short.MAX_VALUE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(0, 0, Short.MAX_VALUE)))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, Short.MAX_VALUE)
-                                            .addComponent(btnClear))
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabel5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, Short.MAX_VALUE)
+                                        .addComponent(btnClear))
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(221, 221, 221))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(474, 474, 474)
+                .addComponent(pn, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -584,8 +589,8 @@ public class DiscountPanel extends javax.swing.JPanel {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         int a = JOptionPane.showConfirmDialog(this,
-                 "Bạn chắc chắn muốn cập nhật trạng thái?",
-                 "update trạng thái", JOptionPane.YES_NO_OPTION);
+                "Bạn chắc chắn muốn cập nhật trạng thái?",
+                "update trạng thái", JOptionPane.YES_NO_OPTION);
         if (a == JOptionPane.YES_OPTION) {
             int row = tbHienthiVoucher.getSelectedRow();
             if (row >= 0) {

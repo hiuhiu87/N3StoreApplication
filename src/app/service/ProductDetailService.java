@@ -17,6 +17,7 @@ import app.repository.ProductRepository;
 import app.repository.SizeRepository;
 import app.repository.SoleRepository;
 import app.request.AddProductDetailRequest;
+import app.request.UpdateProductDetailRequest;
 import app.response.ProductDetailResponse;
 import java.util.List;
 
@@ -102,6 +103,10 @@ public class ProductDetailService {
         return detailRepository.findListByNameProduct(nameProduct);
     }
 
+    public boolean updateProductDetail(String code, UpdateProductDetailRequest detailRequest) {
+        return detailRepository.updateProductDetail(code, detailRequest) > 0;
+    }
+
     public int countProductRecord() {
         return detailRepository.countProductRecord();
     }
@@ -133,6 +138,14 @@ public class ProductDetailService {
 
     public boolean updateQuantityInStore(String code, int quantity) {
         return detailRepository.updateQuantity(code, quantity) > 0;
+    }
+
+    public ProductDetail findByAtribute(String nameProduct, String nameSize, String nameMaterial, String nameSole, String nameColor) {
+        return detailRepository.findByAtribute(nameProduct, nameSize, nameMaterial, nameSole, nameColor);
+    }
+
+    public ProductDetail findById(int id) {
+        return detailRepository.findById(id);
     }
 
 }

@@ -123,4 +123,25 @@ public class MaterialRepository implements CrudRepository<Material> {
         }
     }
 
+    public Material findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT ID, NAME, DELETED
+                         FROM N3STORESNEAKER.dbo.MATERIAL
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            ResultSet rs = stm.executeQuery();
+            Material material = new Material();
+            while (rs.next()) {
+                material.setId(rs.getInt(1));
+                material.setName(rs.getString(2));
+                material.setDeleted(rs.getBoolean(3));
+            }
+            return material;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

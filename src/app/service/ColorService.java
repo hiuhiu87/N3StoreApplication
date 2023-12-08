@@ -32,9 +32,17 @@ public class ColorService {
             return "Đã Xảy Ra Lỗi";
         }
     }
-    
+
     public boolean changeStatus(String name) {
         return colorRepository.updateStatus(name) > 0;
+    }
+
+    public Color findByName(String name) {
+        return colorRepository.findByName(name);
+    }
+
+    public Color findById(int id) {
+        return colorRepository.findById(id);
     }
 
 }

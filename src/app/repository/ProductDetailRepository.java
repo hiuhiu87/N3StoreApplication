@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -11,6 +11,7 @@ import app.model.Product;
 import app.model.ProductDetail;
 import app.model.Size;
 import app.model.Sole;
+import app.request.UpdateProductDetailRequest;
 import app.response.ProductDetailResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -117,7 +118,7 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
                          LEFT JOIN SOLE s1 on
                          	pd.ID_SOLE = s1.ID
                          ORDER BY
-                                pd.CODE DESC
+                                pd.ID DESC
                          OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;
                          """;
             PreparedStatement stm = con.prepareStatement(sql);
@@ -329,6 +330,25 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public int updateProductDetail(String code, UpdateProductDetailRequest detailRequest) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                         SET SELL_PRICE = ?, QUANTITY = ?, ORIGIN_PRICE = ?, DESCRIPTION = ?
+                         WHERE CODE = ?;
+                         """;
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setObject(1, detailRequest.getSellPrice());
+            stm.setObject(2, detailRequest.getQuantity());
+            stm.setObject(3, detailRequest.getOriginPrice());
+            stm.setObject(4, detailRequest.getDescription());
+            stm.setObject(5, code);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     @Override
     public ProductDetail findByName(String code) {
         try (Connection con = DBConnector.getConnection()) {
@@ -340,6 +360,40 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
 
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setObject(1, code);
+            ProductDetail productDetail = new ProductDetail();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                productDetail.setId(rs.getInt(1));
+                productDetail.setIdSize(rs.getInt(2));
+                productDetail.setIdProduct(rs.getInt(3));
+                productDetail.setIdMaterial(rs.getInt(4));
+                productDetail.setIdColor(rs.getInt(5));
+                productDetail.setIdSole(rs.getInt(6));
+                productDetail.setImageProduct(rs.getBytes(7));
+                productDetail.setSellPrice(rs.getDouble(8));
+                productDetail.setQuantity(rs.getInt(9));
+                productDetail.setDeleted(rs.getBoolean(10));
+                productDetail.setOriginPrice(rs.getDouble(11));
+                productDetail.setCode(rs.getString(12));
+                productDetail.setDescription(rs.getString(13));
+            }
+            return productDetail;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ProductDetail findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                     SELECT ID, ID_SIZE, ID_PRODUCT, ID_MATERIAL, ID_COLOR, ID_SOLE, IMAGE_PRODUCT, SELL_PRICE, QUANTITY, DELETED, ORIGIN_PRICE, CODE, DESCRIPTION
+                     FROM N3STORESNEAKER.dbo.PRODUCT_DETAIL
+                     WHERE ID = ?;
+                     """;
+
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
             ProductDetail productDetail = new ProductDetail();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -608,13 +662,6 @@ public class ProductDetailRepository implements CrudRepository<ProductDetail> {
             }
         }
         return 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
-    }
-
-    public static void main(String[] args) {
-        String code = new ProductDetailRepository().generateNextModelCode();
-        int num = new ProductDetailRepository().generateNextModelCodeNumber();
-        System.out.println(code);
-        System.out.println(num);
     }
 
     private boolean codeExistsInDatabase(String code) throws SQLException {

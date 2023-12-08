@@ -34,9 +34,17 @@ public class SoleService {
             return "Đã Xảy Ra Lỗi";
         }
     }
-    
+
     public boolean changeStatus(String name) {
         return soleRepository.updateStatus(name) > 0;
+    }
+
+    public Sole findByName(String name) {
+        return soleRepository.findByName(name);
+    }
+
+    public Sole findById(int id) {
+        return soleRepository.findById(id);
     }
 
 }

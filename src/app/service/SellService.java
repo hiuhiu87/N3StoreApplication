@@ -85,8 +85,8 @@ public class SellService {
         return sellRepository.checkProductDetailInOrderDetail(productDetailCode, orderCode);
     }
 
-    public boolean updateQuantityInCart(String orderCode, String productDetailCode, int quantity) {
-        return orderDetailRepository.updateQuantityInCart(orderCode, productDetailCode, quantity) > 0;
+    public boolean updateQuantityInCart(String orderCode, String productDetailCode, int quantity, Double total) {
+        return orderDetailRepository.updateQuantityInCart(orderCode, productDetailCode, quantity, total) > 0;
     }
 
 }

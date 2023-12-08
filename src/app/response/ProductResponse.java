@@ -10,6 +10,8 @@ package app.response;
  */
 public class ProductResponse {
 
+    private Integer id;
+
     private String code;
 
     private String name;
@@ -22,12 +24,22 @@ public class ProductResponse {
 
     private Boolean deleted;
 
-    public ProductResponse(String code, String name, Integer quantity, String category, String company, Boolean deleted) {
+    public ProductResponse(Integer id, String code, String name, Integer quantity, String category, String company, Boolean deleted) {
+        this.id = id;
+        this.code = code;
         this.name = name;
         this.quantity = quantity;
         this.category = category;
         this.company = company;
         this.deleted = deleted;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {

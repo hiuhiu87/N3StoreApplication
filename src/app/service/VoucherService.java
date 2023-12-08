@@ -42,11 +42,11 @@ public class VoucherService implements VoucherInterface {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
-                         rs.getString(3), rs.getInt(4),
-                         rs.getDate(5), rs.getDate(6),
-                         rs.getFloat(7), rs.getString(8),
-                         rs.getFloat(9), rs.getFloat(10),
-                         rs.getInt(11));
+                        rs.getString(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6),
+                        rs.getFloat(7), rs.getString(8),
+                        rs.getFloat(9), rs.getFloat(10),
+                        rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -66,11 +66,36 @@ public class VoucherService implements VoucherInterface {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
-                         rs.getString(3), rs.getInt(4),
-                         rs.getDate(5), rs.getDate(6),
-                         rs.getFloat(7), rs.getString(8),
-                         rs.getFloat(9), rs.getFloat(10),
-                         rs.getInt(11));
+                        rs.getString(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6),
+                        rs.getFloat(7), rs.getString(8),
+                        rs.getFloat(9), rs.getFloat(10),
+                        rs.getInt(11));
+                list.add(v);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<Voucher> getListAllByMinValue(Double totalMoney) {
+        ArrayList<Voucher> list = new ArrayList<>();
+        try {
+            String q = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED "
+                    + "FROM VOUCHER WHERE MIN_VALUE_CONDITION <= ? AND DELETED = 0";
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.setObject(1, totalMoney);
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6),
+                        rs.getFloat(7), rs.getString(8),
+                        rs.getFloat(9), rs.getFloat(10),
+                        rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -93,11 +118,11 @@ public class VoucherService implements VoucherInterface {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
-                         rs.getString(3), rs.getInt(4),
-                         rs.getDate(5), rs.getDate(6),
-                         rs.getFloat(7), rs.getString(8),
-                         rs.getFloat(9), rs.getFloat(10),
-                         rs.getInt(11));
+                        rs.getString(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6),
+                        rs.getFloat(7), rs.getString(8),
+                        rs.getFloat(9), rs.getFloat(10),
+                        rs.getInt(11));
                 list.add(v);
             }
         } catch (Exception e) {
@@ -127,8 +152,8 @@ public class VoucherService implements VoucherInterface {
     public int add(Voucher v) {
         try {
             String q = "INSERT INTO VOUCHER(NAME,CODE,QUANTITY,START_DATE"
-                    + ",END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE) "
-                    + "VALUES (?,?,?,?,?,?,?,?,?)";
+                    + ",END_DATE,MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE, DELETED) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, v.getTen());
             ps.setString(2, v.getCode());
@@ -143,6 +168,7 @@ public class VoucherService implements VoucherInterface {
             ps.setString(7, v.getType());
             ps.setFloat(8, v.getValues());
             ps.setFloat(9, v.getMax_values());
+            ps.setBoolean(10, false);
             if (ps.executeUpdate() > 0) {
                 System.out.println("Thêm thành công");
                 return 1;
@@ -166,7 +192,7 @@ public class VoucherService implements VoucherInterface {
             Voucher v = new Voucher();
             while (rs.next()) {
                 v.setId(rs.getInt(1));
-                v.setTen(rs.getString(2)); 
+                v.setTen(rs.getString(2));
                 v.setCode(rs.getString(3));
                 v.setQuantity(rs.getInt(4));
                 v.setStart_Date(rs.getDate(5));
@@ -212,7 +238,6 @@ public class VoucherService implements VoucherInterface {
         }
     }
 
-    
     @Override
     public int update(Voucher v, int id) {
         try {
@@ -349,6 +374,60 @@ public class VoucherService implements VoucherInterface {
             ps.execute();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public Voucher findById(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = "SELECT ID,NAME,CODE,QUANTITY,START_DATE,END_DATE"
+                    + ",MIN_VALUE_CONDITION,TYPE,VALUE,MAX_VALUE,DELETED "
+                    + "FROM VOUCHER WHERE ID = ?";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Voucher v = new Voucher(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6),
+                        rs.getFloat(7), rs.getString(8),
+                        rs.getFloat(9), rs.getFloat(10),
+                        rs.getInt(11));
+                return v;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+
+        }
+    }
+
+    public boolean updateQuantityUse(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.VOUCHER
+                         SET QUANTITY = QUANTITY - 1
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean updateQuantityDontUse(int id) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE N3STORESNEAKER.dbo.VOUCHER
+                         SET QUANTITY = QUANTITY + 1
+                         WHERE ID = ?;
+                         """;
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setObject(1, id);
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            return false;
         }
     }
 

@@ -29,6 +29,7 @@ public class SellRepository {
                            ,[DELETED]
                            ,[Address]
                            ,[PHONE_NUMBER]
+                           ,[CODE]
                        FROM [N3STORESNEAKER].[dbo].[CUSTOMER]
                        ORDER BY ID DESC
                      """;
@@ -38,15 +39,15 @@ public class SellRepository {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                KhachHang khachHang = new KhachHang(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getBoolean(4),
-                        rs.getBoolean(5),
-                        rs.getString(6),
-                        rs.getString(7)
-                );
+                KhachHang khachHang = new KhachHang();
+                khachHang.setId(rs.getInt(1));
+                khachHang.setFullName(rs.getString(2));
+                khachHang.setEmail(rs.getString(3));
+                khachHang.setGender(rs.getBoolean(4));
+                khachHang.setDeleted(rs.getBoolean(5));
+                khachHang.setAddress(rs.getString(6));
+                khachHang.setPhoneNumber(rs.getString(7));
+                khachHang.setCode(rs.getString(8));
                 listKhachHang.add(khachHang);
             }
             return listKhachHang;

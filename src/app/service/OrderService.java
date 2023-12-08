@@ -15,49 +15,62 @@ import java.util.List;
  */
 public class OrderService {
 
-    OrderRepository oderRepository = new OrderRepository();
+    OrderRepository orderRepository = new OrderRepository();
+    VoucherService voucherService = new VoucherService();
+
+    public boolean cancelOrder(String orderCode) {
+        return orderRepository.updateStatusOrderToCancel(orderCode) > 0;
+    }
 
     public List<Order> getAllOders() {
-        return oderRepository.getAllOders();
+        return orderRepository.getAllOders();
     }
 
     public List<OrderResponse> getPaginatedOders(int offset, int limit) {
-        return oderRepository.getPaginatedOders(offset, limit);
+        return orderRepository.getPaginatedOders(offset, limit);
     }
 
     public List<OrderResponse> getAllOdersByStatus(int status) {
-        return oderRepository.getAllListByStatus(status);
+        return orderRepository.getAllListByStatus(status);
     }
 
     public int countOder() {
-        return oderRepository.countOder();
+        return orderRepository.countOder();
     }
 
 //    public List<Oders> getAllListPrintOders(){
-//        return oderRepository.getAllListPrintOder();
+//        return orderRepository.getAllListPrintOder();
 //    }
     public int updateDeleted(boolean deleted, int id) {
-        return oderRepository.updateDeleted(deleted, id);
+        return orderRepository.updateDeleted(deleted, id);
     }
 
     public List<OrderResponse> getAllOrderView() {
-        return oderRepository.getAllOrderView();
+        return orderRepository.getAllOrderView();
     }
 
     public Order findByCode(String code) {
-        return oderRepository.findByCode(code);
+        return orderRepository.findByCode(code);
     }
 
     public boolean updateTotalMoney(Double totalMoney, Integer orderId) {
-        return oderRepository.updateTotalMoneyOrder(totalMoney, orderId) > 0;
+        return orderRepository.updateTotalMoneyOrder(totalMoney, orderId) > 0;
     }
 
     public boolean payOrder(String paymentMethod, Double customerMoney, Integer orderId) {
-        return oderRepository.payOrder(paymentMethod, customerMoney, orderId) > 0;
+        return orderRepository.payOrder(paymentMethod, customerMoney, orderId) > 0;
     }
 
     public OrderResponse getDetailOrderResponse(String code) {
-        return oderRepository.getOrderResponseByCode(code);
+        return orderRepository.getOrderResponseByCode(code);
+    }
+
+    public boolean addVoucher(int idVoucher, Double moneyReduce, String orderCode) {
+        boolean resAdd = orderRepository.addVoucher(idVoucher, moneyReduce, orderCode) > 0;
+        if (resAdd) {
+            voucherService.updateQuantityUse(idVoucher);
+        }
+        return resAdd;
     }
 
 }

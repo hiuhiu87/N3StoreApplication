@@ -7,11 +7,18 @@ package app.view;
 import app.model.KhachHang;
 import app.service.KhachHang_Service;
 import app.service.SellService;
+import java.lang.System.Logger.Level;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -33,10 +40,68 @@ public class CustommerDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         fillTable(sellService.getAllKhachHang());
+        onSearch();
     }
 
     public KhachHang getKhachHang() {
         return khachHang;
+    }
+
+    private void onSearch() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    if (e.getDocument().getText(0, e.getDocument().getLength()).length() <= 0) {
+                        fillTable(khachHangService.getAll());
+                    } else {
+                        String namePrdSearch = e.getDocument().getText(0, e.getDocument().getLength());
+                        List<KhachHang> listSearch = khachHangService.getAll();
+                        List<KhachHang> listRes = new ArrayList<>();
+                        if (listSearch != null) {
+                            for (KhachHang khachHang : listSearch) {
+                                if ((khachHang.getFullName().toLowerCase().contains(namePrdSearch.toLowerCase()))
+                                        || (khachHang.getPhoneNumber().toLowerCase().contains(namePrdSearch.toLowerCase()))) {
+                                    listRes.add(khachHang);
+                                }
+                            }
+                            fillTable(listRes);
+                        }
+                    }
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(ProductPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                fillTable(khachHangService.getAll());
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    if (e.getDocument().getText(0, e.getDocument().getLength()).length() <= 0) {
+                        fillTable(khachHangService.getAll());
+                    } else {
+                        String namePrdSearch = e.getDocument().getText(0, e.getDocument().getLength());
+                        List<KhachHang> listSearch = khachHangService.getAll();
+                        List<KhachHang> listRes = new ArrayList<>();
+                        if (listSearch != null) {
+                            for (KhachHang khachHang : listSearch) {
+                                if ((khachHang.getFullName().toLowerCase().contains(namePrdSearch.toLowerCase()))
+                                        || (khachHang.getPhoneNumber().toLowerCase().contains(namePrdSearch.toLowerCase()))) {
+                                    listRes.add(khachHang);
+                                }
+                            }
+                            fillTable(listRes);
+                        }
+                    }
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(ProductPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     void fillTable(List<KhachHang> list) {
@@ -51,23 +116,15 @@ public class CustommerDialog extends javax.swing.JDialog {
         String nameCustommer = txtTenKhachHang.getText();
 
         boolean gender;
-        if (rdNam.isSelected()) {
-            gender = true;
-        } else {
-            gender = false;
-        }
+        gender = rdNam.isSelected();
 
         String phone = txtSoDienThoai.getText();
         String email = txtEmail.getText();
-
+        Date ngaySinh = txtDate.getDate();
         boolean status;
-        if (rdHD.isSelected()) {
-            status = true;
-        } else {
-            status = false;
-        }
+        status = rdHD.isSelected();
         String address = txtDiaChi.getText();
-        return new KhachHang(nameCustommer, email, gender, status, address, phone);
+        return new KhachHang(nameCustommer, email, gender, phone, address, ngaySinh, status, khachHangService.generateNextModelCode());
     }
 
     boolean validateFormCustommer() {
@@ -135,7 +192,7 @@ public class CustommerDialog extends javax.swing.JDialog {
         tabbedPaneCustom1 = new app.view.swing.TabbedPaneCustom();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnTimKiemKH = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
         btnChonKH = new app.view.swing.ButtonGradient();
@@ -151,15 +208,19 @@ public class CustommerDialog extends javax.swing.JDialog {
         btnUpdate = new app.view.swing.ButtonGradient();
         btnLamMoi = new app.view.swing.ButtonGradient();
         txtDiaChi = new app.view.swing.TextField();
+        txtDate = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        tabbedPaneCustom1.setBackground(new java.awt.Color(255, 255, 255));
+        tabbedPaneCustom1.setSelectedColor(new java.awt.Color(23, 35, 51));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Tìm kiếm:");
 
-        btnTimKiemKH.addActionListener(new java.awt.event.ActionListener() {
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTimKiemKHActionPerformed(evt);
+                txtSearchActionPerformed(evt);
             }
         });
 
@@ -171,9 +232,17 @@ public class CustommerDialog extends javax.swing.JDialog {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Full name", "Email", "Gender", "Phone", "Address", "Status"
+                "Code", "Full name", "Email", "Gender", "Phone", "Address", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblKhachHang.setRowHeight(35);
         tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -183,6 +252,8 @@ public class CustommerDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tblKhachHang);
 
         btnChonKH.setText("Chọn");
+        btnChonKH.setColor1(new java.awt.Color(23, 35, 51));
+        btnChonKH.setColor2(new java.awt.Color(23, 35, 51));
         btnChonKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChonKHActionPerformed(evt);
@@ -199,15 +270,15 @@ public class CustommerDialog extends javax.swing.JDialog {
                         .addGap(86, 86, 86)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(btnTimKiemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 6, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(300, 300, 300)
-                .addComponent(btnChonKH, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(243, 243, 243)
+                .addComponent(btnChonKH, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -215,7 +286,7 @@ public class CustommerDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTimKiemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
@@ -225,6 +296,8 @@ public class CustommerDialog extends javax.swing.JDialog {
         );
 
         tabbedPaneCustom1.addTab("Danh sách khách hàng", jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         txtTenKhachHang.setLabelText("Tên Khách Hàng");
 
@@ -240,13 +313,15 @@ public class CustommerDialog extends javax.swing.JDialog {
         txtEmail.setLabelText("Email");
 
         buttonGroup2.add(rdNgungHD);
-        rdNgungHD.setText("Ngưng hoạt động");
+        rdNgungHD.setText("Ngừng Hoạt Động");
 
         buttonGroup2.add(rdHD);
         rdHD.setSelected(true);
         rdHD.setText("Đang hoạt động");
 
-        btnThem.setText("Add");
+        btnThem.setText("Thêm");
+        btnThem.setColor1(new java.awt.Color(23, 35, 51));
+        btnThem.setColor2(new java.awt.Color(23, 35, 51));
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemActionPerformed(evt);
@@ -254,6 +329,8 @@ public class CustommerDialog extends javax.swing.JDialog {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.setColor1(new java.awt.Color(23, 35, 51));
+        btnUpdate.setColor2(new java.awt.Color(23, 35, 51));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -261,15 +338,24 @@ public class CustommerDialog extends javax.swing.JDialog {
         });
 
         btnLamMoi.setText("Reset");
+        btnLamMoi.setColor1(new java.awt.Color(23, 35, 51));
+        btnLamMoi.setColor2(new java.awt.Color(23, 35, 51));
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
         txtDiaChi.setLabelText("Địa Chỉ");
+
+        txtDate.setToolTipText("Ngày Sinh");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
+                .addGap(212, 212, 212)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(rdHD, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,7 +382,10 @@ public class CustommerDialog extends javax.swing.JDialog {
                                         .addGap(29, 29, 29)
                                         .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(171, 171, 171)))))
+                            .addGap(171, 171, 171)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(171, 171, 171))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,14 +404,16 @@ public class CustommerDialog extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdHD)
                     .addComponent(rdNgungHD))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(44, 44, 44)
+                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29))
+                .addGap(15, 15, 15))
         );
 
         tabbedPaneCustom1.addTab("Cập nhập khách hàng", jPanel2);
@@ -341,9 +432,9 @@ public class CustommerDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTimKiemKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemKHActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTimKiemKHActionPerformed
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+
+    }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         index = tblKhachHang.getSelectedRow();
@@ -367,10 +458,10 @@ public class CustommerDialog extends javax.swing.JDialog {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         if (validateFormCustommer()) {
-            KhachHang khachHang = this.readForm();
+            KhachHang khachHangAdd = this.readForm();
             int chon = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thêm ?", "Add", JOptionPane.YES_NO_OPTION);
             if (chon == 0) {
-                if (sellService.addKhachHang(khachHang) != 0) {
+                if (sellService.addKhachHang(khachHangAdd) != 0) {
                     JOptionPane.showMessageDialog(this, "Thêm mới khách hàng thành công");
                     fillTable(sellService.getAllKhachHang());
                 }
@@ -386,12 +477,21 @@ public class CustommerDialog extends javax.swing.JDialog {
     private void btnChonKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonKHActionPerformed
         int row = tblKhachHang.getSelectedRow();
         if (row >= 0) {
-            int id = (int) tblKhachHang.getValueAt(row, 0);
-            KhachHang khachHangChose = khachHangService.findById(id);
+            String code = (String) tblKhachHang.getValueAt(row, 0);
+            KhachHang khachHangChose = khachHangService.findByCode(code);
             this.khachHang = khachHangChose;
             this.dispose();
         }
     }//GEN-LAST:event_btnChonKHActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        txtDiaChi.setText("");
+        txtEmail.setText("");
+        txtSoDienThoai.setText("");
+        txtTenKhachHang.setText("");
+        rdHD.setSelected(true);
+        rdNam.setSelected(true);
+    }//GEN-LAST:event_btnLamMoiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,7 +539,6 @@ public class CustommerDialog extends javax.swing.JDialog {
     private app.view.swing.ButtonGradient btnChonKH;
     private app.view.swing.ButtonGradient btnLamMoi;
     private app.view.swing.ButtonGradient btnThem;
-    private javax.swing.JTextField btnTimKiemKH;
     private app.view.swing.ButtonGradient btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -454,8 +553,10 @@ public class CustommerDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton rdNu;
     private app.view.swing.TabbedPaneCustom tabbedPaneCustom1;
     private javax.swing.JTable tblKhachHang;
+    private com.toedter.calendar.JDateChooser txtDate;
     private app.view.swing.TextField txtDiaChi;
     private app.view.swing.TextField txtEmail;
+    private javax.swing.JTextField txtSearch;
     private app.view.swing.TextField txtSoDienThoai;
     private app.view.swing.TextField txtTenKhachHang;
     // End of variables declaration//GEN-END:variables
