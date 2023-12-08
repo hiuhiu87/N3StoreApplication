@@ -27,27 +27,44 @@ public class KhachHang_Service {
     ResultSet rs = null;
 
     public List<KhachHang> getAll() {
-        sql = "SELECT ID,FULLNAME,EMAIL,PHONE_NUMBER,Address,BIRTHDATE FROM CUSTOMER";
-        List<KhachHang> lstSV = new ArrayList<>();
-        try {
-            con = DBConnector.getConnection();
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                //  public SinhVien(String maSV, String tenSV, int tuoi, int kyHoc, String nganhHoc, double diemTB, b
-                KhachHang s = new KhachHang(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6));
-                lstSV.add(s);
+        ArrayList<KhachHang> list = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+            String q = """
+                       SELECT
+                       	ID,
+                       	FULLNAME,
+                       	EMAIL,
+                       	PHONE_NUMBER,
+                       	Address,
+                       	BIRTHDATE,
+                       	CODE
+                       FROM
+                       	CUSTOMER
+                       WHERE CODE != 'KH0'
+                       ORDER BY ID DESC 
+                       """;
+            PreparedStatement ps1 = conn.prepareStatement(q);
+            ResultSet rs1 = ps1.executeQuery();
+            while (rs1.next()) {
+                KhachHang s = new KhachHang();
+                s.setId(rs1.getInt(1));
+                s.setFullName(rs1.getString(2));
+                s.setEmail(rs1.getString(3));
+                s.setPhoneNumber(rs1.getString(4));
+                s.setAddress(rs1.getString(5));
+                s.setBirthDate(rs1.getDate(6));
+                s.setCode(rs1.getString(7));
+                list.add(s);
             }
-            return lstSV;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return list;
     }
 
     public ArrayList<KhachHang> getListPhanTrang(int offset, int limit) {
         ArrayList<KhachHang> list = new ArrayList<>();
-        try {
+        try (Connection conn = DBConnector.getConnection()) {
             String q = """
                        SELECT
                        	ID,
@@ -63,7 +80,7 @@ public class KhachHang_Service {
                        ORDER BY ID DESC 
                        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
-            PreparedStatement ps = con.prepareStatement(q);
+            PreparedStatement ps = conn.prepareStatement(q);
             ps.setObject(1, offset);
             ps.setObject(2, limit);
             ps.execute();
@@ -87,12 +104,11 @@ public class KhachHang_Service {
     }
 
     public int count() {
-        try {
+        try (Connection conn = DBConnector.getConnection()) {
             int count = 0;
             String q = "SELECT COUNT(*) FROM CUSTOMER";
-            PreparedStatement ps = con.prepareStatement(q);
-            ps.execute();
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement ps1 = conn.prepareStatement(q);
+            ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
             }
@@ -103,20 +119,20 @@ public class KhachHang_Service {
         }
     }
 
-    public int addSach(KhachHang s) {
-        sql = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
-        try {
-            con = DBConnector.getConnection();
-            ps = con.prepareStatement(sql);
+    public int addKhachHang(KhachHang s) {
 
-            ps.setObject(1, s.getFullName());
-            ps.setObject(2, s.getEmail());
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql1 = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
 
-            ps.setObject(3, s.getPhoneNumber());
-            ps.setObject(4, s.getAddress());
-            ps.setObject(5, s.getBirthDate());
-            ps.setObject(6, s.getCode());
-            return ps.executeUpdate();
+            ps1.setObject(1, s.getFullName());
+            ps1.setObject(2, s.getEmail());
+
+            ps1.setObject(3, s.getPhoneNumber());
+            ps1.setObject(4, s.getAddress());
+            ps1.setObject(5, s.getBirthDate());
+            ps1.setObject(6, s.getCode());
+            return ps1.executeUpdate();
             //insert delete, update:executeUpdate()
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,21 +140,18 @@ public class KhachHang_Service {
         }
     }
 
-    public int updateSV(KhachHang s, int id) {
-        //truyền vào đối tượng mới, khóa chính đối tượng cũ
-        //MASACH,TENSACH,THELOAI,DONGIA
-        sql = "update CUSTOMER set FULLNAME=?,EMAIL=?,PHONE_NUMBER=?,Address=?,BIRTHDATE=? where id=?";
-        try {
-            con = DBConnector.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.setObject(1, s.getFullName());
-            ps.setObject(2, s.getEmail());
+    public int updateSV(KhachHang s, String code) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql1 = "update CUSTOMER set FULLNAME=?,EMAIL=?,PHONE_NUMBER=?,Address=?,BIRTHDATE=? where CODE=?";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            ps1.setObject(1, s.getFullName());
+            ps1.setObject(2, s.getEmail());
 
-            ps.setObject(3, s.getPhoneNumber());
-            ps.setObject(4, s.getAddress());
-            ps.setObject(5, s.getBirthDate());
-            ps.setObject(6, id);
-            return ps.executeUpdate();
+            ps1.setObject(3, s.getPhoneNumber());
+            ps1.setObject(4, s.getAddress());
+            ps1.setObject(5, s.getBirthDate());
+            ps1.setObject(6, code);
+            return ps1.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -147,24 +160,24 @@ public class KhachHang_Service {
 
     public KhachHang findById(int id) {
         try (Connection con = DBConnector.getConnection()) {
-            sql = """
+            String sql1 = """
                          SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, DELETED, Address, PHONE_NUMBER
                          FROM N3STORESNEAKER.dbo.CUSTOMER
                          WHERE ID = ?;
                          """;
-            PreparedStatement stm = con.prepareStatement(sql);
+            PreparedStatement stm = con.prepareStatement(sql1);
             stm.setObject(1, id);
-            rs = stm.executeQuery();
+            ResultSet rs1 = stm.executeQuery();
             KhachHang khachHang = new KhachHang();
-            while (rs.next()) {
-                khachHang.setId(rs.getInt(1));
-                khachHang.setFullName(rs.getString(2));
-                khachHang.setEmail(rs.getString(3));
-                khachHang.setBirthDate(rs.getDate(4));
-                khachHang.setGender(rs.getBoolean(5));
-                khachHang.setDeleted(rs.getBoolean(6));
-                khachHang.setAddress(rs.getString(7));
-                khachHang.setPhoneNumber(rs.getString(8));
+            while (rs1.next()) {
+                khachHang.setId(rs1.getInt(1));
+                khachHang.setFullName(rs1.getString(2));
+                khachHang.setEmail(rs1.getString(3));
+                khachHang.setBirthDate(rs1.getDate(4));
+                khachHang.setGender(rs1.getBoolean(5));
+                khachHang.setDeleted(rs1.getBoolean(6));
+                khachHang.setAddress(rs1.getString(7));
+                khachHang.setPhoneNumber(rs1.getString(8));
             }
             return khachHang;
         } catch (Exception e) {
@@ -174,25 +187,25 @@ public class KhachHang_Service {
     }
 
     public KhachHang findByCode(String code) {
-        try (Connection con = DBConnector.getConnection()) {
-            sql = """
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql1 = """
                          SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, DELETED, Address, PHONE_NUMBER
                          FROM N3STORESNEAKER.dbo.CUSTOMER
                          WHERE CODE = ?;
                          """;
-            PreparedStatement stm = con.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql1);
             stm.setObject(1, code);
-            rs = stm.executeQuery();
+            ResultSet rs1 = stm.executeQuery();
             KhachHang khachHang = new KhachHang();
-            while (rs.next()) {
-                khachHang.setId(rs.getInt(1));
-                khachHang.setFullName(rs.getString(2));
-                khachHang.setEmail(rs.getString(3));
-                khachHang.setBirthDate(rs.getDate(4));
-                khachHang.setGender(rs.getBoolean(5));
-                khachHang.setDeleted(rs.getBoolean(6));
-                khachHang.setAddress(rs.getString(7));
-                khachHang.setPhoneNumber(rs.getString(8));
+            while (rs1.next()) {
+                khachHang.setId(rs1.getInt(1));
+                khachHang.setFullName(rs1.getString(2));
+                khachHang.setEmail(rs1.getString(3));
+                khachHang.setBirthDate(rs1.getDate(4));
+                khachHang.setGender(rs1.getBoolean(5));
+                khachHang.setDeleted(rs1.getBoolean(6));
+                khachHang.setAddress(rs1.getString(7));
+                khachHang.setPhoneNumber(rs1.getString(8));
             }
             return khachHang;
         } catch (Exception e) {
@@ -286,14 +299,14 @@ public class KhachHang_Service {
     }
 
     public KhachHang findKhachHangLe() {
-        try (Connection con = DBConnector.getConnection()) {
-            sql = """
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql1 = """
                          SELECT ID, FULLNAME, EMAIL, BIRTHDATE, GENDER, DELETED, Address, PHONE_NUMBER, CODE
                          FROM N3STORESNEAKER.dbo.CUSTOMER
                          WHERE CODE = 'KH0';
                          """;
-            PreparedStatement stm = con.prepareStatement(sql);
-            rs = stm.executeQuery();
+            PreparedStatement stm = conn.prepareStatement(sql1);
+            ResultSet rs = stm.executeQuery();
             KhachHang khachHang = new KhachHang();
             while (rs.next()) {
                 khachHang.setId(rs.getInt(1));
@@ -314,20 +327,19 @@ public class KhachHang_Service {
     }
 
     public int createKhachLe() {
-        sql = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
-        try {
-            con = DBConnector.getConnection();
-            ps = con.prepareStatement(sql);
-            KhachHang s = new KhachHang();
-            ps.setObject(1, "Khách Lẻ");
-            ps.setObject(2, "");
 
-            ps.setObject(3, "");
-            ps.setObject(4, "");
-            ps.setObject(5, "");
-            ps.setObject(6, "KH0");
-            return ps.executeUpdate();
-            //insert delete, update:executeUpdate()
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql1 = "INSERT INTO CUSTOMER(FULLNAME, EMAIL, PHONE_NUMBER, Address, BIRTHDATE, CODE) VALUES(?,?,?,?,?,?)";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            KhachHang s = new KhachHang();
+            ps1.setObject(1, "Khách Lẻ");
+            ps1.setObject(2, "");
+
+            ps1.setObject(3, "");
+            ps1.setObject(4, "");
+            ps1.setObject(5, "");
+            ps1.setObject(6, "KH0");
+            return ps1.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

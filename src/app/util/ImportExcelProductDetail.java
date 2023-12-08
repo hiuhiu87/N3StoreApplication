@@ -183,7 +183,7 @@ public class ImportExcelProductDetail {
                 }
             }
             productDetailRepository.addAll(listProductDetails);
-            JOptionPane.showMessageDialog(null, "Import file excel thành công");
+            JOptionPane.showMessageDialog(null, "Import File Excel Thành Công");
             workbook.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

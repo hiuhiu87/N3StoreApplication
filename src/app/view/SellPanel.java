@@ -510,6 +510,7 @@ public class SellPanel extends javax.swing.JPanel {
         txtPayBack.setText("");
         txtTotalMoneyAfterMinus.setText("");
         cbbTypePayment.setSelectedItem("");
+        setKhachHangBanLe();
     }
 
     private void fillTableOrder(List<OrderResponse> listOder) {
@@ -1110,11 +1111,11 @@ public class SellPanel extends javax.swing.JPanel {
         panelProduct.setLayout(panelProductLayout);
         panelProductLayout.setHorizontalGroup(
             panelProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3)
             .addGroup(panelProductLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane3)
         );
         panelProductLayout.setVerticalGroup(
             panelProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1356,7 +1357,12 @@ public class SellPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseActionPerformed
-        custommerDialog.setVisible(true);
+        if (this.orderChose == null) {
+            JOptionPane.showMessageDialog(this, "");
+            return;
+        } else {
+            custommerDialog.setVisible(true);
+        }
     }//GEN-LAST:event_btnChooseActionPerformed
 
     private void tblDisplayProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayProductMouseClicked
@@ -1733,7 +1739,7 @@ public class SellPanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Bạn Phải Nhập Số Lượng Lên Hơn 0 !");
                     return;
                 }
-                if (quantityNew > quantityInStore) {
+                if (quantityNew > (quantityInStore + quantityInCart)) {
                     JOptionPane.showMessageDialog(this, "Số Lượng Vượt Quá Số Lượng Tôn !");
                     return;
                 }
@@ -1786,7 +1792,7 @@ public class SellPanel extends javax.swing.JPanel {
             return;
         }
 
-        if (this.orderChose.getTotalMoney() == 0) {
+        if (Double.parseDouble(txtTotalMoney.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Hóa Đơn Này Chưa Có Sản Phẩm Nào !");
             return;
         }

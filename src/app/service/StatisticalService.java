@@ -25,6 +25,33 @@ public class StatisticalService {
     public StatisticalService() {
         this.conn = DBConnector.getConnection();
     }
+    
+    public ArrayList<Statistical> getTop5(String year) {
+        ArrayList<Statistical> list = new ArrayList<>();
+        try {
+            String q = """
+                       SELECT TOP(5) SUM(b.QUANTITY) AS SL, d.NAME
+                       FROM ORDERS a
+                       JOIN ORDER_DETAIL b ON a.ID = b.ID_ORDER
+                       JOIN PRODUCT_DETAIL c ON b.ID_PRODUCT_DETAIL = c.ID
+                       JOIN PRODUCT d ON c.ID_PRODUCT = d.ID
+                       WHERE YEAR(a.DATECREATE) = ?
+                       GROUP BY d.NAME
+                       ORDER BY SL DESC;
+                       """;
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.setString(1, year);
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Statistical s = new Statistical(rs.getInt(1), rs.getString(2));
+                list.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public ArrayList<Statistical> getList() {
         ArrayList<Statistical> list = new ArrayList<>();

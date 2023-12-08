@@ -80,6 +80,17 @@ public class KhachHang {
         this.code = code;
     }
 
+    public KhachHang(String fullName, String email, boolean gender, String phoneNumber, String address, Date birthDate, boolean deleted, String code) {
+        this.fullName = fullName;
+        this.email = email;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.birthDate = birthDate;
+        this.deleted = deleted;
+        this.code = code;
+    }
+
     public String getCode() {
         return code;
     }

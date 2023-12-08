@@ -98,6 +98,8 @@ public class OrderPanel extends javax.swing.JPanel {
 
         loadDataOrders(1);
         onChange();
+        paginationOderDetail.setEnabled(false);
+        paginationOderDetail.setVisible(false);
     }
 
     private void fillTableOrder(List<OrderResponse> listOder) {
@@ -210,13 +212,10 @@ public class OrderPanel extends javax.swing.JPanel {
         int limit = 10;
         int offset = (page - 1) * limit;
         try {
-            int rowCount = oderDetailService.countOderDetail();
-            System.out.println(rowCount);
+            int rowCount = oderDetailService.countOderDetail(orderCodeChoose);
             int totalPages = (int) Math.ceil((double) rowCount / limit);
             fillTableOderDetail(oderDetailService.getPaginatedOders(offset, limit, orderCodeChoose));
             paginationOderDetail.setPagegination(page, totalPages);
-            System.out.println("Tổng số trang: " + totalPages);
-            System.out.println("Trang hiện tại: " + page);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -428,13 +427,13 @@ public class OrderPanel extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrderDetailLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(489, 489, 489))
+                .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(490, 490, 490))
         );
         panelOrderDetailLayout.setVerticalGroup(
             panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOrderDetailLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paginationOderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -467,6 +466,8 @@ public class OrderPanel extends javax.swing.JPanel {
             String orderCode = (String) tblDisplayOrder.getValueAt(row, 1);
             this.orderCodeChoose = orderCode;
             loadDataOdersDetail(1);
+            paginationOderDetail.setEnabled(true);
+            paginationOderDetail.setVisible(true);
         }
     }//GEN-LAST:event_tblDisplayOrderMouseClicked
 
@@ -479,33 +480,7 @@ public class OrderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchKeyPressed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-//        String textSearch = txtSearch.getText().toLowerCase().trim();
-//        System.out.println(textSearch);
-//        List<Oders> list = oderService.getAllOders();
-//        List<Oders> listSearch = new ArrayList<>();
-//
-//        for (Order oders : list) {
-//            if (oders.getNameCustomer().toLowerCase().contains(textSearch)) {
-//                listSearch.add(oders);
-//            }
-//        }
-//
-//        if (listSearch.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Không tìm thấy");
-//            fillTableOrder(oderService.getAllOders());
-//        } else {
-//            if (txtSearch.getText().equals("")) {
-//                clearTable(tableModelOrder);
-//                for (Order oders : listSearch) {
-//                    tableModelOrder.addRow(oders.toDataOrder());
-//                }
-//            }
-//            clearTable(tableModelOrder);
-//            for (Order oders : listSearch) {
-//                tableModelOrder.addRow(oders.toDataOrder());
-//            }
-//
-//        }
+
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -585,6 +560,9 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         loadDataOrders(1);
+        tableModelOrderDetail.setRowCount(0);
+        paginationOderDetail.setEnabled(false);
+        paginationOderDetail.setVisible(false);
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void cbbOrderStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbOrderStatusActionPerformed
