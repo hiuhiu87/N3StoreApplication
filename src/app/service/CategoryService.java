@@ -17,20 +17,32 @@ public class CategoryService {
     private final CategoryRepository categoryRepository = new CategoryRepository();
 
     public List<Category> getAll() {
-        return categoryRepository.getAll();
+        List<Category> categories = categoryRepository.getAll();
+        if (categories == null) {
+            throw new IllegalStateException("Failed to retrieve categories from the repository");
+        }
+        return categories;
     }
 
     public String addCategory(Category category) {
-        if (category.getName().trim().isEmpty()) {
-            return "Tên Danh Mục Không Được Để Chóng";
-        }
-        int res = categoryRepository.add(category);
-        if (res > 0) {
-            return "Thêm Danh Mục Thành Công";
-        } else {
-            return "Đã Xảy Ra Lỗi";
+        try {
+            if (category.getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Tên Danh Mục Không Được Để Chóng");
+            }
+            if (category.getName().length() > 255) {
+                throw new IllegalArgumentException("Tên Danh Mục Quá Dài");
+            }
+            int res = categoryRepository.add(category);
+            if (res > 0) {
+                return "Thêm Danh Mục Thành Công";
+            } else {
+                throw new RuntimeException("Đã Xảy Ra Lỗi");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Đã Xảy Ra Lỗi", e);
         }
     }
+
 
     public boolean changeStatus(String name) {
         return categoryRepository.updateStatus(name) > 0;
