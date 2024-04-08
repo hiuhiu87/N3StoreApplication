@@ -6,7 +6,6 @@ package app.service;
 
 import app.dbconnect.DBConnector;
 import app.model.KhachHang;
-import app.model.Voucher;
 import app.response.ProductBoughtCustomerResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +18,7 @@ import java.util.List;
  *
  * @author ACER
  */
-public class KhachHang_Service {
+public class KhachHangService {
 
     Connection con = null;
     PreparedStatement ps = null;

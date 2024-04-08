@@ -5,9 +5,9 @@
 package app.view;
 
 import app.model.KhachHang;
-import app.service.KhachHang_Service;
+import app.service.KhachHangService;
 import app.service.SellService;
-import java.lang.System.Logger.Level;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CustommerDialog extends javax.swing.JDialog {
     DefaultTableModel model;
     private int index = -1;
     private final SellService sellService = new SellService();
-    private final KhachHang_Service khachHangService = new KhachHang_Service();
+    private final KhachHangService khachHangService = new KhachHangService();
     private KhachHang khachHang;
 
     /**
