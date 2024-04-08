@@ -48,6 +48,7 @@ public class CompanyRepository implements CrudRepository<Company> {
     }
     
     public int updateStatus(String name) {
+
         try (Connection con = DBConnector.getConnection()) {
             String sql = """
                          UPDATE N3STORESNEAKER.dbo.BRAND

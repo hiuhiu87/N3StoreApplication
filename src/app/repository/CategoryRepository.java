@@ -79,23 +79,31 @@ public class CategoryRepository implements CrudRepository<Category> {
 
     public int updateStatus(String name) {
         try (Connection con = DBConnector.getConnection()) {
-            String sql = """
-                         UPDATE N3STORESNEAKER.dbo.CATEGORY
-                         SET DELETED = ?
-                         WHERE NAME = ?;
-                         """;
-            PreparedStatement stm = con.prepareStatement(sql);
             Category category = findByName(name);
-            if (category != null) {
-                if (category.getDeleted() != true) {
-                    category.setDeleted(Boolean.TRUE);
-                } else {
-                    category.setDeleted(Boolean.FALSE);
-                }
-
-                stm.setObject(1, category.getDeleted());
-                stm.setObject(2, category.getName());
+            if (category == null) {
+                throw new IllegalArgumentException("Category with name " + name + " does not exist.");
             }
+
+            // Update the status
+            String sql = """
+                 UPDATE N3STORESNEAKER.dbo.CATEGORY
+                 SET DELETED = ?
+                 WHERE NAME = ?;
+                 """;
+            PreparedStatement stm = con.prepareStatement(sql);
+
+            Boolean deleted = category.getDeleted();
+            if (deleted == null) {
+                deleted = Boolean.FALSE;
+            } else if (!deleted) {
+                deleted = Boolean.TRUE;
+            } else {
+                deleted = Boolean.FALSE;
+            }
+
+            stm.setObject(1, deleted);
+            stm.setObject(2, category.getName());
+
             int res = stm.executeUpdate();
             return res;
         } catch (Exception e) {
@@ -103,6 +111,8 @@ public class CategoryRepository implements CrudRepository<Category> {
             return 0;
         }
     }
+
+
 
     public Category findByName(String name) {
         try (Connection con = DBConnector.getConnection()) {
