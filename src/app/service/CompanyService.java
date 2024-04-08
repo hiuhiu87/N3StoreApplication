@@ -22,19 +22,23 @@ public class CompanyService {
 
     public String addCompany(Company company) {
         if (company.getName().trim().isEmpty()) {
-            return "Tên Hãng Trống";
+            throw new IllegalArgumentException("Tên Hãng Trống");
         }
         company.setDeleted(Boolean.FALSE);
         int resultAdd = companyRepository.add(company);
         if (resultAdd > 0) {
             return "Thêm Hãng Thành Công";
         } else {
-            return "Đã Xảy Ra Lỗi";
+            throw new RuntimeException("Đã Xảy Ra Lỗi");
         }
     }
-    
+
     public boolean changeStatus(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên không được null hoặc trống");
+        }
         return companyRepository.updateStatus(name) > 0;
     }
+
 
 }

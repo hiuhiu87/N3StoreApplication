@@ -42,7 +42,7 @@ public class Color {
     }
 
     public Boolean getDeleted() {
-        return deleted;
+        return deleted != null ? deleted : false;
     }
 
     public void setDeleted(Boolean deleted) {
