@@ -4,13 +4,12 @@
  */
 package app.service;
 
-import app.model.Company;
 import app.model.Material;
 import app.repository.MaterialRepository;
+
 import java.util.List;
 
 /**
- *
  * @author Admin
  */
 public class MaterialService {
@@ -21,16 +20,31 @@ public class MaterialService {
         return materialRepository.getAll();
     }
 
-    public String addMaterail(Material material) {
-        if (material.getName().trim().isEmpty()) {
-            return "Tên Chất Liệu Trống";
+    public String addMaterial(Material material) {
+        try {
+            if (material.getName().trim().isEmpty()) {
+                return "Tên Chất Liệu Trống";
+            }
+            material.setDeleted(Boolean.FALSE);
+            int resultAdd = materialRepository.add(material);
+            if (resultAdd > 0) {
+                return "Thêm Chất Liệu Thành Công";
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
         }
-        material.setDeleted(Boolean.FALSE);
-        int resultAdd = materialRepository.add(material);
-        if (resultAdd > 0) {
-            return "Thêm Chất Liệu Thành Công";
-        } else {
-            return "Đã Xảy Ra Lỗi";
+    }
+
+    public int updateMaterial(Material material) {
+        try {
+            if (material.getName().trim().isEmpty()) {
+                return 0;
+            }
+            return materialRepository.update(material.getId(), material);
+        } catch (Exception e) {
+            return 0;
         }
     }
 

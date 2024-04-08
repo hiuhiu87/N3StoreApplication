@@ -15,7 +15,7 @@ import app.response.CartResponse;
 import app.response.OrderResponse;
 import app.response.ProductDetailResponse;
 import app.response.ProductResponse;
-import app.service.KhachHang_Service;
+import app.service.KhachHangService;
 import app.service.NhanVienService;
 import app.service.OrderDetailService;
 import app.service.OrderService;
@@ -132,7 +132,7 @@ public class SellPanel extends javax.swing.JPanel {
     private final JFrame parentFrame;
 
     private final SellService sellService = new SellService();
-    private final KhachHang_Service khachHangService = new KhachHang_Service();
+    private final KhachHangService khachHangService = new KhachHangService();
     private final NhanVienService nhanVienService = new NhanVienService();
     private final OrderService orderService = new OrderService();
     private final OrderDetailService orderDetailService = new OrderDetailService();

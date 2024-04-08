@@ -4,7 +4,6 @@
  */
 package app.view.propertiesproductview;
 
-import app.model.Company;
 import app.model.Material;
 import app.service.MaterialService;
 import java.util.List;
@@ -199,7 +198,7 @@ public class MaterialDialog extends javax.swing.JDialog {
             String nameCompany = txtNameCMaterial.getText();
             Material material = new Material();
             material.setName(nameCompany);
-            String result = materialService.addMaterail(material);
+            String result = materialService.addMaterial(material);
             JOptionPane.showMessageDialog(this, result);
             fillTable(materialService.getAllMaterials());
         }

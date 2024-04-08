@@ -5,15 +5,12 @@
 package app.view;
 
 import app.model.KhachHang;
-import app.model.Order;
-import app.model.Voucher;
 import app.response.ProductBoughtCustomerResponse;
-import app.service.KhachHang_Service;
+import app.service.KhachHangService;
 import app.view.swing.EventPagination;
 import app.view.swing.PaginationItemRenderStyle1;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CustomerPanel extends javax.swing.JPanel {
 
-    private final KhachHang_Service service = new KhachHang_Service();
+    private final KhachHangService service = new KhachHangService();
     int row = -1;
     private DefaultTableModel model = new DefaultTableModel() {
         @Override
